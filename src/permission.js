@@ -54,7 +54,8 @@ router.beforeEach(async (to, from, next) => {
         } else {
             if(process.env.NODE_ENV === 'production'){
                 // next(`/login`);
-                window.open(`${process.env.VUE_APP_API_STATIC_URL}/amis-web/static/login/login.html`, '_self')
+                window.location.href = `${process.env.VUE_APP_API_STATIC_URL}/amis-web/static/login/login.html`
+                // window.open(`${process.env.VUE_APP_API_STATIC_URL}/amis-web/static/login/login.html`, '_self')
             }else{  
                 next();
             }

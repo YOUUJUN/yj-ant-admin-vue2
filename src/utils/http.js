@@ -22,9 +22,10 @@ service.interceptors.request.use(function (config) {
 
 service.interceptors.response.use((response) => {
     console.log('status', response.data.status)
-    if(response.data.status === 50014){
+    if(response.data.status == '99'){
         // router.push(`/login`);
-        window.open(`${process.env.VUE_APP_API_STATIC_URL}/amis-web/static/login/login.html`, '_self')
+        window.location.href = `${process.env.VUE_APP_API_STATIC_URL}/amis-web/static/login/login.html`
+        // window.open(`${process.env.VUE_APP_API_STATIC_URL}/amis-web/static/login/login.html`, '_self')
     }
     return response
 }, (error) => {
