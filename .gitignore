@@ -4,7 +4,9 @@ node_modules
 /vue-pages
 /vue-public
 /dist
+/ElderlyManagement
 package-lock.json
+ElderlyManagement.zip
 
 # local env files
 .env.local
