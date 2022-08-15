@@ -1,23 +1,21 @@
-import router from '@/router';
-import store from '@/store';
+import router from "@/router";
+import store from "@/store";
 
-import NProgress from 'nprogress' // progress bar
-import 'nprogress/nprogress.css' // progress bar style
+import NProgress from "nprogress"; // progress bar
+import "nprogress/nprogress.css"; // progress bar style
 
-import { getToken } from '@/utils/auth';
+import { getToken } from "@/utils/auth";
 
-const whiteList = ['/login'];
+const whiteList = ["/login"];
 
-
-router.beforeEach( async (to, from, next) => {
-    NProgress.start() // start progress bar
+router.beforeEach(async (to, from, next) => {
+    NProgress.start(); // start progress bar
     /* must call `next` */
-    const hasToken = getToken()
-    console.log('hasToken', hasToken)
-    if(hasToken){
-
+    const hasToken = getToken();
+    console.log("hasToken", hasToken);
+    if (hasToken) {
         next();
-        NProgress.done()
+        NProgress.done();
 
         // if(to.path === '/login'){
         //     next({path : '/'});
@@ -30,14 +28,14 @@ router.beforeEach( async (to, from, next) => {
         //         /*--如果没有，尝试获取--*/
         //         try{
         //             const { roles } = await store.dispatch('user/getInfo');
-                    
+
         //             //通过权限列表动态生成前端路由
         //             const accessedRoutes = await store.dispatch('permission/generateRoutes', roles);
 
         //             accessedRoutes.forEach(route => {
         //                 router.addRoute(route);
         //             });
-                    
+
         //             next({...to, replace : true});
         //         }catch(err){
         //             /*--处理向后台请求用户信息接口错误--*/
@@ -46,24 +44,20 @@ router.beforeEach( async (to, from, next) => {
 
         //         }
         //     }
-            
+
         // }
-
-    }else{
-        console.log('no token')
+    } else {
+        console.log("no token");
         /*no token*/
-        if(whiteList.includes(to.path)){
+        if (whiteList.includes(to.path)) {
             next();
-        }else{
+        } else {
             next(`/login?redirect=${to.path}`);
-            NProgress.done()
         }
+        NProgress.done();
     }
-
 });
 
 router.afterEach(() => {
-    NProgress.done() // finish progress bar
-  })
-  
-
+    NProgress.done(); // finish progress bar
+});

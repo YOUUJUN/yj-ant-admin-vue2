@@ -1,53 +1,33 @@
 const state = {
-    displayRow : 'X8',
-    userInfo : [],
-    sidebar : {
-        opened : false,
-        width : '240'
-    }
+    sidebar: {
+        opened: false,
+        width: "240",
+    },
 };
 
 const mutations = {
-    CHANGE_DISPLAY_ROW (state, payload){
-        state.displayRow = payload;
-    },
-
-    INIT_USER_INFO (state, payload){
-        state.userInfo = payload;
-    },
-
-    TOGGLE_SIDE_BAR (state, payload){
+    TOGGLE_SIDE_BAR(state, payload) {
         state.sidebar.opened = !state.sidebar.opened;
     },
 
-    CLOSE_SIDE_BAR(state){
+    CLOSE_SIDE_BAR(state) {
         state.sidebar.opened = fasle;
-    }
-
-
+    },
 };
 
 const actions = {
-    changeDisplayRow({commit}, payload){
-        commit('CHANGE_DISPLAY_ROW', payload);
+    toggleSideBar({ commit }) {
+        commit("TOGGLE_SIDE_BAR");
     },
 
-    initUserInfo ({commit}, payload){
-        commit('INIT_USER_INFO', payload);
+    closeSideBar({ commit }) {
+        commit("CLOSE_SIDE_BAR");
     },
-
-    toggleSideBar({commit}){
-        commit('TOGGLE_SIDE_BAR');
-    },
-
-    closeSideBar({commit}){
-        commit('CLOSE_SIDE_BAR');
-    }
-}
+};
 
 export default {
-    namespaced : true,
+    namespaced: true,
     state,
     mutations,
-    actions
-}
+    actions,
+};

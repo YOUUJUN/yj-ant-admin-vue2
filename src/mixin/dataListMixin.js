@@ -37,31 +37,36 @@ export default {
 
     methods: {
         loadData(page) {
-            let vm = this;
-            console.log("url", this.url);
-            if (!this.url.list) {
-                console.error("请设置url.list属性!");
-                return;
-            }
-            //加载数据 若传入参数1则加载第一页的内容
-            if (page === 1) {
-                this.ipagination.current = 1;
-            }
-
-            var params = this.getQueryParams(); //查询条件
-            console.log("params", params);
-            this.loading = true;
-            postAction(this.url.list, params).then((res) => {
-                if (res.data) {
-                    console.log("res", res);
-                    this.dataSource = res.data.records;
-                    if (res.data.total) {
-                        this.ipagination.total = res.data.total;
-                    }
+            return new Promise((resolve, reject) => {
+                if (!this.url.list) {
+                    console.error("请设置url.list属性!");
+                    return;
                 }
-                this.loading = false;
-                console.log("dataSource", this.dataSource);
-                console.log("ipagination", this.ipagination);
+                //加载数据 若传入参数1则加载第一页的内容
+                if (page === 1) {
+                    this.ipagination.current = 1;
+                }
+
+                var params = this.getQueryParams(); //查询条件
+                this.loading = true;
+                postAction(this.url.list, params)
+                    .then((res) => {
+                        if (res?.data) {
+                            this.dataSource = res.data.records;
+                            if (res.data.total) {
+                                this.ipagination.total = res.data.total;
+                            }
+                        }
+
+                        resolve(res?.data);
+                    })
+                    .catch((err) => {
+                        console.error("loadData err", err);
+                        reject(err);
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
             });
         },
 
@@ -75,7 +80,6 @@ export default {
         },
 
         getQueryParams() {
-            console.log("hello");
             //获取查询条件
             let sqp = {};
             var param = Object.assign(sqp, this.queryParam);
@@ -85,7 +89,6 @@ export default {
         },
 
         handleTableChange(pagination) {
-            console.log(pagination);
             this.ipagination = pagination;
             this.loadData();
         },
