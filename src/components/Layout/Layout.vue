@@ -103,6 +103,7 @@ export default {
     left: 0;
     right: 0;
     overflow: auto;
+    overflow-x: hidden;
 }
 
 .foot-wrap {
