@@ -52,7 +52,12 @@ router.beforeEach(async (to, from, next) => {
         if (whiteList.includes(to.path)) {
             next();
         } else {
-            next(`/login?redirect=${to.path}`);
+            if(process.env.NODE_ENV === 'production'){
+                // next(`/login`);
+                window.open(`${process.env.VUE_APP_API_STATIC_URL}/amis-web/static/login/login.html`, '_self')
+            }else{  
+                next();
+            }
         }
         NProgress.done();
     }

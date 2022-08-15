@@ -80,10 +80,12 @@ let externalModules = getExternalModules(externalConfig);
 
 delete require.cache[module.id];
 
+let publicPath = !isProd ? '/' : "/amis-web/static/ElderlyManagement/";
+
 module.exports = function () {
     return {
-        publicPath: "/",
-        outputDir: "./dist",
+        publicPath,
+        outputDir: "./ElderlyManagement",
         assetsDir: "static",
         filenameHashing: true,
         devServer: {

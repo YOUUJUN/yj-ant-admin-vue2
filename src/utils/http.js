@@ -10,9 +10,9 @@ let service = axios.create({
 });
 
 service.interceptors.request.use(function (config) {
-    let marscript = getToken();
-    if (marscript) {
-        config.headers.accessToken = marscript;
+    let token = getToken();
+    if (token) {
+        config.headers.authorization = token;
         // config.headers['accessToken'] = Token;
     }
     return config;
@@ -23,7 +23,8 @@ service.interceptors.request.use(function (config) {
 service.interceptors.response.use((response) => {
     console.log('status', response.data.status)
     if(response.data.status === 50014){
-        router.push(`/login`);
+        // router.push(`/login`);
+        window.open(`${process.env.VUE_APP_API_STATIC_URL}/amis-web/static/login/login.html`, '_self')
     }
     return response
 }, (error) => {

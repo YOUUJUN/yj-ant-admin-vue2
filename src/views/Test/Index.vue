@@ -31,6 +31,14 @@
                                 >
                                     查询
                                 </a-button>
+                                <a-button
+                                    type="primary"
+                                    style="margin-left: 8px"
+                                    icon="search"
+                                    @click="handleTest"
+                                >
+                                    测试
+                                </a-button>
                             </div>
                         </a-col>
                     </a-row>
@@ -206,6 +214,16 @@ export default {
         //处理查询
         handleQuery(){
             postAction('/test/list', {
+
+            }).then(res => {
+                console.log('res', res);
+            }).catch(err => {
+                console.error('err', err)
+            })
+        },
+
+        handleTest(){
+            getAction('/test', {
 
             }).then(res => {
                 console.log('res', res);
