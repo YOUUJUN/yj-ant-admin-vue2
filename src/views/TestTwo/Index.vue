@@ -17,7 +17,7 @@
                             <div class="ctrl-wrap">
                                 <a-button
                                     type="primary"
-                                    style="margin-left: 8px"
+                                    style="margin-left: .8rem"
                                     icon="reload"
                                     @click="handleReset"
                                 >
@@ -25,7 +25,7 @@
                                 </a-button>
                                 <a-button
                                     type="primary"
-                                    style="margin-left: 8px"
+                                    style="margin-left: .8rem"
                                     icon="search"
                                     @click="handleQuery"
                                 >
@@ -232,11 +232,11 @@ export default {
 }
 
 .header-wrap {
-    padding-left: 30px;
+    padding-left: 3rem;
 }
 
 .main-wrap {
-    margin: 20px;
+    margin: 2rem;
 }
 
 .search-form {
@@ -250,6 +250,6 @@ export default {
 }
 
 .btn-wrap {
-    margin-top: 10px;
+    margin-top: 1rem;
 }
 </style>

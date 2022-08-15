@@ -192,9 +192,9 @@ export default {
 <style scoped>
 .tab-layout-tabs {
     position: fixed;
-    top: 60px;
+    top: 6rem;
     right: 0;
-    left: 240px;
+    left: 24rem;
     background: #f0f2f5;
     opacity: 1;
     z-index: 999;
@@ -202,7 +202,7 @@ export default {
 
 .tabs-view-content {
     margin: 5rem 2.4rem 2.4rem;
-    border-radius: 4px;
+    border-radius: .4rem;
     overflow: hidden;
     box-shadow: -0.1rem -0.1rem 0.5rem 0 rgba(0, 0, 0, 0.1);
     background: #fff;

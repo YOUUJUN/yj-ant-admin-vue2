@@ -82,7 +82,7 @@ export default {
 
 .aside-wrap{
     overflow: auto;
-    border-right: 1px solid #e8e8e8;
+    border-right: .01rem solid #e8e8e8;
     overflow-x: hidden;
 }
 

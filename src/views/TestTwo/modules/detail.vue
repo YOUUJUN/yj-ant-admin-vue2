@@ -216,7 +216,7 @@ export default {
 }
 
 ::v-deep .ant-descriptions-bordered .ant-descriptions-item-content{
-    padding: 3px 6px;
+    padding: .3rem .6rem;
 }
 
 ::v-deep .ant-descriptions-bordered .ant-descriptions-item-label{
@@ -225,7 +225,7 @@ export default {
 }
 
 ::v-deep .ant-descriptions-title{
-    margin-bottom: 8px;
+    margin-bottom: .8rem;
 }
 
 
