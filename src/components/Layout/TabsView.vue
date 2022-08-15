@@ -22,19 +22,25 @@
         </a-tabs>
 
         <div class="tabs-view-content">
-            <keep-alive>
-                <router-view v-if="$route.meta.keepAlive"></router-view>
-            </keep-alive>
+            <page-transition>
+                <keep-alive v-if="$route.meta.keepAlive">
+                    <router-view></router-view>
+                </keep-alive>
 
-            <router-view v-if="!$route.meta.keepAlive"></router-view>
+                <router-view v-else></router-view>
+            </page-transition>
         </div>
     </section>
 </template>
 
 <script>
+const PageTransition = () => import("@/components/Transition/PageTransition");
+
 export default {
     name: "TabLayout",
-    components: {},
+    components: {
+        PageTransition,
+    },
 
     data() {
         //首页path
@@ -68,9 +74,11 @@ export default {
                 });
 
                 if (gotoRoute && gotoRoute.fullPath !== this.$route.fullPath) {
-                    this.$router.push({
-                        path: gotoRoute.fullPath,
-                    }).catch(err=>{});
+                    this.$router
+                        .push({
+                            path: gotoRoute.fullPath,
+                        })
+                        .catch((err) => {});
                 }
             },
         },
@@ -185,7 +193,7 @@ export default {
 .tab-layout-tabs {
     position: fixed;
     top: 60px;
-    right: 0;   
+    right: 0;
     left: 240px;
     background: #f0f2f5;
     opacity: 1;

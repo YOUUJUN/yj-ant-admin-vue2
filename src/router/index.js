@@ -54,10 +54,11 @@ export const constantRoutes = [
                 path: "goout",
                 name: "goout",
                 components: {
-                    default: () => import("@views/Test/Index.vue"),
+                    default: () => import("@views/TestTwo/Index.vue"),
                 },
                 meta: {
                     title: "外出老人",
+                    keepAlive : true,
                 },
             },
             {
