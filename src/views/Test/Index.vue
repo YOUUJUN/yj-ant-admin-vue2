@@ -80,6 +80,9 @@
 </template>
 
 <script>
+
+import { getAction, postAction } from "@/api/manage";
+
 const detailModel = () => import('./modules/detail.vue');
 
 const columns = [
@@ -202,7 +205,13 @@ export default {
 
         //处理查询
         handleQuery(){
+            postAction('/test/list', {
 
+            }).then(res => {
+                console.log('res', res);
+            }).catch(err => {
+                console.error('err', err)
+            })
         },
 
         //处理重置
