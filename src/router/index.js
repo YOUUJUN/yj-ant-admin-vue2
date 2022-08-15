@@ -165,7 +165,7 @@ export const constantRoutes = [
 export const asyncRouters = [];
 
 const router = new VueRouter({
-    mode: "history",
+    mode: "hash",
     base: process.env.BASE_URL,
     routes: constantRoutes,
 });
