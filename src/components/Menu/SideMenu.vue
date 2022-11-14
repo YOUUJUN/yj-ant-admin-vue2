@@ -1,7 +1,7 @@
 <template>
 	<section class="menu-wrap">
-		<a-menu :default-selected-keys="['1']" :open-keys.sync="openKeys" mode="inline" @click="handleClick">
-			<a-sub-menu key="sub1" @titleClick="titleClick">
+		<a-menu  v-model="defaultActive" :openKeys.sync="openKeys" mode="inline" @click="handleClick">
+			<a-sub-menu key="/elderinfo" @titleClick="titleClick">
 				<span slot="title">
 					<a-icon type="solution" />
 					<span>老人信息</span>
@@ -12,7 +12,7 @@
 				<a-menu-item key="/elderinfo/passed">死亡老人</a-menu-item>
 			</a-sub-menu>
 
-			<a-sub-menu key="sub2" @titleClick="titleClick">
+			<a-sub-menu key="/healthcheck" @titleClick="titleClick">
 				<span slot="title">
 					<a-icon type="medicine-box" />
 					<span>健康检查</span>
@@ -21,7 +21,7 @@
 				<a-menu-item key="/healthcheck/anomaly">异常提示</a-menu-item>
 			</a-sub-menu>
 
-			<a-sub-menu key="sub3" @titleClick="titleClick">
+			<a-sub-menu key="/systemsetting" @titleClick="titleClick">
 				<span slot="title">
 					<a-icon type="setting" />
 					<span>系统设置</span>
@@ -40,8 +40,8 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
 	data() {
 		return {
-			current: ['mail'],
-			openKeys: ['sub1'],
+			defaultActive: [],
+			openKeys: [],
 		}
 	},
 
@@ -51,6 +51,8 @@ export default {
 		$route: {
 			immediate: true,
 			handler(newValue) {
+				console.log('newValue.matched[0]',newValue.matched[0]);
+				this.openKeys = [newValue.matched[0].path]
 				this.setMenuActive(newValue.fullPath)
 			},
 		},
@@ -78,7 +80,7 @@ export default {
 
 		//设置菜单默认选中
 		setMenuActive(path) {
-			this.defaultActive = path
+			this.defaultActive = [path]
 		},
 	},
 }
