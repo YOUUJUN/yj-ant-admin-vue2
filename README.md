@@ -1,4 +1,4 @@
-# 机构在院老人管理
+# vue2 ant-design-vue1.7.8 后端管理开发框架 
 
 ## Project setup
 
@@ -9,17 +9,17 @@ pnpm install
 ### Compiles and hot-reloads for development
 
 ```
-pnpm run serve
+pnpm serve
 ```
 
 ### Compiles and minifies for production
 
 ```
-pnpm run build
+pnpm build
 ```
 
 ### Compiles and hot-reloads for development & Open the project structure
 
 ```
-pnpm run performance
+pnpm performance
 ```
