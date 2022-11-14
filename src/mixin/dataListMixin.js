@@ -53,7 +53,7 @@ export default {
 					.then((res) => {
 						if (res?.data) {
 							this.dataSource = res.data.records
-							if (res.data.total) {
+							if (res?.data?.total) {
 								this.ipagination.total = res.data.total
 							}
 						}
