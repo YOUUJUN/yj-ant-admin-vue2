@@ -150,11 +150,12 @@ module.exports = function () {
                     .use(SpeedMeasurePlugin)
             );
 
-            //优化moment 去掉国际化内容；
-            //我都不知道哪来的moment
-            config
-                .plugin("ignore")
-                .use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+            config.plugin("ignore").use(
+                new webpack.IgnorePlugin({
+                    resourceRegExp: /^\.\/locale$/,
+                    contextRegExp: /moment$/,
+                })
+            );
 
             config //打包时生成.gz文件
                 .plugin("compression-webpack-plugin")
