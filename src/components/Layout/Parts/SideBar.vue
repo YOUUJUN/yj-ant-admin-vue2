@@ -1,18 +1,17 @@
 <template>
-    <div>
-        <side-menu></side-menu>
-    </div>
+	<div>
+		<side-menu></side-menu>
+	</div>
 </template>
 
 <script>
-const SideMenu = () => import("@/components/Menu/SideMenu.vue")
+const SideMenu = () => import('@/components/Menu/SideMenu.vue')
 export default {
-    name : 'SideBar',
-    components : {
-        SideMenu
-    }
-};
+	name: 'SideBar',
+	components: {
+		SideMenu,
+	},
+}
 </script>
 
-<style>
-</style>
+<style></style>

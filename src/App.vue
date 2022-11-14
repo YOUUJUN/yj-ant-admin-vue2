@@ -1,36 +1,36 @@
 <template>
-    <a-config-provider :locale="locale">
-        <div id="app">
-            <router-view />
-        </div>
-    </a-config-provider>
+	<a-config-provider :locale="locale">
+		<div id="app">
+			<router-view />
+		</div>
+	</a-config-provider>
 </template>
 
 <script>
-import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 
 export default {
-    name: "App",
-    data() {
-        return {
-            locale: zhCN,
-        };
-    },
-};
+	name: 'App',
+	data() {
+		return {
+			locale: zhCN,
+		}
+	},
+}
 </script>
 
 <style>
 html,
 body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-size: 62.5%;
-    font-family: Poppins, sans-serif;
-    box-sizing: border-box;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-size: 62.5%;
+	font-family: Poppins, sans-serif;
+	box-sizing: border-box;
 }
 
 #app {
-    height: 100%;
+	height: 100%;
 }
 </style>
