@@ -11,6 +11,7 @@ const path = require('path')
 const webpack = require('webpack')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
+const AliasPlugin = require('alias-jsconfig-webpack-plugin')
 
 const productionGzipExtensions = ['js', 'css']
 const isProd = process.env.NODE_ENV === 'production'
@@ -145,6 +146,15 @@ module.exports = function () {
 				new webpack.IgnorePlugin({
 					resourceRegExp: /^\.\/locale$/,
 					contextRegExp: /moment$/,
+				}),
+			)
+
+			//读取alias配置添加到jsconfig.json
+			config.plugin('alias').use(
+				new AliasPlugin({
+					language: 'js', // or 'ts'
+					jsx: true, // default to true,
+					indentation: 4, // default to 4, the indentation of jsconfig.json file
 				}),
 			)
 
