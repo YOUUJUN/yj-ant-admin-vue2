@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*" : ["src/*"],
+            "~@/*" : ["src/*"],
+            "@assets/*" : ["src/assets/*"],
+            "@components/*" : ["src/components/*"],
+            "@views/*" : ["src/views/*"],
+            "@store/*" : ["src/store/*"],
+        },
+        //解决prettier对于装饰器语法的警告
+        "experimentalDecorators": true, 
+    },
+    "exclude": ["node_module", "dist"]
+}
