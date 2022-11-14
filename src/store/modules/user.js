@@ -1,5 +1,6 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { login, logout, getInfo } from '@/api/user'
+import { getMenus } from '@/utils/routerUtils'
+import { login, logout, getInfo, queryPermissionsByUser } from '@/api/user'
 
 import router from '@/router'
 
@@ -9,6 +10,7 @@ const state = {
 	avatar: '',
 	introduction: '',
 	roles: [],
+	permissionList : [],
 }
 
 const mutations = {
@@ -26,6 +28,10 @@ const mutations = {
 	},
 	SET_ROLES: (state, roles) => {
 		state.roles = roles
+	},
+
+	SET_PERMISSIONLIST: (state, permissionList) => {
+		state.permissionList = permissionList
 	},
 }
 
@@ -46,6 +52,49 @@ const actions = {
 				})
 				.catch((err) => {
 					reject(err)
+				})
+		})
+	},
+
+	//获取用户权限列表
+	GetPermissionList({ commit }) {
+		return new Promise((resolve, reject) => {
+			queryPermissionsByUser()
+				.then((response) => {
+					let menuData = response.result.menu
+					const authData = response.result.auth
+					const allAuthData = response.result.allAuth
+
+					//Vue.ls.set(USER_AUTH,authData);
+					sessionStorage.setItem(USER_AUTH, JSON.stringify(authData))
+					sessionStorage.setItem(SYS_BUTTON_AUTH, JSON.stringify(allAuthData))
+
+					if (menuData?.length > 0) {
+						menuData.forEach((item, index) => {
+							if (item['children']) {
+								let hasChildrenMenu = item['children'].filter((i) => {
+									return !i.hidden || i.hidden == false
+								})
+								if (hasChildrenMenu == null || hasChildrenMenu.length == 0) {
+									item['hidden'] = true
+								}
+							}
+						})
+						try {
+							menuData = [...menuData, ...getMenus()]
+							// console.log(" menu show json ", menuData);
+						} catch (err) {
+							console.log(err)
+						}
+
+						commit('SET_PERMISSIONLIST', menuData)
+					} else {
+						reject('getPermissionList: permissions must be a non-null array !')
+					}
+					resolve(response)
+				})
+				.catch((error) => {
+					reject(error)
 				})
 		})
 	},

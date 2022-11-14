@@ -1,24 +1,8 @@
-import request from '@/utils/http'
+import { getAction, postAction } from './manage'
 
-export function login(data) {
-	return request({
-		url: '/users/login',
-		method: 'post',
-		data,
-	})
-}
+const login = (params) => postAction('/users/login', params)
+const logout = (params) => postAction('/users/logout', params)
+const queryPermissionsByUser = () => getAction('/sys/permission/getUserPermissionByToken')
+const getInfo = (params) => postAction('/users/info', params)
 
-export function getInfo(token) {
-	return request({
-		url: '/users/info',
-		method: 'get',
-		params: { token },
-	})
-}
-
-export function logout() {
-	return request({
-		url: '/users/logout',
-		method: 'post',
-	})
-}
+export { login, logout, getInfo, queryPermissionsByUser }
