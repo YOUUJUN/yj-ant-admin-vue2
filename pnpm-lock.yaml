@@ -12,6 +12,7 @@ specifiers:
   less: ^3.0.0
   less-loader: ^5.0.0
   nprogress: ^0.2.0
+  prettier: ^2.7.1
   speed-measure-webpack-plugin: ^1.5.0
   vue: 2.6.14
   vue-router: ^3.1.3
@@ -36,6 +37,7 @@ devDependencies:
   compression-webpack-plugin: 3.1.0_webpack@4.46.0
   less: 3.13.1
   less-loader: 5.0.0_less@3.13.1+webpack@4.46.0
+  prettier: 2.7.1
   speed-measure-webpack-plugin: 1.5.0_webpack@4.46.0
   vue-template-compiler: 2.6.14
   webpack-bundle-analyzer: 3.9.0
@@ -9358,7 +9360,6 @@ packages:
     hasBin: true
     requiresBuild: true
     dev: true
-    optional: true
 
   /pretty-error/2.1.2:
     resolution: {integrity: sha512-EY5oDzmsX5wvuynAByrmY0P0hcp+QpnAKbJng2A2MPjVKXCxrDSUkzghVJ4ZGPIv+JC4gX8fPUWscC0RtjsWGw==}
