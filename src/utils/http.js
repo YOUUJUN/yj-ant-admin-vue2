@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getToken } from '@/utils/auth'
+import { getToken } from '@/utils/root/lsOperation'
 import router from '@/router'
 
 const baseURL = process.env.VUE_APP_API_BASE_URL

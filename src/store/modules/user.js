@@ -1,50 +1,100 @@
-import { getToken, setToken, removeToken } from '@/utils/auth'
-import { getMenus } from '@/utils/routerUtils'
+import { getToken, setToken, removeToken, saveStorage } from '@/utils/root/lsOperation'
+import { USER_NAME, USER_REALNAME, USER_INFO, UI_CACHE_DB_DICT_DATA } from '@/utils/root/localStorageKeys'
+import { getMenus } from '@/utils/root/routerUtils'
 import { login, logout, getInfo, queryPermissionsByUser } from '@/api/user'
 
 import router from '@/router'
 
 const state = {
 	token: getToken(),
-	name: '',
+	userInfo: '',
+	username: '',
+	realname : '',
 	avatar: '',
+	permissionList: [],
+	
 	introduction: '',
 	roles: [],
-	permissionList : [],
 }
 
 const mutations = {
 	SET_TOKEN: (state, token) => {
 		state.token = token
+		setToken(token, 7 * 24 * 60 * 60 * 1000)
 	},
-	SET_INTRODUCTION: (state, introduction) => {
-		state.introduction = introduction
+
+	SET_USER_INFO: (state, userInfo) => {
+		state.userInfo = userInfo
+		saveStorage(USER_INFO, userInfo, 7 * 24 * 60 * 60 * 1000)
 	},
-	SET_NAME: (state, name) => {
-		state.name = name
+
+	SET_USER_NAME: (state, names) => {
+		let { username, realname } = names
+		state.username = username
+		state.realname = realname
+		saveStorage(USER_NAME, username, 7 * 24 * 60 * 60 * 1000)
+		saveStorage(USER_REALNAME, username, 7 * 24 * 60 * 60 * 1000)
 	},
+
 	SET_AVATAR: (state, avatar) => {
 		state.avatar = avatar
-	},
-	SET_ROLES: (state, roles) => {
-		state.roles = roles
 	},
 
 	SET_PERMISSIONLIST: (state, permissionList) => {
 		state.permissionList = permissionList
 	},
+
+	SET_INTRODUCTION: (state, introduction) => {
+		state.introduction = introduction
+	},
+
+	SET_ROLES: (state, roles) => {
+		state.roles = roles
+	},
 }
 
 const actions = {
-	login({ commit }, userInfo) {
+	Login({ commit }, userInfo) {
 		return new Promise((resolve, reject) => {
 			login(userInfo)
 				.then((res) => {
-					console.log('res', res)
-					const { data } = res
-					commit('SET_TOKEN', data.token)
-					setToken(data.token)
-					resolve(res)
+					if (res.code == '200') {
+						const result = res.result
+						let { userInfo, token, sysAllDictItems, sysRole } = result
+						let { username, realname, avatar } = userInfo
+
+						//设置token
+						commit('SET_TOKEN', token)
+						//储存用户数据
+						saveStorage(UI_CACHE_DB_DICT_DATA, sysAllDictItems, 7 * 24 * 60 * 60 * 1000)
+						commit('SET_USER_INFO', userInfo)
+						commit('SET_USER_NAME', {
+							username: username,
+							realname: realname,
+						})
+						commit('SET_AVATAR', avatar)
+						resolve(res)
+					} else {
+						reject(res)
+					}
+				})
+				.catch((err) => {
+					reject(err)
+				})
+		})
+	},
+
+	// user logout
+	Logout({ commit, state, dispatch }) {
+		return new Promise((resolve, reject) => {
+			logout(state.token)
+				.then(() => {
+					commit('SET_TOKEN', '')
+					commit('SET_ROLES', [])
+					removeToken()
+					// resetRouter();
+
+					resolve()
 				})
 				.catch((err) => {
 					reject(err)
@@ -118,24 +168,6 @@ const actions = {
 					commit('SET_AVATAR', avatar)
 					commit('SET_INTRODUCTION', introduction)
 					resolve(data)
-				})
-				.catch((err) => {
-					reject(err)
-				})
-		})
-	},
-
-	// user logout
-	logout({ commit, state, dispatch }) {
-		return new Promise((resolve, reject) => {
-			logout(state.token)
-				.then(() => {
-					commit('SET_TOKEN', '')
-					commit('SET_ROLES', [])
-					removeToken()
-					// resetRouter();
-
-					resolve()
 				})
 				.catch((err) => {
 					reject(err)

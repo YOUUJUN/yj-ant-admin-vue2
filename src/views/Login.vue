@@ -39,7 +39,7 @@
                                 <a-col :span="8" style="text-align: right">
                                     <img v-if="requestCodeSuccess" style="margin-top: 2px" :src="randCodeImage"
                                         @click="handleChangeCheckCode" />
-                                    <img v-else style="margin-top: 2px" src="@/assets/checkcode.png"
+                                    <img v-else style="margin-top: 2px" src="@/assets/images/login/checkcode.png"
                                         @click="handleChangeCheckCode" />
                                 </a-col>
                             </a-row>
@@ -59,7 +59,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { removeToken } from '@/utils/auth'
+import { removeToken } from '@/utils/root/lsOperation'
 import { timeFix } from '@/utils/index'
 import { getAction } from '@/api/manage'
 
@@ -97,7 +97,7 @@ export default {
     },
 
     methods: {
-        ...mapActions(['Login']),
+        ...mapActions('user', ['Login']),
 
         handleSubmit() {
             let that = this

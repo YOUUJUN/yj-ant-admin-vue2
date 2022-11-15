@@ -37,7 +37,7 @@ export function generateIndexRouter(data) {
 			path: '/',
 			name: 'dashboard',
 			//component: () => import('@/components/layouts/BasicLayout'),
-			component: (resolve) => require(['@/components/layouts/TabLayout'], resolve),
+			component: (resolve) => require(['@components/Layout/Layout.vue'], resolve),
 			meta: { title: '首页' },
 			redirect: '/datas/datas',
 			children: [
