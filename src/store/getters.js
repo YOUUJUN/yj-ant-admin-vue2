@@ -1,6 +1,6 @@
 const getters = {
-	// roles : state => state.user.roles,
-	// permission_routers : state => state.permission.routes,
+	permissionList : state => state.user.permissionList,
+	permission_routers : state => state.permission.routes,
 	sidebar: (state) => state.display.sidebar,
 }
 

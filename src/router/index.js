@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Layout from '@components/Layout/Layout.vue'
+import BlankLayout from '@/components/Layout/BlankLayout.vue'
 
 Vue.use(VueRouter)
 
@@ -11,25 +12,39 @@ export const constantRoutes = [
 	//     component: () => import('@/views/Error/404.vue'),
 	// },
 
+	// {
+	// 	path: '/',
+	// 	component: Layout,
+	// 	meta: {
+	// 		title: '首页',
+	// 	},
+	// 	children: [
+	// 		{
+	// 			path: '',
+	// 			name: 'Index',
+	// 			components: {
+	// 				default: () => import('@views/Test/Index.vue'),
+	// 			},
+	// 			meta: {
+	// 				title: '首页',
+	// 			},
+	// 		},
+	// 	],
+	// },
+
 	{
-		path: '/',
-		component: Layout,
-		meta: {
-			title: '首页',
-		},
+		path: '/user',
+		component : BlankLayout,
+		redirect: '/user/login',
+		hidden: true,
 		children: [
-			{
-				path: '',
-				name: 'Index',
-				components: {
-					default: () => import('@views/Test/Index.vue'),
-				},
-				meta: {
-					title: '首页',
-				},
-			},
-		],
-	},
+		  {
+			path: 'login',
+			name: 'login',
+			component: () => import(/* webpackChunkName: "user" */ '@/views/Login')
+		  },
+		]
+	  },
 
 	{
 		path: '/elderinfo',

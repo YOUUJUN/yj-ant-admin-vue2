@@ -1,4 +1,4 @@
-import { getToken, setToken, removeToken, saveStorage } from '@/utils/root/lsOperation'
+import { getToken, setToken, removeToken, saveStorage, removeStorage } from '@/utils/root/lsOperation'
 import { USER_NAME, USER_REALNAME, USER_INFO, UI_CACHE_DB_DICT_DATA } from '@/utils/root/localStorageKeys'
 import { getMenus } from '@/utils/root/routerUtils'
 import { login, logout, getInfo, queryPermissionsByUser } from '@/api/user'
@@ -9,10 +9,10 @@ const state = {
 	token: getToken(),
 	userInfo: '',
 	username: '',
-	realname : '',
+	realname: '',
 	avatar: '',
 	permissionList: [],
-	
+
 	introduction: '',
 	roles: [],
 }
@@ -44,6 +44,8 @@ const mutations = {
 		state.permissionList = permissionList
 	},
 
+
+
 	SET_INTRODUCTION: (state, introduction) => {
 		state.introduction = introduction
 	},
@@ -54,6 +56,7 @@ const mutations = {
 }
 
 const actions = {
+	//登录
 	Login({ commit }, userInfo) {
 		return new Promise((resolve, reject) => {
 			login(userInfo)
@@ -87,13 +90,23 @@ const actions = {
 	// user logout
 	Logout({ commit, state, dispatch }) {
 		return new Promise((resolve, reject) => {
+			//清除token
+			commit('SET_TOKEN', '')
+			removeToken()
+			//清除用户权限等数据
+			commit('SET_PERMISSIONLIST', [])
+			removeStorage(UI_CACHE_DB_DICT_DATA)
+			// removeStorage(CACHE_INCLUDED_ROUTES)
+
+			commit('SET_USER_INFO', '')
+			commit('SET_USER_NAME', {
+				username: '',
+				realname: '',
+			})
+			commit('SET_AVATAR', '')
+
 			logout(state.token)
 				.then(() => {
-					commit('SET_TOKEN', '')
-					commit('SET_ROLES', [])
-					removeToken()
-					// resetRouter();
-
 					resolve()
 				})
 				.catch((err) => {

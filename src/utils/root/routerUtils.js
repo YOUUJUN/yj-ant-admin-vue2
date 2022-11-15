@@ -35,13 +35,20 @@ export function generateIndexRouter(data) {
 	let indexRouter = [
 		{
 			path: '/',
-			name: 'dashboard',
-			//component: () => import('@/components/layouts/BasicLayout'),
 			component: (resolve) => require(['@components/Layout/Layout.vue'], resolve),
-			meta: { title: '首页' },
-			redirect: '/datas/datas',
+			redirect: '/index',
 			children: [
-				// ...asyncRouterMap[0].children,
+				{
+					path: 'index',
+					name: 'Index',
+					components: {
+						default: () => import('@views/Test/Index.vue'),
+					},
+					meta: {
+						title: '首页',
+					},
+				},
+
 				...generateChildRouters(data),
 			],
 		},
