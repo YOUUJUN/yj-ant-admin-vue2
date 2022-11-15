@@ -11,6 +11,7 @@ import '@/permission' // permission control
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 Vue.use(Antd)
+import 'moment/locale/zh-cn'
 
 Vue.config.productionTip = false
 
