@@ -59,7 +59,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { removeToken } from '@/utils/root/lsOperation'
+import { removeToken } from '@/utils/lsOperation'
 import { timeFix } from '@/utils/index'
 import { getAction } from '@/api/manage'
 
@@ -91,7 +91,7 @@ export default {
 
     created() {
         this.currdatetime = new Date().getTime()
-        removeToken()
+        // removeToken()
         this.getRouterData()
         this.handleChangeCheckCode()
     },
@@ -151,7 +151,7 @@ export default {
         },
 
         loginSuccess() {
-            this.$router.push({ path: '/datas/datas' }).catch(() => {})
+            this.$router.push({ path: '/elderinfo' }).catch(() => {})
             this.$notification.success({
                 message: '欢迎',
                 description: `${timeFix()}，欢迎回来`,

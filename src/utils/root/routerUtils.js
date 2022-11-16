@@ -1,34 +1,4 @@
-/**
- * 获取固定菜单
- */
-export function getMenus(components = false, data = null) {
-	let resData = []
-	let tempdata = {}
-	if (!components) {
-		data = localRouterMap || []
-	}
-	data.forEach((item, index) => {
-		tempdata = {
-			name: item.name,
-			path: item.path,
-			redirect: null,
-			route: '1',
-			meta: {
-				title: item.meta.title,
-				keepAlive: false,
-				icon: !components ? 'bar-chart' : '',
-				componentName: !components ? 'RouteView' : item.name,
-			},
-			component: !components ? 'layouts/RouteView' : item.sub,
-			id: Date.parse(new Date()) + item.name,
-		}
-		if (item.children && item.children.length > 0) {
-			tempdata.children = getMenus(true, item.children)
-		}
-		resData.push(tempdata)
-	})
-	return resData
-}
+import { isURL } from '@/utils/validate'
 
 // 生成首页路由
 export function generateIndexRouter(data) {
@@ -86,7 +56,6 @@ function generateChildRouters(data) {
 			name: item.name,
 			redirect: item.redirect,
 			component: componentPath,
-			//component: resolve => require(['@/' + component+'.vue'], resolve),
 			hidden: item.hidden,
 			meta: {
 				title: item.meta.title,
@@ -107,7 +76,7 @@ function generateChildRouters(data) {
 		if (item.children && item.children.length > 0) {
 			menu.children = [...generateChildRouters(item.children)]
 		}
-		//--update-begin----author:scott---date:20190320------for:根据后台菜单配置，判断是否路由菜单字段，动态选择是否生成路由（为了支持参数URL菜单）------
+		//根据后台菜单配置，判断是否路由菜单字段，动态选择是否生成路由（为了支持参数URL菜单）------
 		//判断是否生成路由
 		if (item.route && item.route === '0') {
 			//console.log(' 不生成路由 item.route：  '+item.route);
@@ -115,7 +84,6 @@ function generateChildRouters(data) {
 		} else {
 			routers.push(menu)
 		}
-		//--update-end----author:scott---date:20190320------for:根据后台菜单配置，判断是否路由菜单字段，动态选择是否生成路由（为了支持参数URL菜单）------
 	}
 	return routers
 }

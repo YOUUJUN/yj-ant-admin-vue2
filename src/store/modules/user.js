@@ -1,5 +1,12 @@
-import { getToken, setToken, removeToken, saveStorage, removeStorage } from '@/utils/root/lsOperation'
-import { USER_NAME, USER_REALNAME, USER_INFO, UI_CACHE_DB_DICT_DATA } from '@/utils/root/localStorageKeys'
+import { getToken, setToken, removeToken, saveStorage, removeStorage } from '@/utils/lsOperation'
+import {
+	USER_NAME,
+	USER_REALNAME,
+	USER_INFO,
+	UI_CACHE_DB_DICT_DATA,
+	USER_AUTH,
+	SYS_BUTTON_AUTH,
+} from '@/utils/root/localStorageKeys'
 import { getMenus } from '@/utils/root/routerUtils'
 import { login, logout, getInfo, queryPermissionsByUser } from '@/api/user'
 
@@ -21,6 +28,7 @@ const mutations = {
 	SET_TOKEN: (state, token) => {
 		state.token = token
 		setToken(token, 7 * 24 * 60 * 60 * 1000)
+		console.log('setting token')
 	},
 
 	SET_USER_INFO: (state, userInfo) => {
@@ -43,8 +51,6 @@ const mutations = {
 	SET_PERMISSIONLIST: (state, permissionList) => {
 		state.permissionList = permissionList
 	},
-
-
 
 	SET_INTRODUCTION: (state, introduction) => {
 		state.introduction = introduction
@@ -89,6 +95,7 @@ const actions = {
 
 	// user logout
 	Logout({ commit, state, dispatch }) {
+		console.log('logout...')
 		return new Promise((resolve, reject) => {
 			//清除token
 			commit('SET_TOKEN', '')
@@ -120,14 +127,14 @@ const actions = {
 		return new Promise((resolve, reject) => {
 			queryPermissionsByUser()
 				.then((response) => {
-					let menuData = response.result.menu
-					const authData = response.result.auth
-					const allAuthData = response.result.allAuth
+					let { menu, auth, allAuth } = response.result
 
-					//Vue.ls.set(USER_AUTH,authData);
-					sessionStorage.setItem(USER_AUTH, JSON.stringify(authData))
-					sessionStorage.setItem(SYS_BUTTON_AUTH, JSON.stringify(allAuthData))
+					let menuData = menu
+					const authData = auth
+					const allAuthData = allAuth
 
+					saveStorage(USER_AUTH, JSON.stringify(authData))
+					saveStorage(SYS_BUTTON_AUTH, JSON.stringify(allAuthData))
 					if (menuData?.length > 0) {
 						menuData.forEach((item, index) => {
 							if (item['children']) {
@@ -139,12 +146,6 @@ const actions = {
 								}
 							}
 						})
-						try {
-							menuData = [...menuData, ...getMenus()]
-							// console.log(" menu show json ", menuData);
-						} catch (err) {
-							console.log(err)
-						}
 
 						commit('SET_PERMISSIONLIST', menuData)
 					} else {

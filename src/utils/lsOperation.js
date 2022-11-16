@@ -21,13 +21,14 @@ export function removeStorage(name) {
 }
 
 export function getToken() {
-	return getStorage(ACCESS_TOKEN)
+	return ls.get(ACCESS_TOKEN)
 }
 
 export function setToken(token, expire) {
-	return saveStorage(ACCESS_TOKEN, token, expire)
+	return ls.set(ACCESS_TOKEN, token, expire)
 }
 
 export function removeToken() {
-	return removeStorage(ACCESS_TOKEN)
+	return ls.remove(ACCESS_TOKEN)
 }
+

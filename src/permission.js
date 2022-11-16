@@ -4,7 +4,7 @@ import store from '@/store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 
-import { getToken } from '@/utils/root/lsOperation'
+import { getToken } from '@/utils/lsOperation'
 import { generateIndexRouter } from '@/utils/root/routerUtils'
 
 const whiteList = ['/user/login']
@@ -12,10 +12,9 @@ const whiteList = ['/user/login']
 router.beforeEach(async (to, from, next) => {
 	NProgress.start() // start progress bar
 	/* must call `next` */
+	console.log('getStorage token', getToken())
 	const hasToken = getToken()
-	console.log('hasToken', hasToken)
 	if (hasToken) {
-
 		if (to.path === '/login') {
 			next({ path: '/' })
 			NProgress.done()
@@ -29,8 +28,9 @@ router.beforeEach(async (to, from, next) => {
 						if (!menuData) {
 							return
 						}
-
+						console.log('menuData', menuData);
 						let constRoutes = generateIndexRouter(menuData)
+						console.log('constRoutes', constRoutes)
 						store.dispatch('permission/UpdateAppRouter', { constRoutes }).then((res) => {
 							store.getters.permission_routers.forEach((route) => {
 								router.addRoute(route)
@@ -39,12 +39,10 @@ router.beforeEach(async (to, from, next) => {
 						})
 					})
 					.catch((err) => {
+						console.error('err', err)
 						store.dispatch('user/Logout').then((res) => {
 							next({ path: '/user/login', query: { redirect: to.fullPath } })
 						})
-					})
-					.catch((err) => {
-						console.error('err', err)
 					})
 					.finally(() => {
 						NProgress.done()
