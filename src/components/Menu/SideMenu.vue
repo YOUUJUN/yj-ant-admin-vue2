@@ -1,6 +1,6 @@
 <template>
 	<section class="menu-wrap">
-		<a-menu  v-model="defaultActive" :openKeys.sync="openKeys" mode="inline" @click="handleClick">
+		<!-- <a-menu v-model="defaultActive" :openKeys.sync="openKeys" mode="inline" @click="handleClick">
 			<a-sub-menu key="/elderinfo" @titleClick="titleClick">
 				<span slot="title">
 					<a-icon type="solution" />
@@ -30,14 +30,20 @@
 				<a-menu-item key="/systemsetting/buildingmanagement">楼栋管理</a-menu-item>
 				<a-menu-item key="/systemsetting/personnellabel">人员标签</a-menu-item>
 			</a-sub-menu>
-		</a-menu>
+		</a-menu> -->
+		<v-menu :options="permissionList" :openKeys.sync="openKeys" :collapsed="sidebar.open"></v-menu>
+
 	</section>
 </template>
 
 <script>
+import VMenu from './menu'
+
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
+	components: { VMenu },
+
 	data() {
 		return {
 			defaultActive: [],
@@ -45,13 +51,13 @@ export default {
 		}
 	},
 
-	computed: {},
+	computed: { ...mapGetters(['permissionList', 'sidebar']) },
 
 	watch: {
 		$route: {
 			immediate: true,
 			handler(newValue) {
-				console.log('newValue.matched[0]',newValue.matched[0]);
+				console.log('newValue.matched[0]', newValue.matched[0]);
 				this.openKeys = [newValue.matched[0].path]
 				this.setMenuActive(newValue.fullPath)
 			},
@@ -62,7 +68,9 @@ export default {
 		},
 	},
 
-	created() {},
+	created() {
+		console.log('permissionList', this.permissionList)
+	},
 
 	methods: {
 		...mapActions('display', ['initUserInfo']),
@@ -72,7 +80,7 @@ export default {
 		},
 
 		handleClick({ item, key, keyPath }) {
-			this.$router.push(key).catch((err) => {})
+			this.$router.push(key).catch((err) => { })
 		},
 		titleClick(e) {
 			console.log('titleClick', e)

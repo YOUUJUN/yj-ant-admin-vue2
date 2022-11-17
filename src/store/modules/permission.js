@@ -8,7 +8,8 @@ const state = {
 const mutations = {
 	SET_ROUTERS: (state, routes) => {
 		state.addRoutes = routes
-		state.routes = constantRoutes.concat(routes)
+		// state.routes = constantRoutes.concat(routes)
+		state.routes = constantRoutes
 	},
 }
 

@@ -25,7 +25,7 @@ function resolvePath(path, params = {}) {
 }
 
 export default {
-	name: 'Menu',
+	name: 'VMenu',
 	props: {
 		options: {
 			type: Array,
@@ -39,7 +39,7 @@ export default {
 		mode: {
 			type: String,
 			required: false,
-			default: 'vertical',
+			default: 'inline',
 		},
 		collapsed: {
 			type: Boolean,
@@ -103,7 +103,7 @@ export default {
 	methods: {
 		formatOptions(options, parentPath) {
 			options.forEach((route) => {
-				let isFullPath = route.substring(0, 1) === '/'
+				let isFullPath = route.path.substring(0, 1) === '/'
 				route.fullPath = isFullPath ? route.path : parentPath + '/' + route.path
 				if (route?.children?.length > 0) {
 					this.formatOptions(route.children, route.fullPath)
@@ -118,7 +118,7 @@ export default {
 			if (!equal(openKeys, this.sOpenKeys)) {
 				this.collapsed || this.mode === 'horizontal'
 					? (this.cachedOpenKeys = openKeys)
-					: (this.openKeys = openKeys)
+					: (this.sOpenKeys = openKeys)
 			}
 		},
 
@@ -127,7 +127,7 @@ export default {
 			const route = matches[matches.length - 1]
 			let choose = this.routesMap[route.path]
 			if (choose?.meta?.highlight) {
-				choose = this.routesMap[choose.meta.highlight]
+				choose = this.routesMap[choose?.meta?.highlight]
 				const resolve = this.$router.resolve({
 					path: choose.fullPath,
 				})
@@ -146,8 +146,8 @@ export default {
 		},
 
 		renderItem(h, menu) {
-			const meta = menu.meta
-			if (!meta || !meta.invisible) {
+			const meta = menu?.meta
+			if (!meta || !meta?.invisible) {
 				let renderChildren = false
 				const children = menu.children
 				if (children?.length > 0) {
@@ -161,6 +161,7 @@ export default {
 		},
 
 		renderSubMenu(h, menu) {
+			console.log('menu', menu)
 			let subItem = [
 				h(
 					'span',
@@ -170,7 +171,10 @@ export default {
 							style: 'overflow:hidden;white-space:normal;text-overflow:clip;',
 						},
 					},
-					[this.renderIcon(h, menu.meta ? menu.meta.icon : 'none', meta.fullPath), menu.fullPath],
+					[
+						this.renderIcon(h, menu?.meta ? menu?.meta?.icon : 'none', menu?.fullPath),
+						menu?.meta?.title,
+					],
 				),
 			]
 
@@ -190,12 +194,12 @@ export default {
 
 		renderMenuItem(h, menu) {
 			let tag = 'router-link'
-			const path = resolvePath(menu.fullPath, menu.meta.params)
+			const path = resolvePath(menu.fullPath, menu?.meta?.params)
 			let config = {
 				props: {
 					to: {
 						path,
-						query: menu.meta.query,
+						query: menu?.meta?.query,
 					},
 					attrs: {
 						style: 'overflow:hidden;white-space:normal;text-overflow:clip;',
@@ -208,7 +212,7 @@ export default {
 				config = {
 					attrs: {
 						style: 'overflow:hidden;white-space:normal;text-overflow:clip;',
-						href: menu.meta.link,
+						href: menu?.meta?.link,
 						target: '_blank',
 					},
 				}
@@ -221,8 +225,8 @@ export default {
 				},
 				[
 					h(tag, config, [
-						this.renderIcon(h, menu.meta ? menu.meta.icon : 'none', menu.fullPath),
-						menu.fullPath,
+						this.renderIcon(h, menu?.meta ? menu?.meta?.icon : 'none', menu.fullPath),
+						menu?.meta?.title,
 					]),
 				],
 			)
@@ -257,6 +261,7 @@ export default {
 					mode: this.$props.mode,
 					selectedKeys: this.selectedKeys,
 					openKeys: this.openKeys ? this.openKeys : this.sOpenKeys,
+					inlineCollapsed : this.$props.collapsed
 				},
 				on: {
 					'update:openKeys': (val) => {

@@ -7,6 +7,7 @@ export function generateIndexRouter(data) {
 			path: '/',
 			component: (resolve) => require(['@components/Layout/Layout.vue'], resolve),
 			redirect: '/index',
+			meta: {},
 			children: [
 				{
 					path: 'index',
@@ -26,6 +27,7 @@ export function generateIndexRouter(data) {
 			path: '*',
 			redirect: '/404',
 			hidden: true,
+			meta: {},
 		},
 	]
 	return indexRouter
