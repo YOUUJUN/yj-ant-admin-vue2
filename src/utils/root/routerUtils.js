@@ -49,6 +49,8 @@ function generateChildRouters(data) {
 		let URL = (item.meta.url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)) // URL支持{{ window.xxx }}占位符变量
 		if (isURL(URL)) {
 			item.meta.url = URL
+		}else{
+			console.error('url格式不正确')
 		}
 
 		let componentPath = (resolve) => require(['@/' + component + '.vue'], resolve)
@@ -62,19 +64,14 @@ function generateChildRouters(data) {
 			meta: {
 				title: item.meta.title,
 				icon: item.meta.icon,
-				url: item.meta.url,
-				permissionList: item.meta.permissionList,
+				link: item.meta.url,
 				keepAlive: item.meta.keepAlive,
-				/*update_begin author:wuxianquan date:20190908 for:赋值 */
-				internalOrExternal: item.meta.internalOrExternal,
-				/*update_end author:wuxianquan date:20190908 for:赋值 */
-				componentName: item.meta.componentName,
 			},
 		}
-		if (item.alwaysShow) {
-			menu.alwaysShow = true
-			menu.redirect = menu.path
-		}
+		// if (item.alwaysShow) {
+		// 	menu.alwaysShow = true
+		// 	menu.redirect = menu.path
+		// }
 		if (item.children && item.children.length > 0) {
 			menu.children = [...generateChildRouters(item.children)]
 		}

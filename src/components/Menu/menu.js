@@ -161,7 +161,6 @@ export default {
 		},
 
 		renderSubMenu(h, menu) {
-			console.log('menu', menu)
 			let subItem = [
 				h(
 					'span',
