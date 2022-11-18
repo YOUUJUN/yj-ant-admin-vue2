@@ -1,20 +1,9 @@
 <template>
 	<section>
-		<a-tabs
-			:active-key="activePage"
-			class="tab-layout-tabs"
-			:hide-add="true"
-			type="editable-card"
-			@change="handleTabChange"
-			@tabClick="handleTabClick"
-			@edit="handleEdit"
-		>
-			<a-tab-pane
-				:id="page.fullPath"
-				:key="page.fullPath"
-				v-for="page in pageList"
-				:closable="!($useChain(page)['meta?.title'] == '首页')"
-			>
+		<a-tabs :active-key="activePage" class="tab-layout-tabs" :hide-add="true" type="editable-card"
+			@change="handleTabChange" @tabClick="handleTabClick" @edit="handleEdit" :style="{left: sidebar.width + 'px'}">
+			<a-tab-pane :id="page.fullPath" :key="page.fullPath" v-for="page in pageList"
+				:closable="!($useChain(page)['meta?.title'] == '首页')">
 				<span slot="tab" :pagekey="page.fullPath">{{ $useChain(page)['meta?.title'] }}</span>
 			</a-tab-pane>
 		</a-tabs>
@@ -33,6 +22,7 @@
 
 <script>
 const PageTransition = () => import('@/components/Transition/PageTransition')
+import {mapGetters} from 'vuex'
 
 export default {
 	name: 'TabLayout',
@@ -51,11 +41,8 @@ export default {
 		}
 	},
 
-	created() {
-		if (this.$route.path !== this.indexKey) {
-			this.setIndexAsFirst()
-		}
-		this.initData()
+	computed: {
+		...mapGetters(['sidebar']),
 	},
 
 	watch: {
@@ -76,11 +63,19 @@ export default {
 						.push({
 							path: gotoRoute.fullPath,
 						})
-						.catch((err) => {})
+						.catch((err) => { })
 				}
 			},
 		},
 	},
+
+	created() {
+		if (this.$route.path !== this.indexKey) {
+			this.setIndexAsFirst()
+		}
+		this.initData()
+	},
+
 
 	methods: {
 		//初始化tab栏
@@ -168,10 +163,10 @@ export default {
 		},
 
 		//监听tab点击事件
-		handleTabClick() {},
+		handleTabClick() { },
 
 		//刷新路由
-		reloadRoute() {},
+		reloadRoute() { },
 	},
 }
 </script>
@@ -191,6 +186,7 @@ export default {
 	background: #f0f2f5;
 	opacity: 1;
 	z-index: 999;
+	transition: all 0.2s;
 }
 
 .tabs-view-content {

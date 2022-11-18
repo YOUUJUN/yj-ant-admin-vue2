@@ -171,10 +171,7 @@ export default {
 							style: 'overflow:hidden;white-space:normal;text-overflow:clip;',
 						},
 					},
-					[
-						this.renderIcon(h, menu?.meta ? menu?.meta?.icon : 'none', menu?.fullPath),
-						menu?.meta?.title,
-					],
+					[this.renderIcon(h, menu?.meta ? menu?.meta?.icon : 'none', menu?.fullPath), menu?.meta?.title],
 				),
 			]
 
@@ -226,7 +223,7 @@ export default {
 				[
 					h(tag, config, [
 						this.renderIcon(h, menu?.meta ? menu?.meta?.icon : 'none', menu.fullPath),
-						menu?.meta?.title,
+						h('span', {}, menu?.meta?.title),
 					]),
 				],
 			)
@@ -261,7 +258,7 @@ export default {
 					mode: this.$props.mode,
 					selectedKeys: this.selectedKeys,
 					openKeys: this.openKeys ? this.openKeys : this.sOpenKeys,
-					inlineCollapsed : this.$props.collapsed
+					inlineCollapsed: this.$props.collapsed,
 				},
 				on: {
 					'update:openKeys': (val) => {

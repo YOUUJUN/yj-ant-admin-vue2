@@ -31,7 +31,7 @@
 				<a-menu-item key="/systemsetting/personnellabel">人员标签</a-menu-item>
 			</a-sub-menu>
 		</a-menu> -->
-		<v-menu :options="permissionList" :openKeys.sync="openKeys" :collapsed="sidebar.open"></v-menu>
+		<v-menu :options="permissionList" :openKeys.sync="openKeys" :collapsed.sync="sidebar.open"></v-menu>
 
 	</section>
 </template>
