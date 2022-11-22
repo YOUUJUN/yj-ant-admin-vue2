@@ -1,5 +1,5 @@
 import { USER_AUTH } from '@/utils/root/localStorageKeys'
-import { getStorage } from '@/utils/lsOperation'
+import ls from '@/utils/lsOperation'
 
 /**
  * 
@@ -10,10 +10,10 @@ const AuthorityPlugin = {
 	install(Vue) {
 		Vue.directive('has', {
 			inserted(el, binding, vnode) {
-				const arg = binding.arg
 				const check = binding.value
 				const instance = vnode.context
-                let result = this.$auth(check)
+                const $auth = instance.$auth
+                let result = $auth(check)
                 if(result === false){
                     el.parentNode.removeChild(el);
                 }else{
@@ -38,7 +38,8 @@ const AuthorityPlugin = {
 				 * @param {number} type 授权策略 type=1 :可见/可访问(授权后可见/可访问); type=2 :可编辑(未授权时禁用)
 				 */
 				$auth(auth, type) {
-                    const authList = getStorage(USER_AUTH)
+                    const authList = ls.get(USER_AUTH)
+                    console.log('authList', authList);
                     const visibleTypeAuthList = authList.filter(item => item.type == '1')
                     const disableTypeAuthList = authList.filter(item => item.type == '2')
                     if(authList.findIndex(item => item.action === auth) !== -1){

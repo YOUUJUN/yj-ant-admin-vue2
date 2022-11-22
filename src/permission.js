@@ -12,7 +12,6 @@ const whiteList = ['/user/login']
 router.beforeEach(async (to, from, next) => {
 	NProgress.start() // start progress bar
 	/* must call `next` */
-	console.log('getStorage token', getToken())
 	const hasToken = getToken()
 	if (hasToken) {
 		if (to.path === '/login') {

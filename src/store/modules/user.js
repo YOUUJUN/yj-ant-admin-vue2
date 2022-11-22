@@ -1,4 +1,5 @@
-import { getToken, setToken, removeToken, saveStorage, removeStorage } from '@/utils/lsOperation'
+import ls, { getToken, setToken, removeToken } from '@/utils/lsOperation'
+
 import {
 	USER_NAME,
 	USER_REALNAME,
@@ -33,15 +34,15 @@ const mutations = {
 
 	SET_USER_INFO: (state, userInfo) => {
 		state.userInfo = userInfo
-		saveStorage(USER_INFO, userInfo, 7 * 24 * 60 * 60 * 1000)
+		ls.set(USER_INFO, userInfo, 7 * 24 * 60 * 60 * 1000)
 	},
 
 	SET_USER_NAME: (state, names) => {
 		let { username, realname } = names
 		state.username = username
 		state.realname = realname
-		saveStorage(USER_NAME, username, 7 * 24 * 60 * 60 * 1000)
-		saveStorage(USER_REALNAME, username, 7 * 24 * 60 * 60 * 1000)
+		ls.set(USER_NAME, username, 7 * 24 * 60 * 60 * 1000)
+		ls.set(USER_REALNAME, username, 7 * 24 * 60 * 60 * 1000)
 	},
 
 	SET_AVATAR: (state, avatar) => {
@@ -75,7 +76,7 @@ const actions = {
 						//设置token
 						commit('SET_TOKEN', token)
 						//储存用户数据
-						saveStorage(UI_CACHE_DB_DICT_DATA, sysAllDictItems, 7 * 24 * 60 * 60 * 1000)
+						ls.set(UI_CACHE_DB_DICT_DATA, sysAllDictItems, 7 * 24 * 60 * 60 * 1000)
 						commit('SET_USER_INFO', userInfo)
 						commit('SET_USER_NAME', {
 							username: username,
@@ -102,8 +103,8 @@ const actions = {
 			removeToken()
 			//清除用户权限等数据
 			commit('SET_PERMISSIONLIST', [])
-			removeStorage(UI_CACHE_DB_DICT_DATA)
-			// removeStorage(CACHE_INCLUDED_ROUTES)
+			ls.remove(UI_CACHE_DB_DICT_DATA)
+			// ls.remove(CACHE_INCLUDED_ROUTES)
 
 			commit('SET_USER_INFO', '')
 			commit('SET_USER_NAME', {
@@ -127,14 +128,15 @@ const actions = {
 		return new Promise((resolve, reject) => {
 			queryPermissionsByUser()
 				.then((response) => {
+					console.log('response', response);
 					let { menu, auth, allAuth } = response.result
 
 					let menuData = menu
 					const authData = auth
 					const allAuthData = allAuth
 
-					saveStorage(USER_AUTH, JSON.stringify(authData))
-					saveStorage(SYS_BUTTON_AUTH, JSON.stringify(allAuthData))
+					ls.set(USER_AUTH, JSON.stringify(authData))
+					ls.set(SYS_BUTTON_AUTH, JSON.stringify(allAuthData))
 					if (menuData?.length > 0) {
 						menuData.forEach((item, index) => {
 							if (item['children']) {
