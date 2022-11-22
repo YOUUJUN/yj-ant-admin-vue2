@@ -20,6 +20,7 @@ export default {
 </script>
 
 <style>
+@import url('~@/styles/index.css');
 html,
 body {
 	height: 100%;

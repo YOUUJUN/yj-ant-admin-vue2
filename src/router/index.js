@@ -12,39 +12,31 @@ export const constantRoutes = [
 	//     component: () => import('@/views/Error/404.vue'),
 	// },
 
-	// {
-	// 	path: '/',
-	// 	component: Layout,
-	// 	meta: {
-	// 		title: '首页',
-	// 	},
-	// 	children: [
-	// 		{
-	// 			path: '',
-	// 			name: 'Index',
-	// 			components: {
-	// 				default: () => import('@views/Test/Index.vue'),
-	// 			},
-	// 			meta: {
-	// 				title: '首页',
-	// 			},
-	// 		},
-	// 	],
-	// },
+	{
+		path: '/menu-management',
+		component: (resolve) => require(['@components/Layout/Layout.vue'], resolve),
+		children: [
+			{
+				path: '',
+				component: {},
+			},
+		],
+	},
+
 
 	{
 		path: '/user',
-		component : BlankLayout,
+		component: BlankLayout,
 		redirect: '/user/login',
 		hidden: true,
 		children: [
-		  {
-			path: 'login',
-			name: 'login',
-			component: () => import(/* webpackChunkName: "user" */ '@/views/Login')
-		  },
-		]
-	  },
+			{
+				path: 'login',
+				name: 'login',
+				component: () => import(/* webpackChunkName: "user" */ '@/views/Login'),
+			},
+		],
+	},
 
 	{
 		path: '/elderinfo',
@@ -179,7 +171,7 @@ export const asyncRouters = []
 const router = new VueRouter({
 	mode: 'history',
 	base: process.env.BASE_URL,
-	routes: constantRoutes,
+	// routes: constantRoutes,
 })
 
 export default router

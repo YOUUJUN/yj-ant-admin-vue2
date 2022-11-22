@@ -7,7 +7,6 @@ export function generateIndexRouter(data) {
 			path: '/',
 			component: (resolve) => require(['@components/Layout/Layout.vue'], resolve),
 			redirect: '/index',
-			meta: {},
 			children: [
 				{
 					path: 'index',
@@ -23,6 +22,7 @@ export function generateIndexRouter(data) {
 				...generateChildRouters(data),
 			],
 		},
+
 		{
 			path: '*',
 			redirect: '/404',
@@ -46,11 +46,9 @@ function generateChildRouters(data) {
 		}
 
 		// eslint-disable-next-line
-		let URL = (item.meta.url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)) // URL支持{{ window.xxx }}占位符变量
+		let URL = (item?.meta?.url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)) // URL支持{{ window.xxx }}占位符变量
 		if (isURL(URL)) {
 			item.meta.url = URL
-		}else{
-			console.error('url格式不正确')
 		}
 
 		let componentPath = (resolve) => require(['@/' + component + '.vue'], resolve)

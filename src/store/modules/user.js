@@ -8,10 +8,7 @@ import {
 	USER_AUTH,
 	SYS_BUTTON_AUTH,
 } from '@/utils/root/localStorageKeys'
-import { getMenus } from '@/utils/root/routerUtils'
 import { login, logout, getInfo, queryPermissionsByUser } from '@/api/user'
-
-import router from '@/router'
 
 const state = {
 	token: getToken(),
