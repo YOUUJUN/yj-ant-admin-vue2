@@ -7,10 +7,29 @@ import BlankLayout from '@/components/Layout/BlankLayout.vue'
 Vue.use(VueRouter)
 
 export const constantRoutes = [
-	// {
-	//     path: '/404',
-	//     component: () => import('@/views/Error/404.vue'),
-	// },
+	{
+		path: '/user',
+		redirect : '/user/login',
+		component : BlankLayout,
+		children: [
+			{
+				path: 'login',
+				name: 'login',
+				component: () => import('@/views/Login'),
+			},
+		],
+	},
+
+	{
+		path: '/404',
+		name: '404',
+		component: () => import('@/views/Exception/404.vue'),
+	},
+	{
+		path: '/403',
+		name: '403',
+		component: () => import('@/views/Exception/403.vue'),
+	},
 
 	{
 		path: '/menu-management',
@@ -19,21 +38,6 @@ export const constantRoutes = [
 			{
 				path: '',
 				component: {},
-			},
-		],
-	},
-
-
-	{
-		path: '/user',
-		component: BlankLayout,
-		redirect: '/user/login',
-		hidden: true,
-		children: [
-			{
-				path: 'login',
-				name: 'login',
-				component: () => import(/* webpackChunkName: "user" */ '@/views/Login'),
 			},
 		],
 	},
@@ -171,7 +175,7 @@ export const asyncRouters = []
 const router = new VueRouter({
 	mode: 'history',
 	base: process.env.BASE_URL,
-	// routes: constantRoutes,
+	routes: constantRoutes,
 })
 
 export default router
