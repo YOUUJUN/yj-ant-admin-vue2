@@ -4,7 +4,6 @@
  *
  */
 
-// const fsPromises = require("fs").promises;
 const fs = require('fs')
 const path = require('path')
 
@@ -16,9 +15,9 @@ const AliasPlugin = require('alias-jsconfig-webpack-plugin')
 const productionGzipExtensions = ['js', 'css']
 const isProd = process.env.NODE_ENV === 'production'
 
-let cdnBaseHttp = 'https://cdn.bootcss.com'
+const cdnBaseHttp = 'https://cdn.bootcss.com'
 
-let externalConfig = [
+const externalConfig = [
 	// {name : 'vue', scope: 'Vue', js: 'vue.min.js'},
 	// {name : 'vue-router', scope: 'VueRouter', js: 'vue-router.min.js'},
 	// {name : 'vuex', scope: 'Vuex', js: 'vuex.min.js'},
@@ -27,8 +26,12 @@ let externalConfig = [
 	// {name: 'echarts', scope: 'echarts', js: 'echarts.min.js', includes : ['contact']},
 ]
 
+/**
+ * 读取生产环境第三方依赖版本
+ * @returns 
+ */
 //不支持高版本node
-let getModulesVersion = () => {
+const getModulesVersion = () => {
 	let mvs = {}
 	let regexp = /^npm_package_.{0,3}dependencies_/gi
 	for (let m in process.env) {
@@ -40,8 +43,12 @@ let getModulesVersion = () => {
 	return mvs
 }
 
+/**
+ * 读取生产环境第三方依赖版本
+ * @returns 
+ */
 //兼容高版本node
-let getDependenciesVersion = () => {
+const getDependenciesVersion = () => {
 	let mvs = {}
 
 	let json = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
@@ -53,7 +60,12 @@ let getDependenciesVersion = () => {
 	return mvs
 }
 
-let getExternalModules = (config) => {
+/**
+ * 根据配置和版本号自动构建cdn，返回externals配置
+ * @param {array} config cdn配置
+ * @returns externals配置
+ */
+const getExternalModules = (config) => {
 	let externals = {}
 	let dependencieModules = getDependenciesVersion()
 	config.forEach((item) => {
@@ -130,6 +142,7 @@ module.exports = function () {
 					},
 				])
 
+			//性能检测
 			config.when(process.env.NODE_ENV === 'performance', (config) =>
 				config.plugin('webpack-bundle-analyzer').use(
 					new BundleAnalyzerPlugin({
@@ -137,11 +150,11 @@ module.exports = function () {
 					}),
 				),
 			)
-
 			config.when(process.env.NODE_ENV === 'performance', (config) =>
 				config.plugin('xcTime').use(SpeedMeasurePlugin),
 			)
 
+			//减少moment打包体积
 			config.plugin('ignore').use(
 				new webpack.IgnorePlugin({
 					resourceRegExp: /^\.\/locale$/,
@@ -158,7 +171,8 @@ module.exports = function () {
 				}),
 			)
 
-			config //打包时生成.gz文件
+			//打包时生成.gz文件
+			config
 				.plugin('compression-webpack-plugin')
 				.use(require('compression-webpack-plugin'), [
 					{
@@ -173,7 +187,8 @@ module.exports = function () {
 					return options
 				})
 
-			config.optimization //去除生产环境console;
+			//去除生产环境console;
+			config.optimization 
 				.minimize(true)
 				.minimizer('terser')
 				.tap((args) => {
