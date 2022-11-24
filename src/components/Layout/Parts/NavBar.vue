@@ -62,7 +62,7 @@ export default {
 	methods: {
 		...mapActions('display', ['toggleSideBar']),
 
-		...mapActions('user', ['logout']),
+		...mapActions('user', ['Logout']),
 
 		toggleClick() {
 			this.toggleSideBar()
@@ -70,14 +70,15 @@ export default {
 
 		handleMenuClick(e) {
 			if (e.key === '1') {
+				this.handleLogOut()
 				this.visible = false
 			}
 		},
 
 		//处理退出登录
 		async handleLogOut() {
-			await this.logout
-			this.$router.push({ path: '/login' })
+			await this.Logout()
+			this.$router.push({ path: '/user/login' })
 		},
 	},
 }

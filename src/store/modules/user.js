@@ -8,7 +8,7 @@ import {
 	USER_AUTH,
 	SYS_BUTTON_AUTH,
 } from '@/utils/root/localStorageKeys'
-import { login, logout, getInfo, queryPermissionsByUser } from '@/api/user'
+import { login, logout, queryPermissionsByUser } from '@/api/user'
 
 const state = {
 	token: getToken(),
@@ -31,15 +31,15 @@ const mutations = {
 
 	SET_USER_INFO: (state, userInfo) => {
 		state.userInfo = userInfo
-		ls.set(USER_INFO, userInfo, 7 * 24 * 60 * 60 * 1000)
+		userInfo ? ls.set(USER_INFO, userInfo, 7 * 24 * 60 * 60 * 1000) : ls.remove(USER_INFO)
 	},
 
 	SET_USER_NAME: (state, names) => {
 		let { username, realname } = names
 		state.username = username
 		state.realname = realname
-		ls.set(USER_NAME, username, 7 * 24 * 60 * 60 * 1000)
-		ls.set(USER_REALNAME, username, 7 * 24 * 60 * 60 * 1000)
+		username ? ls.set(USER_NAME, username, 7 * 24 * 60 * 60 * 1000) : ls.remove(USER_NAME)
+		realname ? ls.set(USER_REALNAME, realname, 7 * 24 * 60 * 60 * 1000) : ls.remove(USER_REALNAME)
 	},
 
 	SET_AVATAR: (state, avatar) => {
@@ -95,6 +95,7 @@ const actions = {
 	Logout({ commit, state, dispatch }) {
 		console.log('logout...')
 		return new Promise((resolve, reject) => {
+			const lastToken = state.token
 			//清除token
 			commit('SET_TOKEN', '')
 			removeToken()
@@ -102,6 +103,8 @@ const actions = {
 			commit('SET_PERMISSIONLIST', [])
 			ls.remove(UI_CACHE_DB_DICT_DATA)
 			// ls.remove(CACHE_INCLUDED_ROUTES)
+			ls.remove(USER_AUTH)
+			ls.remove(SYS_BUTTON_AUTH)
 
 			commit('SET_USER_INFO', '')
 			commit('SET_USER_NAME', {
@@ -110,12 +113,14 @@ const actions = {
 			})
 			commit('SET_AVATAR', '')
 
-			logout(state.token)
+			logout(lastToken)
 				.then(() => {
 					resolve()
 				})
 				.catch((err) => {
 					reject(err)
+				}).finally(() => {
+					location.reload()
 				})
 		})
 	},
@@ -125,7 +130,7 @@ const actions = {
 		return new Promise((resolve, reject) => {
 			queryPermissionsByUser()
 				.then((response) => {
-					console.log('response', response);
+					console.log('response', response)
 					let { menu, auth, allAuth } = response.result
 
 					let menuData = menu
@@ -158,41 +163,10 @@ const actions = {
 		})
 	},
 
-	// get user info
-	getInfo({ commit, state }) {
-		return new Promise((resolve, reject) => {
-			getInfo(state.token)
-				.then((res) => {
-					const { data } = res
-
-					if (!data) {
-						reject('Verification failed, please Login again.')
-					}
-
-					const { roles, name, avatar, introduction } = data
-
-					// roles must be a non-empty array
-					if (!roles || roles.length <= 0) {
-						reject('getInfo: roles must be a non-null array!')
-					}
-
-					commit('SET_ROLES', roles)
-					commit('SET_NAME', name)
-					commit('SET_AVATAR', avatar)
-					commit('SET_INTRODUCTION', introduction)
-					resolve(data)
-				})
-				.catch((err) => {
-					reject(err)
-				})
-		})
-	},
-
 	// remove token
 	resetToken({ commit }) {
 		return new Promise((resolve) => {
 			commit('SET_TOKEN', '')
-			commit('SET_ROLES', [])
 			removeToken()
 			resolve()
 		})

@@ -14,6 +14,5 @@ const logout = (logoutToken) => {
 }
 
 const queryPermissionsByUser = () => getAction('/sys/permission/getUserPermissionByToken')
-const getInfo = (params) => postAction('/users/info', params)
 
-export { login, logout, getInfo, queryPermissionsByUser }
+export { login, logout, queryPermissionsByUser }
