@@ -28,7 +28,7 @@ const externalConfig = [
 
 /**
  * 读取生产环境第三方依赖版本
- * @returns 
+ * @returns
  */
 //不支持高版本node
 const getModulesVersion = () => {
@@ -45,7 +45,7 @@ const getModulesVersion = () => {
 
 /**
  * 读取生产环境第三方依赖版本
- * @returns 
+ * @returns
  */
 //兼容高版本node
 const getDependenciesVersion = () => {
@@ -93,7 +93,7 @@ let publicPath = !isProd ? '/' : '/amis-web/static/ElderlyManagement/'
 module.exports = function () {
 	return {
 		publicPath,
-		outputDir: './ElderlyManagement',
+		outputDir: './dit',
 		assetsDir: 'static',
 		filenameHashing: true,
 		devServer: {
@@ -188,7 +188,7 @@ module.exports = function () {
 				})
 
 			//去除生产环境console;
-			config.optimization 
+			config.optimization
 				.minimize(true)
 				.minimizer('terser')
 				.tap((args) => {
@@ -197,6 +197,19 @@ module.exports = function () {
 					terserOptions.compress.drop_console = true
 					terserOptions.compress.drop_debugger = true
 					return args
+				})
+
+			//添加项目引入svg处理
+			config.module.rules.delete('svg') //删除默认配置中处理svg
+			config.module
+				.rule('svg-sprite-loader')
+				.test(/\.svg$/)
+				.include.add(path.join(__dirname, 'src/icons'))
+				.end()
+				.use('svg-sprite-loader')
+				.loader('svg-sprite-loader')
+				.options({
+					symbolId: 'icon-[name]',
 				})
 		},
 

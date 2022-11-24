@@ -1,7 +1,7 @@
 <template>
 	<article class="exception-page">
-		<figure class="img">
-			<img :src="Config[type].img" />
+		<figure class="img-wrap">
+			<svg-icon :iconClass="Config[type].img" class="img"></svg-icon>
 		</figure>
 
 		<main class="content">
@@ -18,6 +18,7 @@ import Config from './typeConfig'
 
 export default {
 	props: ['type', 'homeRoute'],
+
 	data() {
 		return {
 			Config,
@@ -41,11 +42,12 @@ export default {
 	justify-content: center;
 	align-items: center;
 	background-color: #fff;
-	.img {
+	.img-wrap {
 		padding-right: 52px;
 		zoom: 1;
-		img {
-			max-width: 430px;
+		.img {
+			width: 430px;
+			height: 430px;
 		}
 	}
 	.content {
