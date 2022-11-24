@@ -151,7 +151,7 @@ export default {
         },
 
         loginSuccess() {
-            this.$router.push({ path: '/elderinfo' }).catch(() => {})
+            this.$router.push({ path: '/index' }).catch(() => {})
             this.$notification.success({
                 message: '欢迎',
                 description: `${timeFix()}，欢迎回来`,
