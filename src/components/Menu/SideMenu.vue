@@ -31,8 +31,7 @@
 				<a-menu-item key="/systemsetting/personnellabel">人员标签</a-menu-item>
 			</a-sub-menu>
 		</a-menu> -->
-		<v-menu :options="permissionList" :openKeys.sync="openKeys" :collapsed.sync="sidebar.open"></v-menu>
-
+		<v-menu :options="renderPermissionList" :openKeys.sync="openKeys" :collapsed.sync="sidebar.open"></v-menu>
 	</section>
 </template>
 
@@ -40,6 +39,7 @@
 import VMenu from './menu'
 
 import { mapActions, mapGetters } from 'vuex'
+import { asyncRouters } from '@/router/index'
 
 export default {
 	components: { VMenu },
@@ -51,13 +51,21 @@ export default {
 		}
 	},
 
-	computed: { ...mapGetters(['permissionList', 'sidebar']) },
+	computed: {
+		...mapGetters(['permissionList', 'sidebar']),
+		renderPermissionList() {
+			console.log('this.permissionList', this.permissionList)
+			const renderList = [...this.permissionList, ...asyncRouters]
+			console.log('renderList', renderList)
+			return renderList
+		},
+	},
 
 	watch: {
 		$route: {
 			immediate: true,
 			handler(newValue) {
-				console.log('newValue.matched[0]', newValue.matched[0]);
+				console.log('newValue.matched[0]', newValue.matched[0])
 				this.openKeys = [newValue.matched[0].path]
 				this.setMenuActive(newValue.fullPath)
 			},
@@ -80,7 +88,7 @@ export default {
 		},
 
 		handleClick({ item, key, keyPath }) {
-			this.$router.push(key).catch((err) => { })
+			this.$router.push(key).catch((err) => {})
 		},
 		titleClick(e) {
 			console.log('titleClick', e)
@@ -98,6 +106,7 @@ export default {
 .menu-wrap .ant-menu {
 	border: none;
 }
+
 </style>
 
 <style scoped>

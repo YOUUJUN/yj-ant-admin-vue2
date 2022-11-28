@@ -6,11 +6,12 @@ import BlankLayout from '@/components/Layout/BlankLayout.vue'
 
 Vue.use(VueRouter)
 
+//不变的路由配置，不参与菜单项构建
 export const constantRoutes = [
 	{
 		path: '/user',
-		redirect : '/user/login',
-		component : BlankLayout,
+		redirect: '/user/login',
+		component: BlankLayout,
 		children: [
 			{
 				path: 'login',
@@ -20,7 +21,6 @@ export const constantRoutes = [
 		],
 	},
 
-	
 	{
 		path: '/403',
 		name: '403',
@@ -35,17 +35,6 @@ export const constantRoutes = [
 		path: '/500',
 		name: '500',
 		component: () => import('@/views/Exception/500.vue'),
-	},
-
-	{
-		path: '/menu-management',
-		component: (resolve) => require(['@components/Layout/Layout.vue'], resolve),
-		children: [
-			{
-				path: '',
-				component: {},
-			},
-		],
 	},
 
 	{
@@ -176,7 +165,20 @@ export const constantRoutes = [
 	},
 ]
 
-export const asyncRouters = []
+//会读取作为菜单项的路由配置
+export const asyncRouters = [
+	{
+		name: 'menu-manage',
+		path: '/System/menuManage',
+		component: () => import('@/views/System/menuManage'),
+		meta: {
+			icon: 'alert',
+			internalOrExternal: false,
+			keepAlive: false,
+			title: '菜单管理',
+		},
+	},
+]
 
 const router = new VueRouter({
 	mode: 'history',

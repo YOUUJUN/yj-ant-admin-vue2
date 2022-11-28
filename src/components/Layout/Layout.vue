@@ -77,6 +77,7 @@ export default {
 	overflow: auto;
 	border-right: 0.01rem solid #e8e8e8;
 	overflow-x: hidden;
+	margin-bottom: 48px;
 }
 
 .content-wrap {

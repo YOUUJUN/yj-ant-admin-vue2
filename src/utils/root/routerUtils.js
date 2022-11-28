@@ -1,5 +1,7 @@
 import { isURL } from '@/utils/validate'
 
+import { asyncRouters } from '@/router/index'
+
 // 生成首页路由
 export function generateIndexRouter(data) {
 	let indexRouter = [
@@ -18,6 +20,8 @@ export function generateIndexRouter(data) {
 						title: '首页',
 					},
 				},
+
+				...asyncRouters,
 
 				...generateChildRouters(data),
 			],
