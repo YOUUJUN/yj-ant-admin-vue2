@@ -11,6 +11,10 @@ import '@/icons' //导入所有svg
 
 import '@/permission' // permission control
 
+//导入全局组件
+import ComponentsRegister from '@/plugins/regist-global-components'
+Vue.use(ComponentsRegister)
+
 import AuthorityPlugin from '@/plugins/authority'
 Vue.use(AuthorityPlugin)
 
@@ -21,9 +25,9 @@ import 'moment/locale/zh-cn'
 
 //添加localStorage工具
 Vue.use(Storage, {
-	namespace : 'pro__',
-	name : 'ls',
-	storage : 'local'
+	namespace: 'pro__',
+	name: 'ls',
+	storage: 'local',
 })
 
 Vue.config.productionTip = false
