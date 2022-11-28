@@ -1,10 +1,17 @@
 import { getAction, postAction } from '@/api/manage'
+import ls from '@/utils/lsOperation'
+import { ACCESS_TOKEN } from '@/utils/root/localStorageKeys'
 
 export default {
 	data() {
 		return {
+			/* token header */
+			tokenHeader: { 'X-Access-Token': ls.get(ACCESS_TOKEN) },
+
 			/* 查询条件-请不要在queryParam中声明非字符串值的属性 */
 			queryParam: {},
+			/* 动态生成的查询条件，防止重置清除 */
+			dynamicParam: {},
 			/* 数据源 */
 			dataSource: [],
 			/* 分页参数 */
@@ -20,7 +27,12 @@ export default {
 				total: 0,
 			},
 
+			/* table加载状态 */
 			loading: false,
+			/* table选中keys*/
+			selectedRowKeys: [],
+			/* table选中records*/
+			selectionRows: [],
 
 			/** 是否一进页面就开始加载数据 */
 			loadByInit: true,
@@ -36,6 +48,7 @@ export default {
 	},
 
 	methods: {
+		//获取数据
 		loadData(page) {
 			return new Promise((resolve, reject) => {
 				if (!this.url.list) {
@@ -70,12 +83,15 @@ export default {
 			})
 		},
 
+		//处理重置按钮
 		searchReset() {
-			this.queryParam = Object.assign({}, this.$options.data.call(this).queryParam)
+			const queryParam = Object.assign({}, this.$options.data.call(this).queryParam)
+			this.queryParam = { ...queryParam, ...this.dynamicParam }
 			this.loadData(1)
 			this.$message.success('重置搜索项成功!')
 		},
 
+		//生成查询条件
 		getQueryParams() {
 			//获取查询条件
 			let sqp = {}
@@ -85,9 +101,21 @@ export default {
 			return param
 		},
 
+		//监听分页变化
 		handleTableChange(pagination) {
 			this.ipagination = pagination
 			this.loadData()
+		},
+
+		//监听选中行
+		onSelectChange(selectedRowKeys, selectionRows) {
+			this.selectedRowKeys = selectedRowKeys
+			this.selectionRows = selectionRows
+		},
+		//清空选中行
+		onClearSelected() {
+			this.selectedRowKeys = []
+			this.selectionRows = []
 		},
 	},
 }
