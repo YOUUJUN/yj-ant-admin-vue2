@@ -7,7 +7,8 @@ export default {
 		return {
 			/* token header */
 			tokenHeader: { 'X-Access-Token': ls.get(ACCESS_TOKEN) },
-
+			/* 查询列表用是否用post方法 */
+			postMethod: false,
 			/* 查询条件-请不要在queryParam中声明非字符串值的属性 */
 			queryParam: {},
 			/* 动态生成的查询条件，防止重置清除 */
@@ -62,7 +63,10 @@ export default {
 
 				var params = this.getQueryParams() //查询条件
 				this.loading = true
-				postAction(this.url.list, params)
+				
+				const fetchAction = this.postMethod ? postAction : getAction
+
+				fetchAction(this.url.list, params)
 					.then((res) => {
 						if (res?.data) {
 							this.dataSource = res.data.records
