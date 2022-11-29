@@ -98,11 +98,11 @@ export default {
 		//生成查询条件
 		getQueryParams() {
 			//获取查询条件
-			let sqp = {}
-			var param = Object.assign(sqp, this.queryParam)
-			param.pageNo = this.ipagination.current
-			param.pageSize = this.ipagination.pageSize
-			return param
+			const params = Object.assign({}, this.queryParam, this.dynamicParam, {
+				pageNo : this.ipagination.current,
+				pageSize : this.ipagination.pageSize
+			})
+			return params
 		},
 
 		//监听分页变化

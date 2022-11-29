@@ -1,7 +1,7 @@
 <template>
 	<article class="root">
 		<header>
-			<a-row :gutter="[8, 8]">
+			<a-row :gutter="[8, 16]">
 				<a-col :span="24">
 					<a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
 				</a-col>
@@ -20,6 +20,7 @@
 		<main>
 			<a-table
 				:columns="columns"
+				rowKey="id"
 				size="middle"
 				:pagination="false"
 				:dataSource="dataSource"
@@ -29,11 +30,15 @@
 				@expandedRowsChange="handleExpandedRowsChange"
 			></a-table>
 		</main>
+
+		<menu-operate-model ref="operateModel"></menu-operate-model>
 	</article>
 </template>
 <script>
-import { getPermissionList } from '@/api/api'
 import dataListMixin from '@/mixins/dataListMixin'
+import { getAction } from '@/api/manage'
+
+import MenuOperateModel from './modules/MenuOperateModel'
 
 const columns = [
 	{
@@ -96,6 +101,10 @@ const columns = [
 export default {
 	mixins: [dataListMixin],
 
+	components: {
+		MenuOperateModel,
+	},
+
 	data() {
 		return {
 			columns,
@@ -110,8 +119,68 @@ export default {
 	},
 
 	methods: {
+		//获取数据
+		loadData(page) {
+			return new Promise((resolve, reject) => {
+				if (!this.url.list) {
+					console.error('请设置url.list属性!')
+					return
+				}
+				//加载数据 若传入参数1则加载第一页的内容
+				if (page === 1) {
+					this.ipagination.current = 1
+				}
+
+				var params = this.getQueryParams() //查询条件
+				this.loading = true
+
+				getAction(this.url.list, params)
+					.then((res) => {
+						if (res?.result) {
+							this.dataSource = res.result
+						}
+						resolve(res?.result)
+					})
+					.catch((err) => {
+						console.error('loadData err', err)
+						reject(err)
+					})
+					.finally(() => {
+						this.loading = false
+					})
+			})
+		},
+
 		//处理新增菜单
-		handleAdd() {},
+		handleAdd() {
+			const operateModel = this.$refs['operateModel']
+			const screenWidth = document.body.clientWidth;
+			operateModel.visible = true
+			operateModel.title = '新增'	
+			operateModel.disableSubmit = false,
+			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700;
+		},
+
+		//处理编辑菜单
+		handleEdit(record) {
+			const operateModel = this.$refs['operateModel']
+			const screenWidth = document.body.clientWidth;
+			operateModel.visible = true
+			operateModel.title = '编辑'	
+			operateModel.disableSubmit = false,
+			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700;
+			operateModel.initData(record)
+		},
+
+		//处理查看菜单
+		handleView() {
+			const operateModel = this.$refs['operateModel']
+			const screenWidth = document.body.clientWidth;
+			operateModel.visible = true
+			operateModel.title = '查看'	
+			operateModel.disableSubmit = true,
+			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700;
+		},
 
 		//监听行展开
 		handleExpandedRowsChange(expandedRows) {
@@ -123,6 +192,6 @@ export default {
 <style scoped>
 .root {
 	background: #fff;
-	padding: 2rem 1rem;
+	padding: 2.4rem;
 }
 </style>

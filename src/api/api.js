@@ -8,6 +8,9 @@ const getPermissionList = (params) => getAction('/sys/permission/list', params)
 //字典标签专用（通过code获取字典数组）
 const ajaxGetDictItems = (code, params) => getAction(`/sys/dict/getDictItems/${code}`, params)
 //从缓存中获取字典配置
-const getDictItemsFromCache = (dictCode) => ls.get(UI_CACHE_DB_DICT_DATA)?.[dictCode] || []
+const getDictItemsFromCache = (dictCode) => ls.get(UI_CACHE_DB_DICT_DATA)?.[dictCode] || null
 
-export { getPermissionList, ajaxGetDictItems, getDictItemsFromCache }
+// 校验授权标识是否重复
+const duplicateCheck = (params) => getAction('/sys/duplicate/check', params)
+
+export { getPermissionList, ajaxGetDictItems, getDictItemsFromCache, duplicateCheck }

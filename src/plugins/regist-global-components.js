@@ -2,7 +2,7 @@ import DictSelectTag from '@/components/Dict'
 
 const ComponentsRegister = {
 	install(Vue) {
-		Vue.component(DictSelectTag)
+		Vue.component('dict-select-tag', DictSelectTag)
 	},
 }
 
