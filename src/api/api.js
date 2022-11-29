@@ -1,4 +1,4 @@
-import { getAction, postAction } from './manage'
+import { getAction, postAction, putAction } from './manage'
 import ls from '@/utils/lsOperation'
 import { UI_CACHE_DB_DICT_DATA } from '@/utils/root/localStorageKeys'
 
@@ -13,4 +13,19 @@ const getDictItemsFromCache = (dictCode) => ls.get(UI_CACHE_DB_DICT_DATA)?.[dict
 // 校验授权标识是否重复
 const duplicateCheck = (params) => getAction('/sys/duplicate/check', params)
 
-export { getPermissionList, ajaxGetDictItems, getDictItemsFromCache, duplicateCheck }
+//获取树形结构菜单数据
+const queryTreeMenuList = (params) => getAction('/sys/permission/queryTreeList', params)
+
+//权限管理
+const addPermission = (params) => postAction('/sys/permission/add', params)
+const editPermission = (params) => putAction('/sys/permission/edit', params)
+
+export {
+	getPermissionList,
+	ajaxGetDictItems,
+	getDictItemsFromCache,
+	duplicateCheck,
+	queryTreeMenuList,
+	addPermission,
+	editPermission,
+}

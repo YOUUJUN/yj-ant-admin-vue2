@@ -28,7 +28,13 @@
 				:expandedRowKeys="expandedRowKeys"
 				:rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
 				@expandedRowsChange="handleExpandedRowsChange"
-			></a-table>
+			>
+				<template slot="action" slot-scope="text, record">
+					<a-button type="link" @click="handleEdit(record)">编辑</a-button>
+					<a-button type="link" @click="handleView(record)">查看</a-button>
+				</template>
+
+			</a-table>
 		</main>
 
 		<menu-operate-model ref="operateModel"></menu-operate-model>
@@ -159,6 +165,7 @@ export default {
 			operateModel.title = '新增'	
 			operateModel.disableSubmit = false,
 			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700;
+			operateModel.initData()
 		},
 
 		//处理编辑菜单
@@ -180,6 +187,7 @@ export default {
 			operateModel.title = '查看'	
 			operateModel.disableSubmit = true,
 			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700;
+			operateModel.initData(record)
 		},
 
 		//监听行展开

@@ -160,6 +160,8 @@
 	</a-drawer>
 </template>
 <script>
+import { queryTreeMenuList, addPermission, editPermission } from '@/api/api'
+
 export default {
 	data() {
 		return {
@@ -196,16 +198,22 @@ export default {
 				sm: { span: 16 },
 			},
 
-			//动态字段label
-			menuLabel: '菜单名称',
-
 			treeData: [],
 		}
 	},
 
+	computed: {
+		menuLabel() {
+			return this.form.menuType == 2 ? '按钮/权限' : '菜单名称'
+		},
+	},
+
 	methods: {
-		initData(record) {
-			this.$set(this, 'form', Object.assign({}, this.form, record))
+		initData(record = {}) {
+			this.loadMenuTree()
+			const originForm = this.$options.data.call(this).form
+			this.$set(this, 'form', Object.assign({}, originForm, record))
+			this.show = record.menuType == 2 ? false : true
 		},
 
 		handleCancel() {
@@ -213,32 +221,43 @@ export default {
 		},
 
 		handleSave() {
-			if (this.form.id) {
-				this.handleEdit()
-			} else {
-				this.handleAdd()
-			}
+			this.$refs['form']
+				.validate()
+				.then((res) => {
+					if (this.form.id) {
+						this.handleEdit()
+					} else {
+						this.handleAdd()
+					}
+				})
+				.catch((err) => {})
 		},
 
 		//处理新增请求
 		handleAdd() {
-			this.$refs['form'].validate((valid) => {
-				console.log('valid', valid)
+			addPermission(this.form).then(res => {
+				console.log('res', res);
+			}).catch(err => {
+				console.error('err', err)
 			})
 		},
 
 		//处理编辑请求
-		handleEdit() {},
+		handleEdit() {
+			editPermission(this.form).then(res => {
+				console.log('res', res);
+			}).catch(err => {
+				console.error('err', err)
+			})
+		},
 
 		//设置需要维护的菜单类型
 		onChangeMenuType(e) {
 			this.localMenuType = e.target.value
 			if (e.target.value == 2) {
 				this.show = false
-				this.menuLabel = '按钮/权限'
 			} else {
 				this.show = true
-				this.menuLabel = '菜单名称'
 			}
 		},
 
@@ -246,6 +265,24 @@ export default {
 
 		//打开选择图标窗体
 		selectIcons() {},
+
+		//获取树形结构菜单数据
+		loadMenuTree() {
+			queryTreeMenuList()
+				.then((res) => {
+					console.log('res', res)
+					if (res.success) {
+						let treeList = res.result.treeList
+						this.treeData = treeList.map((item) => {
+							item.isLeaf = item.leaf
+							return item
+						})
+					}
+				})
+				.catch((err) => {
+					console.error('err', err)
+				})
+		},
 
 		//验证name
 		validateName(rule, value, callback) {

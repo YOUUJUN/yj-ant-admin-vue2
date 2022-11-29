@@ -8,6 +8,14 @@ export function postAction(url, parameter) {
 	})
 }
 
+export function putAction(url, parameter) {
+	return request({
+		url,
+		method: 'put',
+		data: parameter,
+	})
+}
+
 export function getAction(url, parameter) {
 	return request({
 		url,
