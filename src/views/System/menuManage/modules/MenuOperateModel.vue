@@ -14,17 +14,17 @@
 			<a-form-model ref="form" :model="form" :rules="rules" :labelCol="labelCol" :wrapperCol="wrapperCol">
 				<a-form-model-item label="菜单类型">
 					<a-radio-group @change="onChangeMenuType" v-model="form.menuType">
-						<a-radio :value="0">一级菜单</a-radio>
-						<a-radio :value="1">子菜单</a-radio>
-						<a-radio :value="2">按钮/权限</a-radio>
+						<a-radio value="0">一级菜单</a-radio>
+						<a-radio value="1">子菜单</a-radio>
+						<a-radio value="2">按钮/权限</a-radio>
 					</a-radio-group>
 				</a-form-model-item>
 
 				<a-form-model-item :label="menuLabel" :required="true" prop="name">
-					<a-input placeholder="请输入菜单名称" v-model="form.name" :readOnly="disableSubmit" />
+					<a-input placeholder="请输入菜单名称" v-model="form.name" :disabled="disableSubmit" />
 				</a-form-model-item>
 
-				<a-form-model-item v-show="localMenuType != 0" label="上级菜单" :required="true" prop="parentId">
+				<a-form-model-item v-show="localMenuType !== '0'" label="上级菜单" :required="true" prop="parentId">
 					<a-tree-select
 						style="width: 100%"
 						:dropdownStyle="{ maxHeight: '200px', overflow: 'auto' }"
@@ -37,54 +37,46 @@
 				</a-form-model-item>
 
 				<a-form-model-item v-show="show" label="菜单路径" :required="true" prop="url">
-					<a-input placeholder="请输入菜单路径" v-model="form.url" :readOnly="disableSubmit" />
+					<a-input placeholder="请输入菜单路径" v-model="form.url" :disabled="disableSubmit" />
 				</a-form-model-item>
 
 				<a-form-model-item v-show="show" label="前端组件" :required="true" prop="component">
-					<a-input placeholder="请输入前端组件" v-model="form.component" :readOnly="disableSubmit" />
+					<a-input placeholder="请输入前端组件" v-model="form.component" :disabled="disableSubmit" />
 				</a-form-model-item>
 
 				<a-form-model-item
-					v-show="localMenuType == 0"
+					v-show="localMenuType === '0'"
 					label="默认跳转地址"
 					:labelCol="labelCol"
 					:wrapperCol="wrapperCol"
 				>
-					<a-input placeholder="请输入路由参数 redirect" v-model="form.redirect" :readOnly="disableSubmit" />
+					<a-input placeholder="请输入路由参数 redirect" v-model="form.redirect" :disabled="disableSubmit" />
 				</a-form-model-item>
 
 				<a-form-model-item v-show="!show" label="授权标识" prop="perms">
 					<a-input
 						placeholder="多个用逗号分隔, 如: user:list,user:create"
 						v-model="form.perms"
-						:readOnly="disableSubmit"
+						:disabled="disableSubmit"
 					/>
 				</a-form-model-item>
 
 				<a-form-model-item v-show="!show" label="授权策略" prop="permsType">
-					<dict-select-tag
-						v-model="form.permsType"
-						placeholder="请选择授权策略"
-						type="radio"
-						:triggerChange="true"
-						:disabled="disableSubmit"
-						dictCode="global_perms_type"
-					></dict-select-tag>
+					<a-radio-group v-model="form.permsType" :disabled="disableSubmit">
+						<a-radio :value="1">可见/可访问(授权后可见/可访问)</a-radio>
+						<a-radio :value="2">可编辑(未授权时禁用)</a-radio>
+					</a-radio-group>
 				</a-form-model-item>
 
 				<a-form-model-item v-show="!show" label="状态">
-					<dict-select-tag
-						v-model="form.status"
-						placeholder="请选择状态"
-						type="radio"
-						:triggerChange="true"
-						:disabled="disableSubmit"
-						dictCode="valid_status"
-					></dict-select-tag>
+					<a-radio-group v-model="form.status" :disabled="disableSubmit">
+						<a-radio :value="0">无效</a-radio>
+						<a-radio :value="1">有效</a-radio>
+					</a-radio-group>
 				</a-form-model-item>
 
 				<a-form-model-item v-show="show" label="菜单图标">
-					<a-input placeholder="点击选择图标" v-model="form.icon" :readOnly="disableSubmit">
+					<a-input placeholder="点击选择图标" v-model="form.icon" :disabled="disableSubmit">
 						<a-icon slot="addonAfter" type="setting" @click="selectIcons" />
 					</a-input>
 				</a-form-model-item>
@@ -98,19 +90,19 @@
 					/>
 				</a-form-model-item>
 
-				<!-- <a-form-model-item label="菜单平台类型">
+				<a-form-model-item label="菜单平台类型" :required="true">
 					<a-radio-group v-model="form.platformType" :disabled="disableSubmit">
-						<a-radio :value="1">监管</a-radio>
-						<a-radio :value="2">运营</a-radio>
-						<a-radio :value="3">服务商</a-radio>
+						<a-radio value="1">监管</a-radio>
+						<a-radio value="2">运营</a-radio>
+						<a-radio value="3">服务商</a-radio>
 					</a-radio-group>
-				</a-form-model-item> -->
+				</a-form-model-item>
 
 				<a-form-model-item v-show="show" label="是否路由菜单">
 					<a-switch
 						checkedChildren="是"
 						unCheckedChildren="否"
-						v-model="form.routeSwitch"
+						v-model="form.isRoute"
 						:disabled="disableSubmit"
 					/>
 				</a-form-model-item>
@@ -128,7 +120,7 @@
 					<a-switch
 						checkedChildren="是"
 						unCheckedChildren="否"
-						v-model="form.isKeepalive"
+						v-model="form.keepAlive"
 						:disabled="disableSubmit"
 					/>
 				</a-form-model-item>
@@ -153,7 +145,7 @@
 			</a-form-model>
 		</main>
 
-		<footer>
+		<footer class="footer-wrap">
 			<a-button :style="{ marginRight: '8px' }" @click="handleCancel">关闭</a-button>
 			<a-button :disabled="disableSubmit" @click="handleSave" type="primary">确定</a-button>
 		</footer>
@@ -173,22 +165,24 @@ export default {
 
 			//表单控制
 			form: {
-				menuType: 0,
+				menuType: '0',
 				sortNo: 1,
-				permsType: 1,
-				status: 1,
+				permsType: '1',
+				status: '1',
+				isRoute: true,
 			},
 			rules: {
 				name: [{ required: true, validator: this.validateName }],
-				parentId: [{ required: this.localMenuType != 0, message: '请选择父级菜单!' }],
-				component: [{ required: this.show, message: '请输入前端组件!' }],
-				url: [{ required: this.show, message: '请输入菜单路径!' }],
-				permsType: [{ required: !this.show, message: '请输入授权策略!' }],
-				perms: [{ required: !this.show, message: '请输入授权标识!' }, { validator: this.validatePerms }],
+				parentId: [{ required: true, message: '请选择父级菜单!' }],
+				component: [{ required: true, message: '请输入前端组件!' }],
+				url: [{ required: true, message: '请输入菜单路径!' }],
+				permsType: [{ required: true, message: '请输入授权策略!' }],
+				perms: [{ validator: this.validatePerms }],
+				platformType : [{ required: true, message: '请选择平台菜单类型!' }],
 			},
 			show: true, //显示隐藏菜单维护项与按钮维护项
 			disableSubmit: false,
-			localMenuType: 0, //菜单类型
+			localMenuType: '0', //菜单类型
 			labelCol: {
 				xs: { span: 24 },
 				sm: { span: 5 },
@@ -204,7 +198,7 @@ export default {
 
 	computed: {
 		menuLabel() {
-			return this.form.menuType == 2 ? '按钮/权限' : '菜单名称'
+			return this.form.menuType === '2' ? '按钮/权限' : '菜单名称'
 		},
 	},
 
@@ -212,8 +206,16 @@ export default {
 		initData(record = {}) {
 			this.loadMenuTree()
 			const originForm = this.$options.data.call(this).form
-			this.$set(this, 'form', Object.assign({}, originForm, record))
-			this.show = record.menuType == 2 ? false : true
+			this.$set(
+				this,
+				'form',
+				Object.assign({}, originForm, record, {
+					children: null,
+				}),
+			)
+			delete this.form.children
+			this.show = record.menuType === '2' ? false : true
+			record?.menuType !== undefined && (this.localMenuType = record.menuType)
 		},
 
 		handleCancel() {
@@ -221,40 +223,80 @@ export default {
 		},
 
 		handleSave() {
-			this.$refs['form']
-				.validate()
-				.then((res) => {
-					if (this.form.id) {
-						this.handleEdit()
-					} else {
-						this.handleAdd()
+			let needValidates = []
+			switch (this.localMenuType) {
+				case '0':
+					needValidates = ['name', 'url', 'component']
+					break
+				case '1':
+					needValidates = ['name', 'parentId', 'url', 'component']
+					break
+				case '2':
+					needValidates = ['name', 'parentId', 'permsType']
+					break
+			}
+
+			let validateResult = new Promise((resolve, reject) => {
+				this.$refs['form'].validateField(needValidates, (validate) => {
+					console.log('validate', validate)
+					if (validate) {
+						reject()
 					}
+
+					resolve()
 				})
-				.catch((err) => {})
+			})
+
+			validateResult.then((res) => {
+				if (this.form.id) {
+					this.handleEdit(needValidates)
+				} else {
+					this.handleAdd(needValidates)
+				}
+			})
 		},
 
 		//处理新增请求
-		handleAdd() {
-			addPermission(this.form).then(res => {
-				console.log('res', res);
-			}).catch(err => {
-				console.error('err', err)
-			})
+		handleAdd(needValidates) {
+			console.log('form', this.form)
+			addPermission(this.form)
+				.then((res) => {
+					const { success, message } = res
+					if (success) {
+						this.$message.success(message)
+						this.$emit('doSearch')
+					} else {
+						this.$message.warning(message)
+					}
+				})
+				.catch((err) => {
+					console.error('err', err)
+				})
+				.finally(() => {})
 		},
 
 		//处理编辑请求
-		handleEdit() {
-			editPermission(this.form).then(res => {
-				console.log('res', res);
-			}).catch(err => {
-				console.error('err', err)
-			})
+		handleEdit(needValidates) {
+			console.log('form', this.form)
+			editPermission(this.form)
+				.then((res) => {
+					const { success, message } = res
+					if (success) {
+						this.$message.success(message)
+						this.$emit('doSearch')
+					} else {
+						this.$message.warning(message)
+					}
+				})
+				.catch((err) => {
+					console.error('err', err)
+				})
 		},
 
 		//设置需要维护的菜单类型
 		onChangeMenuType(e) {
 			this.localMenuType = e.target.value
-			if (e.target.value == 2) {
+			if (e.target.value === '2') {
 				this.show = false
 			} else {
 				this.show = true
@@ -287,7 +329,7 @@ export default {
 		//验证name
 		validateName(rule, value, callback) {
 			let message = '请输入菜单标题!'
-			if (this.localMenuType == 2) {
+			if (this.localMenuType === '2') {
 				message = '请输入按钮/权限 名称!'
 			}
 
@@ -309,7 +351,7 @@ export default {
 				tableName: 'sys_permission',
 				fieldName: 'perms',
 				fieldVal: value,
-				// dataId: this.model.id,
+				dataId: this.form.id,
 			}
 			duplicateCheck(params).then((res) => {
 				if (res.success) {
@@ -322,4 +364,8 @@ export default {
 	},
 }
 </script>
-<style scoped></style>
+<style scoped>
+.footer-wrap {
+	text-align: right;
+}
+</style>

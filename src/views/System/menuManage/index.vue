@@ -30,19 +30,23 @@
 				@expandedRowsChange="handleExpandedRowsChange"
 			>
 				<template slot="action" slot-scope="text, record">
-					<a-button type="link" @click="handleEdit(record)">编辑</a-button>
-					<a-button type="link" @click="handleView(record)">查看</a-button>
+					<a-button type="link" size="default" @click="handleEdit(record)">编辑</a-button>
+					<a-button type="link" size="default" @click="handleView(record)">查看</a-button>
+					<a-button type="link" size="default" @click="handleAddSub(record)">添加下级</a-button>
+					<a-popconfirm title="确定删除吗?" @confirm="() => handleDel(record)">
+						<a-button type="link" size="default">删除</a-button>
+					</a-popconfirm>
 				</template>
-
 			</a-table>
 		</main>
 
-		<menu-operate-model ref="operateModel"></menu-operate-model>
+		<menu-operate-model ref="operateModel" @doSearch="searchQuery"></menu-operate-model>
 	</article>
 </template>
 <script>
 import dataListMixin from '@/mixins/dataListMixin'
 import { getAction } from '@/api/manage'
+import { editPermission } from '@/api/api'
 
 import MenuOperateModel from './modules/MenuOperateModel'
 
@@ -100,7 +104,7 @@ const columns = [
 		fixed: 'right',
 		scopedSlots: { customRender: 'action' },
 		align: 'center',
-		width: 150,
+		width: 310,
 	},
 ]
 
@@ -160,34 +164,67 @@ export default {
 		//处理新增菜单
 		handleAdd() {
 			const operateModel = this.$refs['operateModel']
-			const screenWidth = document.body.clientWidth;
+			const screenWidth = document.body.clientWidth
 			operateModel.visible = true
-			operateModel.title = '新增'	
-			operateModel.disableSubmit = false,
-			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700;
-			operateModel.initData()
+			operateModel.title = '新增'
+			operateModel.disableSubmit = false
+			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700
+			operateModel.initData({ menuType: '0' })
+		},
+
+		//处理添加下级菜单
+		handleAddSub(record) {
+			console.log('record', record)
+			const operateModel = this.$refs['operateModel']
+			const screenWidth = document.body.clientWidth
+			operateModel.visible = true
+			operateModel.title = '添加子菜单'
+			operateModel.disableSubmit = false
+			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700
+			operateModel.initData({ menuType: '1', parentId: record.id })
 		},
 
 		//处理编辑菜单
 		handleEdit(record) {
 			const operateModel = this.$refs['operateModel']
-			const screenWidth = document.body.clientWidth;
+			const screenWidth = document.body.clientWidth
 			operateModel.visible = true
-			operateModel.title = '编辑'	
-			operateModel.disableSubmit = false,
-			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700;
+			operateModel.title = '编辑'
+			operateModel.disableSubmit = false
+			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700
 			operateModel.initData(record)
 		},
 
 		//处理查看菜单
-		handleView() {
+		handleView(record) {
 			const operateModel = this.$refs['operateModel']
-			const screenWidth = document.body.clientWidth;
+			const screenWidth = document.body.clientWidth
 			operateModel.visible = true
-			operateModel.title = '查看'	
-			operateModel.disableSubmit = true,
-			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700;
+			operateModel.title = '查看'
+			operateModel.disableSubmit = true
+			operateModel.drawerWidth = screenWidth < 500 ? screenWidth : 700
 			operateModel.initData(record)
+		},
+
+		//处理删除按钮
+		handleDel(record) {
+			const { id } = record
+			editPermission({
+				id,
+				delFlag: 1,
+			})
+				.then((res) => {
+					const { success, message } = res
+					if (success) {
+						this.$message.success('删除成功!')
+						this.searchQuery()
+					} else {
+						this.$message.warning('删除失败!')
+					}
+				})
+				.catch((err) => {
+					this.$message.warning('删除失败!')
+				})
 		},
 
 		//监听行展开

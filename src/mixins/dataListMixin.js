@@ -63,7 +63,7 @@ export default {
 
 				var params = this.getQueryParams() //查询条件
 				this.loading = true
-				
+
 				const fetchAction = this.postMethod ? postAction : getAction
 
 				fetchAction(this.url.list, params)
@@ -87,6 +87,10 @@ export default {
 			})
 		},
 
+		searchQuery() {
+			this.loadData(this.ipagination.current)
+		},
+
 		//处理重置按钮
 		searchReset() {
 			const queryParam = Object.assign({}, this.$options.data.call(this).queryParam)
@@ -99,8 +103,8 @@ export default {
 		getQueryParams() {
 			//获取查询条件
 			const params = Object.assign({}, this.queryParam, this.dynamicParam, {
-				pageNo : this.ipagination.current,
-				pageSize : this.ipagination.pageSize
+				pageNo: this.ipagination.current,
+				pageSize: this.ipagination.pageSize,
 			})
 			return params
 		},
