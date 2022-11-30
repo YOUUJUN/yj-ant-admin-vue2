@@ -14,8 +14,8 @@ router.beforeEach(async (to, from, next) => {
 	/* must call `next` */
 	const hasToken = getToken()
 	if (hasToken) {
-		if (to.path === '/login') {
-			next({ path: '/' })
+		if (to.path === '/user/login') {
+			next({ path: '/index' })
 			NProgress.done()
 		} else {
 			/*--从VUEX中判断是否有权限--*/
@@ -34,6 +34,7 @@ router.beforeEach(async (to, from, next) => {
 							store.getters.permission_routers.forEach((route) => {
 								router.addRoute(route)
 							})
+							console.log('to', to)
 							next({ ...to, replace: true })
 						})
 					})

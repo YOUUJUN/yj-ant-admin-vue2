@@ -32,7 +32,7 @@ export default {
 
 	data() {
 		//首页path
-		this.indexKey = window._CONFIG['indexURL']
+		this.indexKey = window._CONFIG['indexURL'].trim()
 
 		return {
 			pageList: [],
@@ -70,6 +70,7 @@ export default {
 	},
 
 	created() {
+		console.log('this.$route.path', this.$route.path, this.indexKey)
 		if (this.$route.path !== this.indexKey) {
 			this.setIndexAsFirst()
 		}

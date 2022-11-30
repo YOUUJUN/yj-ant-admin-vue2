@@ -71,10 +71,10 @@ function generateChildRouters(data) {
 				keepAlive: item.meta.keepAlive,
 			},
 		}
-		if (item.alwaysShow) {
-			menu.alwaysShow = true
-			menu.redirect = menu.path
-		}
+		// if (item.alwaysShow) {
+		// 	menu.alwaysShow = true
+		// 	menu.redirect = menu.path
+		// }
 		if (item.children && item.children.length > 0) {
 			menu.children = [...generateChildRouters(item.children)]
 		}
