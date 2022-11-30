@@ -1,6 +1,7 @@
 import { isURL } from '@/utils/validate'
-
 import { asyncRouters } from '@/router/index'
+
+const indexPath = window._CONFIG['indexURL']
 
 // 生成首页路由
 export function generateIndexRouter(data) {
@@ -8,7 +9,7 @@ export function generateIndexRouter(data) {
 		{
 			path: '/',
 			component: (resolve) => require(['@components/Layout/Layout.vue'], resolve),
-			redirect: '/index',
+			redirect: indexPath,
 			children: [
 				{
 					path: 'index',
@@ -70,10 +71,10 @@ function generateChildRouters(data) {
 				keepAlive: item.meta.keepAlive,
 			},
 		}
-		// if (item.alwaysShow) {
-		// 	menu.alwaysShow = true
-		// 	menu.redirect = menu.path
-		// }
+		if (item.alwaysShow) {
+			menu.alwaysShow = true
+			menu.redirect = menu.path
+		}
 		if (item.children && item.children.length > 0) {
 			menu.children = [...generateChildRouters(item.children)]
 		}

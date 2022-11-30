@@ -156,7 +156,7 @@ export default {
 					}
 				}
 
-				return menu.children && renderChildren ? this.renderSubMenu(h, menu) : this.renderMenuItem(h, menu)
+				return (menu.children && renderChildren) && !menu.alwaysShow ? this.renderSubMenu(h, menu) : this.renderMenuItem(h, menu)
 			}
 		},
 

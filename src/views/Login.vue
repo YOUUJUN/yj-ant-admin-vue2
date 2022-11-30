@@ -150,7 +150,8 @@ export default {
         },
 
         loginSuccess() {
-            this.$router.push({ path: '/index' }).catch(() => {})
+            const indexPath = window._CONFIG['indexURL']
+            this.$router.push({ path: indexPath }).catch(() => {})
             this.$notification.success({
                 message: '欢迎',
                 description: `${timeFix()}，欢迎回来`,

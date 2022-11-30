@@ -32,7 +32,7 @@ export default {
 
 	data() {
 		//首页path
-		this.indexKey = '/index'
+		this.indexKey = window._CONFIG['indexURL']
 
 		return {
 			pageList: [],
