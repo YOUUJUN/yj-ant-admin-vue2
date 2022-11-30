@@ -67,17 +67,17 @@ const actions = {
 				.then((res) => {
 					if (res.code == '200') {
 						const result = res.result
-						let { userInfo, token, sysAllDictItems, sysRole } = result
-						let { username, realname, avatar } = userInfo
+						let { sysUserVO, token, sysAllDictItems, sysRole } = result
+						let { username, realName, avatar } = sysUserVO
 
 						//设置token
 						commit('SET_TOKEN', token)
 						//储存用户数据
 						ls.set(UI_CACHE_DB_DICT_DATA, sysAllDictItems, 7 * 24 * 60 * 60 * 1000)
-						commit('SET_USER_INFO', userInfo)
+						commit('SET_USER_INFO', sysUserVO)
 						commit('SET_USER_NAME', {
 							username: username,
-							realname: realname,
+							realname: realName,
 						})
 						commit('SET_AVATAR', avatar)
 						resolve(res)

@@ -90,7 +90,7 @@ export default {
     },
 
     created() {
-        this.currdatetime = new Date().getTime()
+        this.currentTime = new Date().getTime()
         // removeToken()
         this.getRouterData()
         this.handleChangeCheckCode()
@@ -100,30 +100,29 @@ export default {
         ...mapActions('user', ['Login']),
 
         handleSubmit() {
-            let that = this
             let loginParams = {}
-            that.loginBtn = true
+            this.loginBtn = true
             // 使用账户密码登录
-            that.form.validateFields(
+            this.form.validateFields(
                 ['username', 'password', 'inputCode', 'rememberMe'],
                 { force: true },
                 (err, values) => {
                     if (!err) {
                         loginParams.username = values.username
                         loginParams.password = values.password
-                        loginParams.captcha = that.inputCodeContent
-                        loginParams.checkKey = that.currdatetime
+                        loginParams.captcha = this.inputCodeContent
+                        loginParams.checkKey = this.currentTime
                         loginParams.platformType = '2'
                         console.log('登录参数', loginParams)
-                        that.Login(loginParams)
+                        this.Login(loginParams)
                             .then((res) => {
                                 this.loginSuccess()
                             })
                             .catch((err) => {
-                                that.requestFailed(err)
+                                this.requestFailed(err)
                             })
                     } else {
-                        that.loginBtn = false
+                        this.loginBtn = false
                     }
                 }
             )
@@ -134,8 +133,8 @@ export default {
         },
 
         handleChangeCheckCode() {
-            this.currdatetime = new Date().getTime()
-            getAction(`/sys/randomImage/${this.currdatetime}`)
+            this.currentTime = new Date().getTime()
+            getAction(`/sys/user/randomImage/${this.currentTime}`)
                 .then((res) => {
                     if (res.success) {
                         this.randCodeImage = res.result

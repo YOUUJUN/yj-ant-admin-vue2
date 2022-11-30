@@ -1,11 +1,11 @@
 import request from '@/utils/http'
 import { getAction, postAction } from './manage'
 
-const login = (params) => postAction('/sys/login', params)
+const login = (params) => postAction('/sys/user/login', params)
 const logout = (logoutToken) => {
 	return request({
-		url: '/sys/logout',
-		method: 'post',
+		url: '/sys/user/logout',
+		method: 'get',
 		headers: {
 			'Content-Type': 'application/json;charset=UTF-8',
 			'X-Access-Token': logoutToken,
@@ -13,6 +13,10 @@ const logout = (logoutToken) => {
 	})
 }
 
+//获取验证码
+const getRandomImage = (currentTime) => getAction(`/sys/user/randomImage/${this.currentTime}`)
+
+//获取用户权限
 const queryPermissionsByUser = () => getAction('/sys/permission/getUserPermissionByToken')
 
-export { login, logout, queryPermissionsByUser }
+export { login, logout, getRandomImage, queryPermissionsByUser }
