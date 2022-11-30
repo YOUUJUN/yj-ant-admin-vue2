@@ -2,11 +2,12 @@ import axios from 'axios'
 import { getToken } from '@/utils/lsOperation'
 import router from '@/router'
 
-const baseURL = process.env.VUE_APP_API_BASE_URL
+const baseURL = window._CONFIG['domianURL']
 
 let service = axios.create({
 	baseURL,
 	withCredentials: true,
+	timeout: 9000,
 })
 
 service.interceptors.request.use(

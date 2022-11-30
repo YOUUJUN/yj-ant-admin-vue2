@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import '@/config'	//导入应用基本配置
 import Storage from 'vue-ls'
 import App from './App.vue'
 import router from './router'
