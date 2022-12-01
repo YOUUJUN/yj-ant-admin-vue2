@@ -4,6 +4,16 @@
 			<a-row :gutter="[8, 16]">
 				<a-col :span="24">
 					<a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
+					<a-button
+						@click="handleBatchDel"
+						v-if="selectedRowKeys.length > 0"
+						ghost
+						type="primary"
+						icon="delete"
+						style="margin-left: 14px"
+					>
+						批量删除
+					</a-button>
 				</a-col>
 
 				<a-col :span="24">
@@ -32,7 +42,9 @@
 				<template slot="action" slot-scope="text, record">
 					<a-button type="link" size="default" @click="handleEdit(record)">编辑</a-button>
 					<a-button type="link" size="default" @click="handleView(record)">查看</a-button>
-					<a-button type="link" size="default" @click="handleAddSub(record)">添加下级</a-button>
+					<a-button v-if="record.menuType !== '2'" type="link" size="default" @click="handleAddSub(record)">
+						添加下级
+					</a-button>
 					<a-popconfirm title="确定删除吗?" @confirm="() => handleDel(record)">
 						<a-button type="link" size="default">删除</a-button>
 					</a-popconfirm>
@@ -46,7 +58,7 @@
 <script>
 import dataListMixin from '@/mixins/dataListMixin'
 import { getAction } from '@/api/manage'
-import { editPermission } from '@/api/api'
+import { editPermission } from '@/api/system'
 
 import MenuOperateModel from './modules/MenuOperateModel'
 
@@ -225,6 +237,22 @@ export default {
 				.catch((err) => {
 					this.$message.warning('删除失败!')
 				})
+		},
+
+		//处理批量删除按钮
+		handleBatchDel() {
+			if (this.selectedRowKeys.length <= 0) {
+				this.$message.warning('请选择一条记录！')
+				return
+			}
+
+			this.$confirm({
+				title: '确认删除',
+				content: '是否删除选中数据?',
+				onOk: () => {
+					
+				},	
+			})
 		},
 
 		//监听行展开

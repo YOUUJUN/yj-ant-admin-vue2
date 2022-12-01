@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { ajaxGetDictItems, getDictItemsFromCache } from '@/api/api'
+import { ajaxGetDictItems, getDictItemsFromCache } from '@/api/system'
 
 export default {
 	name: 'DictSelectTag',

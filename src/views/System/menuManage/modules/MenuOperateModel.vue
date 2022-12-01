@@ -152,7 +152,7 @@
 	</a-drawer>
 </template>
 <script>
-import { queryTreeMenuList, addPermission, editPermission } from '@/api/api'
+import { queryTreeMenuList, addPermission, editPermission } from '@/api/system'
 
 export default {
 	data() {
@@ -315,10 +315,7 @@ export default {
 					console.log('res', res)
 					if (res.success) {
 						let treeList = res.result.treeList
-						this.treeData = treeList.map((item) => {
-							item.isLeaf = item.leaf
-							return item
-						})
+						this.treeData = treeList
 					}
 				})
 				.catch((err) => {
