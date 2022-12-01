@@ -57,7 +57,7 @@
 <script>
 import { getAction, postAction } from '@/api/manage'
 
-const detailModel = () => import('./modules/detail.vue')
+const detailModel = () => import('./modules/Detail.vue')
 
 const columns = [
 	{

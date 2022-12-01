@@ -52,6 +52,18 @@ export const asyncRouters = [
 			title: '菜单管理',
 		},
 	},
+
+	{
+		name: 'user-manage',
+		path: '/system/user-manage',
+		component: () => import('@/views/system/user-manage'),
+		meta: {
+			icon: 'alert',
+			internalOrExternal: false,
+			keepAlive: false,
+			title: '用户管理',
+		},
+	},
 ]
 
 const router = new VueRouter({

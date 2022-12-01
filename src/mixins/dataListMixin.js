@@ -68,8 +68,8 @@ export default {
 
 				fetchAction(this.url.list, params)
 					.then((res) => {
-						if (res?.data) {
-							this.dataSource = res.data.records
+						if (res?.result) {
+							this.dataSource = res.result?.records || []
 							if (res?.data?.total) {
 								this.ipagination.total = res.data.total
 							}

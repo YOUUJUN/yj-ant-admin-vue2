@@ -1,7 +1,7 @@
 <template>
 	<article class="root">
 		<header>
-			<a-row :gutter="[8, 16]">
+			<a-row :gutter="[8, 14]">
 				<a-col :span="24">
 					<a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
 					<a-button
