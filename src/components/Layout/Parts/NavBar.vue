@@ -38,7 +38,7 @@
 </template>
 
 <script>
-const hamburger = () => import('@/components/Hamburger/Index.vue')
+const hamburger = () => import('@/components/Hamburger/index.vue')
 
 import { mapGetters, mapActions } from 'vuex'
 

@@ -16,7 +16,7 @@ export const constantRoutes = [
 			{
 				path: 'login',
 				name: 'login',
-				component: () => import('@/views/Login'),
+				component: () => import('@/views/login'),
 			},
 		],
 	},
@@ -24,153 +24,27 @@ export const constantRoutes = [
 	{
 		path: '/403',
 		name: '403',
-		component: () => import('@/views/Exception/403.vue'),
+		component: () => import('@/views/exception/403.vue'),
 	},
 	{
 		path: '/404',
 		name: '404',
-		component: () => import('@/views/Exception/404.vue'),
+		component: () => import('@/views/exception/404.vue'),
 	},
 	{
 		path: '/500',
 		name: '500',
-		component: () => import('@/views/Exception/500.vue'),
+		component: () => import('@/views/exception/500.vue'),
 	},
 
-	{
-		path: '/elderinfo',
-		redirect: '/elderinfo/registered',
-		component: Layout,
-		meta: {
-			title: '老人信息',
-		},
-		children: [
-			{
-				path: 'registered',
-				name: 'registered',
-				components: {
-					default: () => import('@views/Test/Index.vue'),
-				},
-				meta: {
-					title: '在院老人',
-					// keepAlive : true,
-				},
-			},
-			{
-				path: 'goout',
-				name: 'goout',
-				components: {
-					default: () => import('@views/TestTwo/Index.vue'),
-				},
-				meta: {
-					title: '外出老人',
-					keepAlive: true,
-				},
-			},
-			{
-				path: 'unregistered',
-				name: 'unregistered',
-				components: {
-					default: () => import('@views/Test/Index.vue'),
-				},
-				meta: {
-					title: '出院老人',
-				},
-			},
-			{
-				path: 'passed',
-				name: 'passed',
-				components: {
-					default: () => import('@views/Test/Index.vue'),
-				},
-				meta: {
-					title: '死亡老人',
-				},
-			},
-		],
-	},
-
-	{
-		path: '/healthcheck',
-		redirect: '/healthcheck/daily',
-		component: Layout,
-		meta: {
-			title: '健康检查',
-		},
-		children: [
-			{
-				path: 'daily',
-				name: 'daily',
-				components: {
-					default: () => import('@views/Test/Index.vue'),
-				},
-				meta: {
-					title: '日常检查',
-					// keepAlive : true,
-				},
-			},
-			{
-				path: 'anomaly',
-				name: 'anomaly',
-				components: {
-					default: () => import('@views/Test/Index.vue'),
-				},
-				meta: {
-					title: '异常提示',
-				},
-			},
-		],
-	},
-
-	{
-		path: '/systemsetting',
-		redirect: '/systemsetting/nursingproject',
-		component: Layout,
-		meta: {
-			title: '系统设置',
-		},
-		children: [
-			{
-				path: 'nursingproject',
-				name: 'nursingproject',
-				components: {
-					default: () => import('@views/Test/Index.vue'),
-				},
-				meta: {
-					title: '护理项目',
-					// keepAlive : true,
-				},
-			},
-			{
-				path: 'buildingmanagement',
-				name: 'buildingmanagement',
-				components: {
-					default: () => import('@views/Test/Index.vue'),
-				},
-				meta: {
-					title: '楼栋管理',
-				},
-			},
-			{
-				path: 'personnellabel',
-				name: 'personnellabel',
-				components: {
-					default: () => import('@views/Test/Index.vue'),
-				},
-				meta: {
-					title: '人员标签',
-				},
-			},
-		],
-	},
 ]
 
 //会读取作为菜单项的路由配置
 export const asyncRouters = [
 	{
 		name: 'menu-manage',
-		path: '/System/menuManage',
-		component: () => import('@/views/System/menuManage'),
+		path: '/system/menu-manage',
+		component: () => import('@/views/system/menu-manage'),
 		meta: {
 			icon: 'alert',
 			internalOrExternal: false,

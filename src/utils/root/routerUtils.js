@@ -15,7 +15,7 @@ export function generateIndexRouter(data) {
 					path: 'index',
 					name: 'Index',
 					components: {
-						default: () => import('@views/Test/Index.vue'),
+						default: () => import('@views/test/index.vue'),
 					},
 					meta: {
 						title: '首页',
