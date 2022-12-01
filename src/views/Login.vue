@@ -91,7 +91,7 @@ export default {
 
     created() {
         this.currentTime = new Date().getTime()
-        // removeToken()
+        removeToken()
         this.getRouterData()
         this.handleChangeCheckCode()
     },

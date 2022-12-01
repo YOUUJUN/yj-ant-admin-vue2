@@ -16,10 +16,18 @@ export function putAction(url, parameter) {
 	})
 }
 
+export function deleteAction(url, parameter) {
+	return request({
+		url,
+		method: 'delete',
+		params: parameter,
+	})
+}
+
 export function getAction(url, parameter) {
 	return request({
 		url,
 		method: 'get',
-		data: parameter,
+		params: parameter,
 	})
 }

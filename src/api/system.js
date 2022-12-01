@@ -1,4 +1,4 @@
-import { getAction, postAction, putAction } from './manage'
+import { getAction, postAction, putAction, deleteAction } from './manage'
 import ls from '@/utils/lsOperation'
 import { UI_CACHE_DB_DICT_DATA } from '@/utils/root/localStorageKeys'
 
@@ -19,6 +19,7 @@ const queryTreeMenuList = (params) => getAction('/sys/permission/queryTreeList',
 //权限管理
 const addPermission = (params) => postAction('/sys/permission/add', params)
 const editPermission = (params) => putAction('/sys/permission/edit', params)
+const deletePermission = (params) => deleteAction('/sys/permission/delete', params)
 
 export {
 	getPermissionList,
@@ -28,4 +29,5 @@ export {
 	queryTreeMenuList,
 	addPermission,
 	editPermission,
+	deletePermission,
 }

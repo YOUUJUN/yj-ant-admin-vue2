@@ -58,7 +58,7 @@
 <script>
 import dataListMixin from '@/mixins/dataListMixin'
 import { getAction } from '@/api/manage'
-import { editPermission } from '@/api/system'
+import { deletePermission } from '@/api/system'
 
 import MenuOperateModel from './modules/MenuOperateModel'
 
@@ -169,6 +169,7 @@ export default {
 					})
 					.finally(() => {
 						this.loading = false
+						this.onClearSelected()
 					})
 			})
 		},
@@ -221,9 +222,8 @@ export default {
 		//处理删除按钮
 		handleDel(record) {
 			const { id } = record
-			editPermission({
-				id,
-				delFlag: 1,
+			deletePermission({
+				ids: [id],
 			})
 				.then((res) => {
 					const { success, message } = res
@@ -250,8 +250,22 @@ export default {
 				title: '确认删除',
 				content: '是否删除选中数据?',
 				onOk: () => {
-					
-				},	
+					deletePermission({
+						ids: this.selectedRowKeys?.join(','),
+					})
+						.then((res) => {
+							const { success, message } = res
+							if (success) {
+								this.$message.success('删除成功!')
+								this.searchQuery()
+							} else {
+								this.$message.warning('删除失败!')
+							}
+						})
+						.catch((err) => {
+							this.$message.warning('删除失败!')
+						})
+				},
 			})
 		},
 
