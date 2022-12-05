@@ -186,7 +186,7 @@ export default {
 	left: 24rem;
 	background: #f0f2f5;
 	opacity: 1;
-	z-index: 999;
+	z-index: 3;
 	transition: all 0.2s;
 }
 

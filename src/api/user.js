@@ -19,4 +19,11 @@ const getRandomImage = (currentTime) => getAction(`/sys/user/randomImage/${this.
 //获取用户权限
 const queryPermissionsByUser = () => getAction('/sys/permission/getUserPermissionByToken')
 
-export { login, logout, getRandomImage, queryPermissionsByUser }
+//获取用户角色
+const queryUserRole = (params) => getAction('/sys/user/queryUserRole', params)
+//添加用户
+const addUser = (params) => postAction('/sys/user/add', params)
+//查询用户角色关系
+const fetchUserRoleRelation = (params) => getAction('/sys/userRole/list', params)
+
+export { login, logout, getRandomImage, queryPermissionsByUser, queryUserRole, addUser, fetchUserRoleRelation }

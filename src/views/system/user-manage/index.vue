@@ -15,12 +15,11 @@
 				</a-form-model-item>
 
 				<a-form-model-item label="用户状态">
-					<dict-select-tag
-						placeholder="选择用户状态"
-						v-model="queryParam.status"
-						dictCode="user_status"
-						style="width: 170px"
-					/>
+					<a-select style="width: 170px" v-model="queryParam.status" placeholder="选择用户状态">
+						<a-select-option :value="undefined">请选择</a-select-option>
+						<a-select-option value="true">启用</a-select-option>
+						<a-select-option value="false">禁用</a-select-option>
+					</a-select>
 				</a-form-model-item>
 
 				<a-form-model-item>
@@ -31,8 +30,8 @@
 
 			<a-row :gutter="[8, 14]" style="margin: 14px 0">
 				<a-col :span="24">
-					<!-- <a-button @click="handleAdd" type="primary" icon="plus" v-has="'user:add'">新增用户</a-button>
-					<a-button @click="handleDelBunch" type="primary" v-has="'users:delete'" style="margin-left: 8px">
+					<a-button @click="handleAdd" type="primary" icon="plus" v-has="'user:add'">新增用户</a-button>
+					<!-- <a-button @click="handleDelBunch" type="primary" v-has="'users:delete'" style="margin-left: 8px">
 						批量删除
 					</a-button>
 					<a-button @click="batchFrozen(1)" type="primary" v-has="'users:open'" style="margin-left: 8px">
@@ -79,10 +78,10 @@
 					<div>
 						<span style="margin-right: 6px">{{ record.status == 1 ? '启用' : '禁用' }}</span>
 						<a-switch
-							:defaultChecked="record.status == 1"
+							:defaultChecked="record.status"
 							v-model="record.status"
 							@change="(checked) => handleDisableUser(checked, record)"
-							v-if="record.isAdmin !== '1'"
+							v-if="!record.isAdmin"
 						/>
 					</div>
 				</template>
@@ -98,7 +97,7 @@
 					<a-popconfirm
 						title="确定删除该用户吗？"
 						@confirm="() => handleDel(record)"
-						v-if="record.status === false"
+						v-if="record.status === false && !record.isAdmin"
 					>
 						<a-button type="link" size="default" v-has="'user:delete'">删除</a-button>
 					</a-popconfirm>
@@ -107,18 +106,36 @@
 		</main>
 
 		<footer></footer>
+
+		<user-drawer
+			ref="userDrawer"
+			:visible.sync="visible"
+			:ctrlMode="ctrlMode"
+			@handleOpenRole="handleOpenRole"
+			@handleQuery="searchQuery"
+		></user-drawer>
+
+		<choose-role
+			ref="rolePanel"
+			:visible.sync="visible2"
+			:ctrlMode="ctrlModeRole"
+			@handleQuery="searchQuery"
+		></choose-role>
 	</article>
 </template>
 <script>
 import dataListMixin from '@/mixins/dataListMixin'
+import UserDrawer from './modules/UserDrawer.vue'
+import ChooseRole from './modules/ChooseRole.vue'
 
 const columns = [
 	{
 		title: '序号',
 		dataIndex: '',
 		key: 'rowIndex',
-		width: 60,
+		width: 75,
 		align: 'center',
+		sorter: true,
 		customRender: function (t, r, index) {
 			return parseInt(index) + 1
 		},
@@ -127,7 +144,6 @@ const columns = [
 		title: '用户账号',
 		align: 'center',
 		dataIndex: 'username',
-		sorter: true,
 	},
 	{
 		title: '用户姓名',
@@ -144,11 +160,13 @@ const columns = [
 	{
 		title: '创建时间',
 		align: 'center',
+		sorter: true,
 		dataIndex: 'createTime',
 	},
 	{
 		title: '登录次数',
 		align: 'center',
+		sorter: true,
 		dataIndex: 'loginNum',
 	},
 
@@ -163,27 +181,37 @@ const columns = [
 		dataIndex: 'action',
 		scopedSlots: { customRender: 'action' },
 		align: 'center',
-		width: 230,
+		width: 300,
 	},
 ]
 
 export default {
 	mixins: [dataListMixin],
 
+	components: {
+		UserDrawer,
+		ChooseRole,
+	},
+
 	data() {
 		return {
 			columns,
-
 			url: {
 				list: '/sys/user/list/',
 			},
+
+			visible: false,
+			visible2: false,
+			ctrlMode: 'add',
+			ctrlModeRole: 'add',
+
 		}
 	},
-
 	methods: {
+
 		//处理启用禁用
 		handleDisableUser(checked, record) {
-			let status = checked === true ? 1 : 2
+			let status = checked
 			// putAction('/sys/user/frozenBatch', {
 			// 	ids: record.id,
 			// 	status,
@@ -192,6 +220,25 @@ export default {
 			// 		record.status = checked === false ? false : true
 			// 	})
 			// 	.catch((err) => {})
+		},
+
+		//打开角色窗体
+		handleOpenRole() {
+			this.ctrlModeRole = 'add'
+			this.visible2 = true
+		},
+
+		//处理新增
+		handleAdd() {
+			this.ctrlMode = 'add'
+			this.visible = true
+		},
+
+		//处理编辑
+		handleEdit(record) {
+			this.ctrlMode = 'modify'
+			this.visible = true
+			this.$refs.userDrawer.setData(record)
 		},
 	},
 }
