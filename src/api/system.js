@@ -13,8 +13,11 @@ const getDictItemsFromCache = (dictCode) => ls.get(UI_CACHE_DB_DICT_DATA)?.[dict
 // 校验授权标识是否重复
 const duplicateCheck = (params) => getAction('/sys/common/duplicateCheck', params)
 
-//获取树形结构菜单数据
+
+//获取树形结构菜单数据(不包含按钮)
 const queryTreeMenuList = (params) => getAction('/sys/permission/queryTreeList', params)
+//获取树形结构菜单数据(包含按钮)
+const queryFullTreeMenuList = (params) => getAction('/sys/permission/getTree', params)
 
 //权限管理
 const addPermission = (params) => postAction('/sys/permission/add', params)
@@ -27,6 +30,7 @@ export {
 	getDictItemsFromCache,
 	duplicateCheck,
 	queryTreeMenuList,
+	queryFullTreeMenuList,
 	addPermission,
 	editPermission,
 	deletePermission,

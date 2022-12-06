@@ -22,10 +22,10 @@
 					:expandedKeys="expandedKeysss"
 					:checkStrictly="checkStrictly"
 				>
-					<span slot="hasDatarule" slot-scope="{ slotTitle, ruleFlag }">
+					<!-- <span slot="hasDatarule" slot-scope="{ slotTitle, ruleFlag }">
 						{{ slotTitle }}
 						<a-icon v-if="ruleFlag" type="align-left" style="margin-left: 5px; color: red"></a-icon>
-					</span>
+					</span> -->
 				</a-tree>
 			</a-form-item>
 		</a-form>
@@ -54,17 +54,17 @@
 			<a-button @click="handleSubmit(true)" type="primary" :loading="loading">保存并关闭</a-button>
 		</div>
 
-		<role-datarule-modal ref="datarule"></role-datarule-modal>
 	</a-drawer>
 </template>
 <script>
-// import { queryTreeListForRole, queryRolePermission, saveRolePermission } from '@/api/api'
-// import RoleDataruleModal from './RoleDataruleModal.vue'
+
+import { queryRolePermission, addRolePermission } from '@/api/user'
+import { queryFullTreeMenuList } from '@/api/system'
 
 export default {
 	name: 'RoleModal',
 	components: {
-		RoleDataruleModal,
+		// RoleDataruleModal,
 	},
 	data() {
 		return {
@@ -87,7 +87,6 @@ export default {
 			if (id && id.length > 0) {
 				this.selectedKeys = id
 			}
-			this.$refs.datarule.show(this.selectedKeys[0], this.roleId)
 		},
 		onCheck(o) {
 			if (this.checkStrictly) {
@@ -125,7 +124,6 @@ export default {
 			this.checkedKeys = this.allTreeKeys
 		},
 		cancelCheckALL() {
-			//this.checkedKeys = this.defaultCheckedKeys
 			this.checkedKeys = []
 		},
 		switchCheckStrictly(v) {
@@ -139,42 +137,38 @@ export default {
 			this.close()
 		},
 		handleSubmit(exit) {
-			let that = this
 			let params = {
-				roleId: that.roleId,
-				permissionIds: that.checkedKeys.join(','),
-				lastpermissionIds: that.defaultCheckedKeys.join(','),
+				roleId: this.roleId,
+				permissionIds: this.checkedKeys,
+				lastpermissionIds: this.defaultCheckedKeys,
 			}
-			that.loading = true
+			this.loading = true
 			console.log('请求参数：', params)
-			saveRolePermission(params).then((res) => {
+			addRolePermission(params).then((res) => {
 				if (res.success) {
-					that.$message.success(res.message)
-					that.loading = false
+					this.$message.success(res.message)
+					this.loading = false
 					if (exit) {
-						that.close()
+						this.close()
 					}
 				} else {
-					that.$message.error(res.message)
-					that.loading = false
+					this.$message.error(res.message)
+					this.loading = false
 					if (exit) {
-						that.close()
+						this.close()
 					}
 				}
 				this.loadData()
 			})
 		},
-		loadData() {
-			queryTreeListForRole().then((res) => {
-				this.treeData = res.result.treeList
-				this.allTreeKeys = res.result.ids
-				queryRolePermission({ roleId: this.roleId }).then((res) => {
-					this.checkedKeys = [...res.result]
-					this.defaultCheckedKeys = [...res.result]
-					this.expandedKeysss = this.allTreeKeys
-					console.log(this.defaultCheckedKeys)
-				})
-			})
+		async loadData() {
+			const { result } = await queryFullTreeMenuList()
+			this.treeData = result.treeList
+			this.allTreeKeys = result.ids
+			const msg = await queryRolePermission({ roleId: this.roleId })
+			this.checkedKeys = [...msg.result]
+			this.defaultCheckedKeys = [...msg.result]
+			this.expandedKeysss = this.allTreeKeys
 		},
 	},
 	watch: {

@@ -37,7 +37,7 @@
 					<a-form-model-item label="角色用户" v-if="ctrlMode === 'view'">
 						<section class="users-wrap">
 							<span v-for="item in usersList" class="ant-tag ant-tag-green">
-								{{ item.username }}
+								{{ item.realName }}
 							</span>
 						</section>
 					</a-form-model-item>
@@ -65,7 +65,7 @@
 
 <script>
 import { addRole, editRole } from '@/api/user'
-import { getAction, postAction, putAction } from '@/api/manage'
+
 export default {
 	props: {
 		visible: {

@@ -88,10 +88,7 @@
 				</template>
 
 				<template slot="action" slot-scope="text, record">
-					<a-button type="link" size="small" @click="handleChoice(record)" v-has="'role:user'">
-						角色用户
-					</a-button>
-					<a-button type="link" size="small" @click="handlePerssion(record)" v-has="'role:accredit'">
+					<a-button type="link" size="small" @click="handlePermission(record)" v-has="'role:accredit'">
 						角色权限
 					</a-button>
 					<a-button type="link" size="small" @click="handleView(record)" v-has="'role:detail'">查看</a-button>
@@ -112,13 +109,13 @@
 			@handleQuery="searchQuery"
 		></role-drawer>
 
-		<choose-user ref="userPanel" :visible.sync="visible2" @handleQuery="searchQuery"></choose-user>
+		<permission-selector ref="permissionSelector"></permission-selector>
 	</article>
 </template>
 <script>
 import dataListMixin from '@/mixins/data_list_mixin'
 import RoleDrawer from './modules/RoleDrawer.vue'
-import ChooseUser from './modules/ChooseUser.vue'
+import PermissionSelector from './modules/PermissionSelector.vue'
 
 import { fetchUserRoleRelation } from '@/api/user'
 
@@ -168,8 +165,8 @@ export default {
 	mixins: [dataListMixin],
 
 	components: {
-		ChooseUser,
 		RoleDrawer,
+		PermissionSelector,
 	},
 
 	data() {
@@ -181,7 +178,6 @@ export default {
 
 			//窗体控制
 			visible: false,
-			visible2: false,
 			ctrlMode: 'add',
 		}
 	},
@@ -210,23 +206,24 @@ export default {
 			})
 				.then((res) => {
 					console.log('res', res)
-					// if (res.success) {
-					// 	let userList = res.result.records.map((item) => {
-					// 		return {
-					// 			id: item.id,
-					// 			username: item.username,
-					// 		}
-					// 	})
-					// 	let payload = {
-					// 		form: record,
-					// 		list: userList,
-					// 	}
-					// 	this.ctrlMode = 'view'
-					// 	this.openRoleDrawer()
-					// 	this.$nextTick(() => {
-					// 		this.$refs.roleDrawer.setData(payload)
-					// 	})
-					// }
+					const { success, message, result } = res
+					if (success) {
+						let userList = result?.map((item) => {
+							return {
+								id: item.userId,
+								realName: item.realName,
+							}
+						})
+						let payload = {
+							form: record,
+							list: userList,
+						}
+						this.ctrlMode = 'view'
+						this.visible = true
+						this.$nextTick(() => {
+							this.$refs.roleDrawer.setData(payload)
+						})
+					}
 				})
 				.catch((err) => {
 					console.error('err', err)
@@ -236,10 +233,11 @@ export default {
 				})
 		},
 
-		//处理选择角色用户功能
-		handleChoice(record){
-
-		}
+		//处理分配角色权限
+		handlePermission(record) {
+			const { id } = record
+			this.$refs.permissionSelector.show(id)
+		},
 	},
 }
 </script>

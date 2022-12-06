@@ -31,6 +31,12 @@ const editUserStatus = (params) => putAction('/sys/user/editStatus', params)
 const deleteUser = (params) => deleteAction('/sys/user/delete', params)
 //查询用户角色关系
 const fetchUserRoleRelation = (params) => getAction('/sys/userRole/list', params)
+//获取角色权限关系列表 
+const queryRolePermission = (params) => getAction('/sys/rolePermission/list', params)
+//新增角色权限关系
+const addRolePermission = (params) => postAction('/sys/rolePermission/add', params)
+
+
 
 //添加角色
 const addRole = (params) => postAction('/sys/role/add', params)
@@ -48,6 +54,8 @@ export {
 	editUserStatus,
 	deleteUser,
 	fetchUserRoleRelation,
+	queryRolePermission,
+	addRolePermission,
 	addRole,
 	editRole
 }

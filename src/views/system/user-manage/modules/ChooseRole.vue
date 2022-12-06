@@ -222,7 +222,7 @@ export default {
 		handleEdit() {
 			let roles = this.selectedRowKeys.join(',')
 			let payload = Object.assign({}, this.detailForm, {
-				selectedroles: roles,
+				selectedRoles: roles,
 			})
 			putAction('/sys/user/edit/baseWeb', payload)
 				.then((res) => {

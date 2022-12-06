@@ -198,7 +198,7 @@ export default {
 						})
 						.join(',')
 					let payload = Object.assign({}, this.detailForm, {
-						selectedroles: roles,
+						selectedRoles: roles,
 					})
 					console.log('payload', payload)
 					addUser(payload)
@@ -232,7 +232,7 @@ export default {
 						})
 						.join(',')
 					let payload = Object.assign({}, this.detailForm, {
-						selectedroles: roles,
+						selectedRoles: roles,
 					})
 					editUser(payload)
 						.then((res) => {
