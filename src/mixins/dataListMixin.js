@@ -70,12 +70,12 @@ export default {
 					.then((res) => {
 						if (res?.result) {
 							this.dataSource = res.result?.records || []
-							if (res?.data?.total) {
-								this.ipagination.total = res.data.total
+							if (res?.result?.total) {
+								this.ipagination.total = res.result.total
 							}
 						}
 
-						resolve(res?.data)
+						resolve(res)
 					})
 					.catch((err) => {
 						console.error('loadData err', err)
@@ -88,8 +88,27 @@ export default {
 			})
 		},
 
+		//查询当前页数据，若当前页无数据且分页数大于1，则再次查前一页
 		searchQuery() {
-			this.loadData(this.ipagination.current)
+			return new Promise((resolve, reject) => {
+				const currentPage = this.ipagination.current
+				this.loadData(currentPage)
+					.then((res) => {
+						const { result, success } = res
+						if (success) {
+							if (result?.records.length === 0 && currentPage > 1) {
+								this.loadData(currentPage - 1)
+							}
+							resolve(res)
+						} else {
+							resolve({})
+						}
+					})
+					.catch((err) => {
+						console.error('loadData err', err)
+						reject(err)
+					})
+			})
 		},
 
 		//处理重置按钮
@@ -111,7 +130,9 @@ export default {
 		},
 
 		//监听分页变化
-		handleTableChange(pagination) {
+		handleTableChange(pagination, filters, sorter) {
+			console.log('filters', filters, sorter)
+
 			this.ipagination = pagination
 			this.loadData()
 		},

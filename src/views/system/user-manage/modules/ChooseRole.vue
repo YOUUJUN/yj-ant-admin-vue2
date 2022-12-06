@@ -180,7 +180,7 @@ export default {
 
 		setData(data) {
 			this.detailForm = Object.assign({}, data.form)
-			this.selectedRowKeys = data.list
+			this.selectedRowKeys = data.list.map(item => item.id)
 		},
 
 		bindListener() {

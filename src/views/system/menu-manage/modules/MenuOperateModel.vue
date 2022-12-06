@@ -152,7 +152,7 @@
 	</a-drawer>
 </template>
 <script>
-import { queryTreeMenuList, addPermission, editPermission } from '@/api/system'
+import { queryTreeMenuList, addPermission, editPermission, duplicateCheck } from '@/api/system'
 
 export default {
 	data() {
@@ -178,7 +178,7 @@ export default {
 				url: [{ required: true, message: '请输入菜单路径!' }],
 				permsType: [{ required: true, message: '请输入授权策略!' }],
 				perms: [{ validator: this.validatePerms }],
-				platformType : [{ required: true, message: '请选择平台菜单类型!' }],
+				platformType: [{ required: true, message: '请选择平台菜单类型!' }],
 			},
 			show: true, //显示隐藏菜单维护项与按钮维护项
 			disableSubmit: false,

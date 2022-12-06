@@ -34,11 +34,11 @@
 						</a-input-search>
 					</a-form-model-item>
 
-					<a-form-model-item label="姓名" prop="realname">
+					<a-form-model-item label="姓名" prop="realName">
 						<a-input
 							placeholder="请输入姓名"
 							size="large"
-							v-model="detailForm.realname"
+							v-model="detailForm.realName"
 							:disabled="disabled"
 						/>
 					</a-form-model-item>
@@ -90,8 +90,7 @@
 </template>
 
 <script>
-import { getAction, postAction, putAction } from '@/api/manage'
-import { queryUserRole, addUser, fetchUserRoleRelation } from '@/api/user'
+import { addUser, editUser, fetchUserRoleRelation } from '@/api/user'
 export default {
 	props: {
 		visible: {
@@ -132,7 +131,7 @@ export default {
 			detailFormRules: {
 				username: { required: true, message: '请输入用户账号', trigger: 'blur' },
 				password: { required: true, message: '请输入用户密码', trigger: 'blur' },
-				realname: { required: true, message: '请输入用户姓名', trigger: 'blur' },
+				realName: { required: true, message: '请输入用户姓名', trigger: 'blur' },
 			},
 
 			rolesList: [],
@@ -175,28 +174,7 @@ export default {
 		async setData(record) {
 			this.loading = true
 			this.detailForm = Object.assign({}, record)
-			let userRoles = await this.loadUserRoles(record.id)
-			console.log('userRoles', userRoles)
-			let roleList = await this.getAllRoles()
-			console.log('roleList', roleList)
-
-			let roles = userRoles.reduce((previousValue, item) => {
-				let rowData = roleList.find((role) => {
-					return role.id === item
-				})
-
-				if (rowData) {
-					previousValue.push({
-						id: item,
-						name: rowData.roleName,
-					})
-				}
-
-				return previousValue
-			}, [])
-
-			this.rolesList = roles
-
+			this.rolesList = await this.loadUserRoles(record.id)
 			this.loading = false
 		},
 
@@ -221,7 +199,6 @@ export default {
 						.join(',')
 					let payload = Object.assign({}, this.detailForm, {
 						selectedroles: roles,
-						status: this.detailForm.status === true ? 1 : 2,
 					})
 					console.log('payload', payload)
 					addUser(payload)
@@ -256,9 +233,8 @@ export default {
 						.join(',')
 					let payload = Object.assign({}, this.detailForm, {
 						selectedroles: roles,
-						status: this.detailForm.status === true ? 1 : 2,
 					})
-					putAction('/sys/user/edit/baseWeb', payload)
+					editUser(payload)
 						.then((res) => {
 							if (res.success) {
 								this.$message.success('编辑用户成功!')
@@ -281,29 +257,16 @@ export default {
 		//获取角色列表
 		loadUserRoles(userid) {
 			return new Promise((resolve, reject) => {
-				fetchUserRoleRelation({ userid: userid })
+				fetchUserRoleRelation({ userId: userid })
 					.then((res) => {
 						if (res.success) {
-							let selectedRole = res?.result.map((item) => item.roleId)
+							let selectedRole = res?.result.map((item) => {
+								return {
+									id: item.roleId,
+									name: item.roleName,
+								}
+							})
 							resolve(selectedRole)
-						} else {
-							resolve([])
-						}
-					})
-					.catch((err) => {
-						reject(err)
-					})
-			})
-		},
-
-		//获取所有角色列表数据
-		getAllRoles() {
-			return new Promise((resolve, reject) => {
-				getAction('/sys/role/list')
-					.then((res) => {
-						const { result, success } = res
-						if (success) {
-							resolve(result?.records)
 						} else {
 							resolve([])
 						}
@@ -364,5 +327,15 @@ export default {
 	left: 0;
 	background: #fff;
 	border-radius: 0 0 2px 2px;
+}
+
+/*---编辑状态下隐藏placeholder---*/
+.description-wrap input[disabled]::placeholder,
+.description-wrap textarea[disabled]::placeholder {
+	font-size: 0;
+}
+
+::v-deep .description-wrap .ant-select-disabled .ant-select-selection__placeholder {
+	visibility: hidden;
 }
 </style>

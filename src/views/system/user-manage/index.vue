@@ -31,24 +31,37 @@
 			<a-row :gutter="[8, 14]" style="margin: 14px 0">
 				<a-col :span="24">
 					<a-button @click="handleAdd" type="primary" icon="plus" v-has="'user:add'">新增用户</a-button>
-					<!-- <a-button @click="handleDelBunch" type="primary" v-has="'users:delete'" style="margin-left: 8px">
-						批量删除
-					</a-button>
-					<a-button @click="batchFrozen(1)" type="primary" v-has="'users:open'" style="margin-left: 8px">
-						批量启用
-					</a-button>
-					<a-button @click="batchFrozen(2)" type="primary" v-has="'users:close'" style="margin-left: 8px">
-						批量禁用
-					</a-button>
 					<a-button
+						v-if="selectedRowKeys.length > 0"
+						ghost
+						@click="handleDelBunch"
 						type="primary"
-						icon="download"
-						@click="handleExportXls('用户管理')"
-						v-has="'user:export'"
+						icon="delete"
+						v-has="'users:delete'"
 						style="margin-left: 8px"
 					>
-						导出
-					</a-button> -->
+						批量删除
+					</a-button>
+					<a-button
+						@click="handleBatchFrozen(true)"
+						type="primary"
+						v-has="'users:open'"
+						v-if="selectedRowKeys.length > 0"
+						ghost
+						style="margin-left: 8px"
+					>
+						批量启用
+					</a-button>
+					<a-button
+						@click="handleBatchFrozen(false)"
+						type="primary"
+						v-has="'users:close'"
+						v-if="selectedRowKeys.length > 0"
+						ghost
+						style="margin-left: 8px"
+					>
+						批量禁用
+					</a-button>
 				</a-col>
 
 				<a-col :span="24">
@@ -73,6 +86,7 @@
 				:rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
 				:pagination="ipagination"
 				:loading="loading"
+				@change="handleTableChange"
 			>
 				<template slot="status_dictText" slot-scope="text, record">
 					<div>
@@ -128,6 +142,8 @@ import dataListMixin from '@/mixins/dataListMixin'
 import UserDrawer from './modules/UserDrawer.vue'
 import ChooseRole from './modules/ChooseRole.vue'
 
+import { deleteUser, editUserStatus, fetchUserRoleRelation } from '@/api/user'
+
 const columns = [
 	{
 		title: '序号',
@@ -148,7 +164,7 @@ const columns = [
 	{
 		title: '用户姓名',
 		align: 'center',
-		dataIndex: 'realname',
+		dataIndex: 'realName',
 	},
 
 	{
@@ -179,6 +195,7 @@ const columns = [
 	{
 		title: '操作',
 		dataIndex: 'action',
+		fixed: 'right',
 		scopedSlots: { customRender: 'action' },
 		align: 'center',
 		width: 300,
@@ -204,22 +221,51 @@ export default {
 			visible2: false,
 			ctrlMode: 'add',
 			ctrlModeRole: 'add',
-
 		}
 	},
 	methods: {
+		//获取角色列表
+		loadUserRoles(userid) {
+			return new Promise((resolve, reject) => {
+				fetchUserRoleRelation({ userId: userid })
+					.then((res) => {
+						if (res.success) {
+							let selectedRole = res?.result.map((item) => {
+								return {
+									id: item.roleId,
+									name: item.roleName,
+								}
+							})
+							resolve(selectedRole)
+						} else {
+							resolve([])
+						}
+					})
+					.catch((err) => {
+						reject(err)
+					})
+			})
+		},
 
 		//处理启用禁用
 		handleDisableUser(checked, record) {
 			let status = checked
-			// putAction('/sys/user/frozenBatch', {
-			// 	ids: record.id,
-			// 	status,
-			// })
-			// 	.then((res) => {
-			// 		record.status = checked === false ? false : true
-			// 	})
-			// 	.catch((err) => {})
+			editUserStatus({
+				ids: [record.id],
+				status,
+			})
+				.then((res) => {
+					const { success } = res
+					if (success) {
+						this.$message.success('修改用户状态成功!')
+					} else {
+						this.$message.warning('修改用户状态失败!')
+					}
+				})
+				.catch((err) => {
+					console.error('err', err)
+					this.$message.warning('修改用户状态失败!')
+				})
 		},
 
 		//打开角色窗体
@@ -234,11 +280,122 @@ export default {
 			this.visible = true
 		},
 
+		//处理查看
+		handleView(record) {
+			this.ctrlMode = 'view'
+			this.visible = true
+			this.$refs.userDrawer.setData(record)
+		},
+
 		//处理编辑
 		handleEdit(record) {
 			this.ctrlMode = 'modify'
 			this.visible = true
 			this.$refs.userDrawer.setData(record)
+		},
+
+		//处理选择角色
+		async handleChoice(record) {
+			this.loading = true
+			this.ctrlModeRole = 'modify'
+			let userRoles = await this.loadUserRoles(record.id)
+			this.visible2 = true
+			let payload = {
+				form: record,
+				list: userRoles,
+			}
+			this.$refs.rolePanel.setData(payload)
+			this.loading = false
+		},
+
+		//处理删除
+		handleDel(record) {
+			deleteUser({
+				ids: record.id,
+			})
+				.then((res) => {
+					const { success, message } = res
+					if (success) {
+						this.$message.success('删除成功!')
+						this.searchQuery()
+					} else {
+						this.$message.warning('删除失败!')
+					}
+				})
+				.catch((err) => {
+					console.error('err', err)
+					this.$message.warning('删除失败!')
+				})
+		},
+
+		//处理批量删除
+		handleDelBunch() {
+			let keys = this.selectedRowKeys
+			if (keys.length <= 0) {
+				this.$message.warning('请选择一条记录！')
+				return
+			}
+
+			this.$confirm({
+				title: '确认删除',
+				content: '是否删除选中数据?',
+				onOk: () => {
+					deleteUser({
+						ids: keys.join(','),
+					})
+						.then((res) => {
+							const { success, message } = res
+							if (success) {
+								this.$message.success('删除成功!')
+								this.searchQuery()
+							} else {
+								this.$message.warning('删除失败!')
+							}
+						})
+						.catch((err) => {
+							console.error('err', err)
+							this.$message.warning('删除失败!')
+						})
+				},
+				onCancel() {
+					console.log('Cancel')
+				},
+			})
+		},
+
+		//处理批量启用禁用
+		handleBatchFrozen: function (status) {
+			if (this.selectedRowKeys.length <= 0) {
+				this.$message.warning('请选择一条记录！')
+				return
+			}
+			if (this.selectionRows.findIndex((item) => item.isAdmin === 1) !== -1) {
+				this.$message.warning('管理员账号不允许此操作,请重新选择！')
+				return
+			}
+			this.$confirm({
+				title: '确认操作',
+				content: `是否'${status == true ? '解冻' : '冻结'}选中账号?`,
+				onOk: () => {
+					editUserStatus({
+						ids: this.selectedRowKeys,
+						status,
+					})
+						.then((res) => {
+							const { success } = res
+							if (success) {
+								this.$message.success('修改用户状态成功!')
+								this.searchQuery()
+							} else {
+								this.$message.warning('修改用户状态失败!')
+							}
+						})
+						.catch((err) => {
+							console.error('err', err)
+							this.$message.warning('修改用户状态失败!')
+						})
+				},
+			})
 		},
 	},
 }

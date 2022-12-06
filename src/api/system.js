@@ -11,7 +11,7 @@ const ajaxGetDictItems = (code, params) => getAction(`/sys/dict/getDictItems/${c
 const getDictItemsFromCache = (dictCode) => ls.get(UI_CACHE_DB_DICT_DATA)?.[dictCode] || null
 
 // 校验授权标识是否重复
-const duplicateCheck = (params) => getAction('/sys/duplicate/check', params)
+const duplicateCheck = (params) => getAction('/sys/common/duplicateCheck', params)
 
 //获取树形结构菜单数据
 const queryTreeMenuList = (params) => getAction('/sys/permission/queryTreeList', params)

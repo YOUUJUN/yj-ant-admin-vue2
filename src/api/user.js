@@ -1,5 +1,5 @@
 import request from '@/utils/http'
-import { getAction, postAction } from './manage'
+import { getAction, postAction, putAction, deleteAction } from './manage'
 
 const login = (params) => postAction('/sys/user/login', params)
 const logout = (logoutToken) => {
@@ -23,7 +23,24 @@ const queryPermissionsByUser = () => getAction('/sys/permission/getUserPermissio
 const queryUserRole = (params) => getAction('/sys/user/queryUserRole', params)
 //添加用户
 const addUser = (params) => postAction('/sys/user/add', params)
+//编辑用户
+const editUser = (params) => putAction('/sys/user/edit', params)
+//修改用户状态]
+const editUserStatus = (params) => putAction('/sys/user/editStatus', params)
+//删除用户
+const deleteUser = (params) => deleteAction('/sys/user/delete', params)
 //查询用户角色关系
 const fetchUserRoleRelation = (params) => getAction('/sys/userRole/list', params)
 
-export { login, logout, getRandomImage, queryPermissionsByUser, queryUserRole, addUser, fetchUserRoleRelation }
+export {
+	login,
+	logout,
+	getRandomImage,
+	queryPermissionsByUser,
+	queryUserRole,
+	addUser,
+	editUser,
+	editUserStatus,
+	deleteUser,
+	fetchUserRoleRelation,
+}
