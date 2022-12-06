@@ -105,7 +105,12 @@
 
 		<footer></footer>
 
-		<role-drawer ref="roleDrawer" :visible.sync="visible" :ctrlMode="ctrlMode" @handleQuery="searchQuery"></role-drawer>
+		<role-drawer
+			ref="roleDrawer"
+			:visible.sync="visible"
+			:ctrlMode="ctrlMode"
+			@handleQuery="searchQuery"
+		></role-drawer>
 
 		<choose-user ref="userPanel" :visible.sync="visible2" @handleQuery="searchQuery"></choose-user>
 	</article>
@@ -114,6 +119,8 @@
 import dataListMixin from '@/mixins/dataListMixin'
 import RoleDrawer from './modules/RoleDrawer.vue'
 import ChooseUser from './modules/ChooseUser.vue'
+
+import { fetchUserRoleRelation } from '@/api/user'
 
 const columns = [
 	{
@@ -185,6 +192,54 @@ export default {
 			this.ctrlMode = 'add'
 			this.visible = true
 		},
+
+		//处理编辑
+		handleEdit(record) {
+			this.ctrlMode = 'modify'
+			this.visible = true
+			this.$nextTick(() => {
+				this.$refs.roleDrawer.setData(record)
+			})
+		},
+
+		//处理查看
+		handleView(record) {
+			this.loading = true
+			fetchUserRoleRelation({
+				roleId: record.id,
+			})
+				.then((res) => {
+					console.log('res', res)
+					// if (res.success) {
+					// 	let userList = res.result.records.map((item) => {
+					// 		return {
+					// 			id: item.id,
+					// 			username: item.username,
+					// 		}
+					// 	})
+					// 	let payload = {
+					// 		form: record,
+					// 		list: userList,
+					// 	}
+					// 	this.ctrlMode = 'view'
+					// 	this.openRoleDrawer()
+					// 	this.$nextTick(() => {
+					// 		this.$refs.roleDrawer.setData(payload)
+					// 	})
+					// }
+				})
+				.catch((err) => {
+					console.error('err', err)
+				})
+				.finally(() => {
+					this.loading = false
+				})
+		},
+
+		//处理选择角色用户功能
+		handleChoice(record){
+
+		}
 	},
 }
 </script>
