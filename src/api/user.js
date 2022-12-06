@@ -25,7 +25,7 @@ const queryUserRole = (params) => getAction('/sys/user/queryUserRole', params)
 const addUser = (params) => postAction('/sys/user/add', params)
 //编辑用户
 const editUser = (params) => putAction('/sys/user/edit', params)
-//修改用户状态]
+//修改用户状态
 const editUserStatus = (params) => putAction('/sys/user/editStatus', params)
 //删除用户
 const deleteUser = (params) => deleteAction('/sys/user/delete', params)

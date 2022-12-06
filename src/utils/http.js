@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getToken } from '@/utils/lsOperation'
+import { getToken } from '@/utils/ls_operation'
 import router from '@/router'
 
 const baseURL = window._CONFIG['domianURL']

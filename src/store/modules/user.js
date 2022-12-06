@@ -1,4 +1,4 @@
-import ls, { getToken, setToken, removeToken } from '@/utils/lsOperation'
+import ls, { getToken, setToken, removeToken } from '@/utils/ls_operation'
 
 import {
 	USER_NAME,
@@ -7,7 +7,7 @@ import {
 	UI_CACHE_DB_DICT_DATA,
 	USER_AUTH,
 	SYS_BUTTON_AUTH,
-} from '@/utils/root/localStorageKeys'
+} from '@/utils/root/local_storageKeys'
 import { login, logout, queryPermissionsByUser } from '@/api/user'
 
 const state = {

@@ -1,6 +1,6 @@
 import { getAction, postAction } from '@/api/manage'
-import ls from '@/utils/lsOperation'
-import { ACCESS_TOKEN } from '@/utils/root/localStorageKeys'
+import ls from '@/utils/ls_operation'
+import { ACCESS_TOKEN } from '@/utils/root/local_storageKeys'
 
 export default {
 	data() {

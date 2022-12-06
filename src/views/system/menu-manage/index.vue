@@ -56,7 +56,7 @@
 	</article>
 </template>
 <script>
-import dataListMixin from '@/mixins/dataListMixin'
+import dataListMixin from '@/mixins/data_list_mixin'
 import { getAction } from '@/api/manage'
 import { deletePermission } from '@/api/system'
 

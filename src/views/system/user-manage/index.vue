@@ -138,7 +138,7 @@
 	</article>
 </template>
 <script>
-import dataListMixin from '@/mixins/dataListMixin'
+import dataListMixin from '@/mixins/data_list_mixin'
 import UserDrawer from './modules/UserDrawer.vue'
 import ChooseRole from './modules/ChooseRole.vue'
 

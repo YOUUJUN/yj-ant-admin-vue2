@@ -1,6 +1,6 @@
 import { getAction, postAction, putAction, deleteAction } from './manage'
-import ls from '@/utils/lsOperation'
-import { UI_CACHE_DB_DICT_DATA } from '@/utils/root/localStorageKeys'
+import ls from '@/utils/ls_operation'
+import { UI_CACHE_DB_DICT_DATA } from '@/utils/root/local_storageKeys'
 
 //权限管理
 const getPermissionList = (params) => getAction('/sys/permission/list', params)

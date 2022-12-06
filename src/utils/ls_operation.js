@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN } from '@/utils/root/localStorageKeys'
+import { ACCESS_TOKEN } from '@/utils/root/local_storageKeys'
 import Storage from 'vue-ls'
 
 const { ls } = Storage.useStorage({

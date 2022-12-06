@@ -13,7 +13,7 @@ import '@/icons' //导入所有svg
 import '@/permission' // permission control
 
 //导入全局组件
-import ComponentsRegister from '@/plugins/regist-global-components'
+import ComponentsRegister from '@/plugins/regist_global_components'
 Vue.use(ComponentsRegister)
 
 import AuthorityPlugin from '@/plugins/authority'

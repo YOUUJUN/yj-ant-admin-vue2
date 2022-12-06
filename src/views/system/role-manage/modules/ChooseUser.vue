@@ -59,7 +59,7 @@
 
 <script>
 import { getAction, postAction, putAction } from '@/api/manage'
-import dataListMixin from '@/mixins/dataListMixin'
+import dataListMixin from '@/mixins/data_list_mixin'
 
 const columns = [
     {

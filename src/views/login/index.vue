@@ -59,7 +59,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { removeToken } from '@/utils/lsOperation'
+import { removeToken } from '@/utils/ls_operation'
 import { timeFix } from '@/utils/index'
 import { getAction } from '@/api/manage'
 

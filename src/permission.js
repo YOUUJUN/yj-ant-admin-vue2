@@ -4,8 +4,8 @@ import store from '@/store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 
-import { getToken } from '@/utils/lsOperation'
-import { generateIndexRouter } from '@/utils/root/routerUtils'
+import { getToken } from '@/utils/ls_operation'
+import { generateIndexRouter } from '@/utils/root/router_utils'
 
 const whiteList = ['/user/login']
 

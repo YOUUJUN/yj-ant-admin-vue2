@@ -1,5 +1,5 @@
-import { USER_AUTH } from '@/utils/root/localStorageKeys'
-import ls from '@/utils/lsOperation'
+import { USER_AUTH } from '@/utils/root/local_storageKeys'
+import ls from '@/utils/ls_operation'
 
 /**
  *
