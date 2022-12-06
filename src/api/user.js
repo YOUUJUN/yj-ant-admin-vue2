@@ -32,6 +32,11 @@ const deleteUser = (params) => deleteAction('/sys/user/delete', params)
 //查询用户角色关系
 const fetchUserRoleRelation = (params) => getAction('/sys/userRole/list', params)
 
+//添加角色
+const addRole = (params) => postAction('/sys/role/add', params)
+//编辑角色
+const editRole = (params) => putAction('/sys/role/edit', params)
+
 export {
 	login,
 	logout,
@@ -43,4 +48,6 @@ export {
 	editUserStatus,
 	deleteUser,
 	fetchUserRoleRelation,
+	addRole,
+	editRole
 }

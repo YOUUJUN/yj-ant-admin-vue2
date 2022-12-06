@@ -67,7 +67,7 @@
 			</a-spin>
 
 			<section class="roles-wrap">
-				<a-tag v-for="item in rolesList" color="green">{{ item.name }}</a-tag>
+				<a-tag v-for="(item, index) in rolesList" color="green" :key="index">{{ item.name }}</a-tag>
 			</section>
 
 			<div class="drawer-bootom-button" v-if="ctrlMode === 'add'">
@@ -330,12 +330,13 @@ export default {
 }
 
 /*---编辑状态下隐藏placeholder---*/
-.description-wrap input[disabled]::placeholder,
-.description-wrap textarea[disabled]::placeholder {
+.form-wrap input[disabled]::placeholder,
+.form-wrap textarea[disabled]::placeholder,
+::v-deep .form-wrap .ant-input::placeholder {
 	font-size: 0;
 }
 
-::v-deep .description-wrap .ant-select-disabled .ant-select-selection__placeholder {
+::v-deep .form-wrap .ant-select-disabled .ant-select-selection__placeholder {
 	visibility: hidden;
 }
 </style>

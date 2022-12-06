@@ -64,6 +64,18 @@ export const asyncRouters = [
 			title: '用户管理',
 		},
 	},
+
+	{
+		name: 'role-manage',
+		path: '/system/role-manage',
+		component: () => import('@/views/system/role-manage'),
+		meta: {
+			icon: 'alert',
+			internalOrExternal: false,
+			keepAlive: false,
+			title: '角色管理',
+		},
+	},
 ]
 
 const router = new VueRouter({

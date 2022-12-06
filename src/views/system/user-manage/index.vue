@@ -151,7 +151,6 @@ const columns = [
 		key: 'rowIndex',
 		width: 75,
 		align: 'center',
-		sorter: true,
 		customRender: function (t, r, index) {
 			return parseInt(index) + 1
 		},
@@ -176,13 +175,16 @@ const columns = [
 	{
 		title: '创建时间',
 		align: 'center',
-		sorter: true,
 		dataIndex: 'createTime',
+	},
+	{
+		title: '修改时间',
+		align: 'center',
+		dataIndex: 'updateTime',
 	},
 	{
 		title: '登录次数',
 		align: 'center',
-		sorter: true,
 		dataIndex: 'loginNum',
 	},
 
@@ -369,13 +371,13 @@ export default {
 				this.$message.warning('请选择一条记录！')
 				return
 			}
-			if (this.selectionRows.findIndex((item) => item.isAdmin === 1) !== -1) {
+			if (this.selectionRows.findIndex((item) => item.isAdmin === true) !== -1) {
 				this.$message.warning('管理员账号不允许此操作,请重新选择！')
 				return
 			}
 			this.$confirm({
 				title: '确认操作',
-				content: `是否'${status == true ? '解冻' : '冻结'}选中账号?`,
+				content: `是否${status == true ? '启用' : '禁用'}选中账号?`,
 				onOk: () => {
 					editUserStatus({
 						ids: this.selectedRowKeys,
