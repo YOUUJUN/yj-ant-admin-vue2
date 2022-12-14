@@ -76,6 +76,18 @@ export const asyncRouters = [
 			title: '角色管理',
 		},
 	},
+
+	{
+		name: 'dict-manage',
+		path: '/system/dict-manage',
+		component: () => import('@/views/system/dict-manage'),
+		meta: {
+			icon: 'alert',
+			internalOrExternal: false,
+			keepAlive: false,
+			title: '数据字典',
+		},
+	},
 ]
 
 const router = new VueRouter({

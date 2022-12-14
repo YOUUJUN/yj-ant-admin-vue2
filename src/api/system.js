@@ -9,6 +9,12 @@ const getPermissionList = (params) => getAction('/sys/permission/list', params)
 const ajaxGetDictItems = (code, params) => getAction(`/sys/dict/getDictItems/${code}`, params)
 //从缓存中获取字典配置
 const getDictItemsFromCache = (dictCode) => ls.get(UI_CACHE_DB_DICT_DATA)?.[dictCode] || null
+//新增字典项
+const addDictItem = (params) => postAction('/sys/dict/add', params)
+//修改字典项
+const editDictItem = (params) => putAction('/sys/dict/edit', params)
+//删除字典项
+const deleteDictItem = (params) => deleteAction('/sys/dict/delete', params)
 
 // 校验授权标识是否重复
 const duplicateCheck = (params) => getAction('/sys/common/duplicateCheck', params)
@@ -28,6 +34,9 @@ export {
 	getPermissionList,
 	ajaxGetDictItems,
 	getDictItemsFromCache,
+	addDictItem,
+	editDictItem,
+	deleteDictItem,
 	duplicateCheck,
 	queryTreeMenuList,
 	queryFullTreeMenuList,
