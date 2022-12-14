@@ -82,7 +82,7 @@
 						<a-switch
 							:defaultChecked="record.status === true"
 							v-model="record.status"
-							@change="(checked) => handleDisableUser(checked, record)"
+							@change="(checked) => handleDisableRole(checked, record)"
 						/>
 					</div>
 				</template>
@@ -117,7 +117,7 @@ import dataListMixin from '@/mixins/data_list_mixin'
 import RoleDrawer from './modules/RoleDrawer.vue'
 import PermissionSelector from './modules/PermissionSelector.vue'
 
-import { fetchUserRoleRelation } from '@/api/user'
+import { fetchUserRoleRelation, deleteRole, editRoleStatus } from '@/api/user'
 
 const columns = [
 	{
@@ -231,6 +231,114 @@ export default {
 				.finally(() => {
 					this.loading = false
 				})
+		},
+
+		//处理删除
+		handleDel(record) {
+			deleteRole({
+				ids: record.id,
+			})
+				.then((res) => {
+					const { success, message } = res
+					if (success) {
+						this.$message.success('删除成功!')
+						this.searchQuery()
+					} else {
+						this.$message.warning('删除失败!')
+					}
+				})
+				.catch((err) => {
+					console.error('err', err)
+					this.$message.warning('删除失败!')
+				})
+		},
+
+		//处理批量删除
+		handleDelBunch() {
+			let keys = this.selectedRowKeys
+			if (keys.length <= 0) {
+				this.$message.warning('请选择一条记录！')
+				return
+			}
+
+			this.$confirm({
+				title: '确认删除',
+				content: '是否删除选中数据?',
+				onOk: () => {
+					deleteRole({
+						ids: keys.join(','),
+					})
+						.then((res) => {
+							const { success, message } = res
+							if (success) {
+								this.$message.success('删除成功!')
+								this.searchQuery()
+							} else {
+								this.$message.warning('删除失败!')
+							}
+						})
+						.catch((err) => {
+							console.error('err', err)
+							this.$message.warning('删除失败!')
+						})
+				},
+				onCancel() {
+					console.log('Cancel')
+				},
+			})
+		},
+
+		//处理启用禁用
+		handleDisableRole(checked, record) {
+			let status = checked
+			editRoleStatus({
+				ids: [record.id],
+				status,
+			})
+				.then((res) => {
+					const { success } = res
+					if (success) {
+						this.$message.success('修改角色状态成功!')
+					} else {
+						this.$message.warning('修改角色状态失败!')
+					}
+				})
+				.catch((err) => {
+					console.error('err', err)
+					this.$message.warning('修改角色状态失败!')
+				})
+		},
+
+		//处理批量启用禁用
+		handleBatchFrozen: function (status) {
+			if (this.selectedRowKeys.length <= 0) {
+				this.$message.warning('请选择一条记录！')
+				return
+			}
+
+			this.$confirm({
+				title: '确认操作',
+				content: `是否${status == true ? '启用' : '禁用'}选中角色?`,
+				onOk: () => {
+					editRoleStatus({
+						ids: this.selectedRowKeys,
+						status,
+					})
+						.then((res) => {
+							const { success } = res
+							if (success) {
+								this.$message.success('修改角色状态成功!')
+								this.searchQuery()
+							} else {
+								this.$message.warning('修改角色状态失败!')
+							}
+						})
+						.catch((err) => {
+							console.error('err', err)
+							this.$message.warning('修改角色状态失败!')
+						})
+				},
+			})
 		},
 
 		//处理分配角色权限

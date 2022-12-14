@@ -42,6 +42,10 @@ const addRolePermission = (params) => postAction('/sys/rolePermission/add', para
 const addRole = (params) => postAction('/sys/role/add', params)
 //编辑角色
 const editRole = (params) => putAction('/sys/role/edit', params)
+//删除角色
+const deleteRole = (params) => deleteAction('/sys/role/delete', params)
+//修改角色状态
+const editRoleStatus = (params) => putAction('/sys/role/editStatus', params)
 
 export {
 	login,
@@ -57,5 +61,7 @@ export {
 	queryRolePermission,
 	addRolePermission,
 	addRole,
-	editRole
+	editRole,
+	deleteRole,
+	editRoleStatus,
 }
