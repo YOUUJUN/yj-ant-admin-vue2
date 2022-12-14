@@ -16,6 +16,12 @@ const editDictItem = (params) => putAction('/sys/dict/edit', params)
 //删除字典项
 const deleteDictItem = (params) => deleteAction('/sys/dict/delete', params)
 
+//新增字典详细项
+const addDictItemDetail = (params) => postAction('sys/dictItem/add', params)
+//编辑字典详细项
+const editDictItemDetail = (params) => putAction('sys/dictItem/edit', params)
+
+
 // 校验授权标识是否重复
 const duplicateCheck = (params) => getAction('/sys/common/duplicateCheck', params)
 
@@ -36,6 +42,8 @@ export {
 	getDictItemsFromCache,
 	addDictItem,
 	editDictItem,
+	addDictItemDetail,
+	editDictItemDetail,
 	deleteDictItem,
 	duplicateCheck,
 	queryTreeMenuList,

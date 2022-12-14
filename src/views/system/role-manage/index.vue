@@ -7,7 +7,11 @@
 				</a-form-item>
 
 				<a-form-item label="角色状态">
-					<!-- <j-dict-select-tag placeholder="选择用户状态" v-model="queryParam.status" dictCode="role_status" /> -->
+					<a-select style="width: 170px" v-model="queryParam.status" placeholder="选择角色状态">
+						<a-select-option :value="undefined">请选择</a-select-option>
+						<a-select-option value="true">启用</a-select-option>
+						<a-select-option value="false">禁用</a-select-option>
+					</a-select>
 				</a-form-item>
 
 				<a-form-model-item>

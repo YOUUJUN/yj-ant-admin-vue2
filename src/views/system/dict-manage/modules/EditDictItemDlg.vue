@@ -18,17 +18,26 @@
 			:labelCol="labelCol"
 			:wrapperCol="wrapperCol"
 		>
-			<a-form-model-item label="字典名称" prop="dictName">
-				<a-input placeholder="请输入字典名称" v-model="detailForm.dictName" :disabled="disabled" />
+			<a-form-model-item label="名称" prop="itemText">
+				<a-input placeholder="请输入名称" v-model="detailForm.itemText" :disabled="disabled" />
 			</a-form-model-item>
 
-			<a-form-model-item label="字典编码" prop="dictCode">
-				<a-input placeholder="请输入字典编码" v-model="detailForm.dictCode" :disabled="disabled" />
+            <a-form-model-item label="数据值" prop="itemValue">
+				<a-input placeholder="请输入数据值" v-model="detailForm.itemValue" :disabled="disabled" />
 			</a-form-model-item>
 
-			<a-form-model-item label="描述" prop="description">
+            <a-form-model-item label="描述" prop="description">
 				<a-input placeholder="请输入描述" v-model="detailForm.description" :disabled="disabled" />
 			</a-form-model-item>
+
+            <a-form-model-item label="排序值" prop="sortOrder">
+                <a-input-number placeholder="请输入排序值"  v-model="detailForm.sortOrder" :min="1" :disabled="disabled" />
+			</a-form-model-item>
+
+            <a-form-model-item label="是否启用" prop="status">
+				<a-switch checkedChildren="启用" unCheckedChildren="禁用" v-model="detailForm.status"/>
+			</a-form-model-item>
+
 		</a-form-model>
 
 		<div class="ctrlBtn-wrap" v-if="ctrlMode === 'add'">
@@ -43,7 +52,7 @@
 	</a-modal>
 </template>
 <script>
-import { addDictItem, editDictItem } from '@/api/system'
+import { addDictItemDetail, editDictItemDetail } from '@/api/system'
 
 export default {
 	props: {
@@ -69,8 +78,8 @@ export default {
 
 			detailForm: {},
 			detailFormRules: {
-				dictName: { required: true, message: '请输入字典名称', trigger: 'blur' },
-				dictCode: { required: true, message: '请输入字典编码', trigger: 'blur' },
+				itemText: { required: true, message: '请输入字典名称', trigger: 'blur' },
+				itemValue: { required: true, message: '请输入字典编码', trigger: 'blur' },
 			},
 			labelCol: {
 				xs: { span: 24 },
@@ -103,6 +112,7 @@ export default {
 
 	methods: {
         setData(record){
+			console.log('record--', record)
             this.$set(this, 'detailForm', Object.assign({}, record))
         },
 
@@ -116,7 +126,7 @@ export default {
 				.then((res) => {
 					let payload = Object.assign({}, this.detailForm)
 					console.log('payload', payload)
-					addDictItem(payload)
+					addDictItemDetail(payload)
 						.then((res) => {
 							if (res.success) {
 								this.$message.success('新增字典项成功!')
@@ -142,7 +152,7 @@ export default {
 				.then((res) => {
 					let payload = Object.assign({}, this.detailForm)
 					console.log('payload', payload)
-					editDictItem(payload)
+					editDictItemDetail(payload)
 						.then((res) => {
 							if (res.success) {
 								this.$message.success('修改字典项成功!')
