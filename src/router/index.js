@@ -88,6 +88,18 @@ export const asyncRouters = [
 			title: '数据字典',
 		},
 	},
+
+	{
+		name: 'operation-log',
+		path: '/system/operation-log',
+		component: () => import('@/views/system/operation-log'),
+		meta: {
+			icon: 'alert',
+			internalOrExternal: false,
+			keepAlive: false,
+			title: '操作日志',
+		},
+	},
 ]
 
 const router = new VueRouter({
