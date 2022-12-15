@@ -12,7 +12,7 @@ import { login, logout, queryPermissionsByUser } from '@/api/user'
 
 const state = {
 	token: getToken(),
-	userInfo: '',
+	userInfo: {},
 	username: '',
 	realname: '',
 	avatar: '',

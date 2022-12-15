@@ -1,8 +1,8 @@
 <template>
 	<div class="header">
 		<section class="start">
-			<img class="logo" src="@/assets/logo.png" />
-			<span class="logo-text">老龄健康</span>
+			<img class="logo" src="@/assets/images/logo.png" />
+			<!-- <span class="logo-text">老龄健康</span> -->
 		</section>
 
 		<section class="center">
@@ -11,28 +11,20 @@
 			</div>
 
 			<div class="ctrl-wrap">
-				<a class="ctrl-item" href="javascript:void(0);" target="_self">
+				<!-- <a class="ctrl-item" href="javascript:void(0);" target="_self">
 					<span>返回首页</span>
 				</a>
 
 				<div class="ctrl-item">
 					<a-icon class="ctrl-icon" type="fullscreen" />
-				</div>
-
-				<a-dropdown v-model="visible">
-					<a class="ctrl-item ant-dropdown-link" @click="(e) => e.preventDefault()">
-						安徽省老龄健康处
-						<a-icon type="caret-down" />
-					</a>
-					<a-menu slot="overlay" @click="handleMenuClick">
-						<a-menu-item key="1">退出登录</a-menu-item>
-					</a-menu>
-				</a-dropdown>
+				</div> -->
 			</div>
 		</section>
 
 		<section class="end">
-			<div class="avatar-wrap"></div>
+			<div class="avatar-wrap">
+				<header-avatar></header-avatar>
+			</div>
 		</section>
 	</div>
 </template>
@@ -41,12 +33,14 @@
 const hamburger = () => import('@/components/Hamburger/index.vue')
 
 import { mapGetters, mapActions } from 'vuex'
+import HeaderAvatar from './HeaderAvatar.vue'
 
 export default {
 	name: 'NavBar',
 
 	components: {
 		hamburger,
+		HeaderAvatar,
 	},
 
 	data() {
@@ -114,7 +108,7 @@ export default {
 
 .start .logo {
 	width: auto;
-	height: 3.8rem;
+	height: 100%;
 }
 
 .start .logo-text {
