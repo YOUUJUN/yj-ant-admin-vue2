@@ -43,7 +43,7 @@
 	</a-modal>
 </template>
 <script>
-import { addDictItem, editDictItem } from '@/api/system'
+import { addDictItem, editDictItem, duplicateCheck } from '@/api/system'
 
 export default {
 	props: {
@@ -70,7 +70,10 @@ export default {
 			detailForm: {},
 			detailFormRules: {
 				dictName: { required: true, message: '请输入字典名称', trigger: 'blur' },
-				dictCode: { required: true, message: '请输入字典编码', trigger: 'blur' },
+				dictCode: [
+					{ required: true, message: '请输入字典编码', trigger: 'blur' },
+					{ validator: this.validateDictCode },
+				],
 			},
 			labelCol: {
 				xs: { span: 24 },
@@ -102,9 +105,9 @@ export default {
 	},
 
 	methods: {
-        setData(record){
-            this.$set(this, 'detailForm', Object.assign({}, record))
-        },
+		setData(record) {
+			this.$set(this, 'detailForm', Object.assign({}, record))
+		},
 
 		clearData() {
 			this.detailForm = this.$options.data().detailForm
@@ -137,7 +140,7 @@ export default {
 		},
 
 		handleModify() {
-            this.$refs.detailForm
+			this.$refs.detailForm
 				.validate()
 				.then((res) => {
 					let payload = Object.assign({}, this.detailForm)
@@ -160,10 +163,29 @@ export default {
 				.catch((err) => {
 					console.error('err', err)
 				})
-        },
+		},
 
 		handleCancel() {
 			this.$emit('update:visible', false)
+		},
+
+		//校验字典编码是否重复
+		validateDictCode(rule, value, callback) {
+			// 重复校验
+			let params = {
+				tableName: 'sys_dict',
+				fieldName: 'dict_code',
+				fieldVal: value,
+				dataId: this.detailForm.id,
+			}
+			
+			duplicateCheck(params).then((res) => {
+				if (res.success) {
+					callback()
+				} else {
+					callback(res.message)
+				}
+			})
 		},
 	},
 }

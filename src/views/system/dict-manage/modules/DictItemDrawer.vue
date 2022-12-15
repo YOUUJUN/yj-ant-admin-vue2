@@ -16,14 +16,6 @@
 						<a-input placeholder="输入名称" v-model="queryParam.itemText"></a-input>
 					</a-form-model-item>
 
-					<a-form-model-item label="状态">
-						<a-select style="width: 170px" v-model="queryParam.status" placeholder="选择状态">
-							<a-select-option :value="undefined">请选择</a-select-option>
-							<a-select-option value="true">启用</a-select-option>
-							<a-select-option value="false">禁用</a-select-option>
-						</a-select>
-					</a-form-model-item>
-
 					<a-form-model-item>
 						<a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
 						<a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">
@@ -64,6 +56,7 @@
 </template>
 <script>
 import dataListMixin from '@/mixins/data_list_mixin'
+import { deleteDictItemDetail } from '@/api/system'
 
 const columns = [
 	{
@@ -80,7 +73,7 @@ const columns = [
 		title: '操作',
 		dataIndex: 'action',
 		align: 'center',
-		width : 200,
+		width: 200,
 		scopedSlots: { customRender: 'action' },
 	},
 ]
@@ -101,7 +94,7 @@ export default {
 				title: '字典列表',
 			},
 
-            columns,
+			columns,
 			url: {
 				list: '/sys/dictItem/list',
 			},
@@ -140,23 +133,40 @@ export default {
 			this.$emit('update:visible', false)
 		},
 
-		handleAdd(){
+		handleAdd() {
 			let payload = {
-				ctrlMode : 'add',
-				record : Object.assign({}, this.queryParam),
+				ctrlMode: 'add',
+				record: Object.assign({}, this.queryParam),
 			}
 			this.$emit('openDictEditorDlg', payload)
 		},
 
-		handleEdit(record){
+		handleEdit(record) {
 			let payload = {
-				ctrlMode : 'modify',
-				record : Object.assign({}, record, this.queryParam),
+				ctrlMode: 'modify',
+				record: Object.assign({}, record, this.queryParam),
 			}
 			this.$emit('openDictEditorDlg', payload)
 		},
 
-		
+		handleDel(record) {
+			deleteDictItemDetail({
+				ids: record.id,
+			})
+				.then((res) => {
+					const { success, message } = res
+					if (success) {
+						this.$message.success('删除成功!')
+						this.searchQuery()
+					} else {
+						this.$message.warning('删除失败!')
+					}
+				})
+				.catch((err) => {
+					console.error('err', err)
+					this.$message.warning('删除失败!')
+				})
+		},
 	},
 }
 </script>
