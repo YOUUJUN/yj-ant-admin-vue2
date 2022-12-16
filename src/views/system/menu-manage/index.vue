@@ -143,8 +143,6 @@ export default {
 			expandedRowKeys: [], // 展开的行
 			url: {
 				list: '/sys/permission/list',
-				delete: '/sys/permission/delete',
-				deleteBatch: '/sys/permission/deleteBatch',
 			},
 
 			visible: false,
@@ -234,7 +232,7 @@ export default {
 		handleDel(record) {
 			const { id } = record
 			deletePermission({
-				ids: [id],
+				ids: id,
 			})
 				.then((res) => {
 					const { success, message } = res

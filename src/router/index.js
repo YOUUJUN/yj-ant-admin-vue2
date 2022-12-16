@@ -41,65 +41,65 @@ export const constantRoutes = [
 
 //会读取作为菜单项的路由配置
 export const asyncRouters = [
-	{
-		name: 'menu-manage',
-		path: '/system/menu-manage',
-		component: () => import('@/views/system/menu-manage'),
-		meta: {
-			icon: 'alert',
-			internalOrExternal: false,
-			keepAlive: false,
-			title: '菜单管理',
-		},
-	},
+	// {
+	// 	name: 'menu-manage',
+	// 	path: '/system/menu-manage',
+	// 	component: () => import('@/views/system/menu-manage'),
+	// 	meta: {
+	// 		icon: 'alert',
+	// 		internalOrExternal: false,
+	// 		keepAlive: false,
+	// 		title: '菜单管理',
+	// 	},
+	// },
 
-	{
-		name: 'user-manage',
-		path: '/system/user-manage',
-		component: () => import('@/views/system/user-manage'),
-		meta: {
-			icon: 'alert',
-			internalOrExternal: false,
-			keepAlive: false,
-			title: '用户管理',
-		},
-	},
+	// {
+	// 	name: 'user-manage',
+	// 	path: '/system/user-manage',
+	// 	component: () => import('@/views/system/user-manage'),
+	// 	meta: {
+	// 		icon: 'alert',
+	// 		internalOrExternal: false,
+	// 		keepAlive: false,
+	// 		title: '用户管理',
+	// 	},
+	// },
 
-	{
-		name: 'role-manage',
-		path: '/system/role-manage',
-		component: () => import('@/views/system/role-manage'),
-		meta: {
-			icon: 'alert',
-			internalOrExternal: false,
-			keepAlive: false,
-			title: '角色管理',
-		},
-	},
+	// {
+	// 	name: 'role-manage',
+	// 	path: '/system/role-manage',
+	// 	component: () => import('@/views/system/role-manage'),
+	// 	meta: {
+	// 		icon: 'alert',
+	// 		internalOrExternal: false,
+	// 		keepAlive: false,
+	// 		title: '角色管理',
+	// 	},
+	// },
 
-	{
-		name: 'dict-manage',
-		path: '/system/dict-manage',
-		component: () => import('@/views/system/dict-manage'),
-		meta: {
-			icon: 'alert',
-			internalOrExternal: false,
-			keepAlive: false,
-			title: '数据字典',
-		},
-	},
+	// {
+	// 	name: 'dict-manage',
+	// 	path: '/system/dict-manage',
+	// 	component: () => import('@/views/system/dict-manage'),
+	// 	meta: {
+	// 		icon: 'alert',
+	// 		internalOrExternal: false,
+	// 		keepAlive: false,
+	// 		title: '数据字典',
+	// 	},
+	// },
 
-	{
-		name: 'operation-log',
-		path: '/system/operation-log',
-		component: () => import('@/views/system/operation-log'),
-		meta: {
-			icon: 'alert',
-			internalOrExternal: false,
-			keepAlive: false,
-			title: '操作日志',
-		},
-	},
+	// {
+	// 	name: 'operation-log',
+	// 	path: '/system/operation-log',
+	// 	component: () => import('@/views/system/operation-log'),
+	// 	meta: {
+	// 		icon: 'alert',
+	// 		internalOrExternal: false,
+	// 		keepAlive: false,
+	// 		title: '操作日志',
+	// 	},
+	// },
 ]
 
 const router = new VueRouter({
