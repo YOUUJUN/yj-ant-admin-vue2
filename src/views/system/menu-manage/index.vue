@@ -53,6 +53,7 @@
 		</main>
 
 		<menu-operate-model ref="operateModel" @doSearch="searchQuery"></menu-operate-model>
+		<icon-choose-dlg :visible.sync="visible" @choose="handleIconChoose"></icon-choose-dlg>
 	</article>
 </template>
 <script>
@@ -61,6 +62,7 @@ import { getAction } from '@/api/manage'
 import { deletePermission } from '@/api/system'
 
 import MenuOperateModel from './modules/MenuOperateModel'
+import IconChooseDlg from './modules/IconChooseDlg.vue'
 
 const columns = [
 	{
@@ -123,8 +125,15 @@ const columns = [
 export default {
 	mixins: [dataListMixin],
 
+	provide(){
+		return {
+			openIconChooseDlg_inject : this.openIconChooseDlg
+		}
+	},
+
 	components: {
 		MenuOperateModel,
+		IconChooseDlg,
 	},
 
 	data() {
@@ -137,6 +146,8 @@ export default {
 				delete: '/sys/permission/delete',
 				deleteBatch: '/sys/permission/deleteBatch',
 			},
+
+			visible: false,
 		}
 	},
 
@@ -272,6 +283,20 @@ export default {
 		//监听行展开
 		handleExpandedRowsChange(expandedRows) {
 			this.expandedRowKeys = expandedRows
+		},
+
+		//打开图标选择窗体
+		openIconChooseDlg(){
+			this.visible = true
+		},
+
+		//处理图标选择操作
+		handleIconChoose(value) {
+			console.log(value)
+			this.$refs.operateModel.setData({
+				icon : value
+			})
+			this.visible = false
 		},
 	},
 }

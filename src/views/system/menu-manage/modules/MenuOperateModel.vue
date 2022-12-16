@@ -155,6 +155,8 @@
 import { queryTreeMenuList, addPermission, editPermission, duplicateCheck } from '@/api/system'
 
 export default {
+	inject: ['openIconChooseDlg_inject'],
+
 	data() {
 		return {
 			//窗体控制
@@ -216,6 +218,10 @@ export default {
 			delete this.form.children
 			this.show = record.menuType === '2' ? false : true
 			record?.menuType !== undefined && (this.localMenuType = record.menuType)
+		},
+
+		setData(record) {
+			this.form = Object.assign({}, this.form, record)
 		},
 
 		handleCancel() {
@@ -306,7 +312,9 @@ export default {
 		handleParentIdChange() {},
 
 		//打开选择图标窗体
-		selectIcons() {},
+		selectIcons() {
+			this.openIconChooseDlg_inject()
+		},
 
 		//获取树形结构菜单数据
 		loadMenuTree() {

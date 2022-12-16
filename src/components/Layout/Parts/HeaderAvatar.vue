@@ -60,7 +60,7 @@ export default {
 		color : #cccccc;
 		display: flex;
 		flex-direction: column;
-		justify-content: end;
+		justify-content: flex-end;
 	}
 }
 .avatar-menu {
