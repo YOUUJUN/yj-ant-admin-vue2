@@ -1,3 +1,8 @@
+/**
+ * table分页逻辑混入
+ * 
+ */
+
 import { getAction, postAction } from '@/api/manage'
 import ls from '@/utils/ls_operation'
 import { ACCESS_TOKEN } from '@/utils/root/local_storageKeys'

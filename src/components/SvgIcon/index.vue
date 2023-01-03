@@ -4,6 +4,13 @@
 	</svg>
 </template>
 <script>
+/**
+ * 自定义svg图标组件
+ * 使用 ：
+ *
+ *	<svg-icon :iconClass="svgName"></svg-icon>
+ *
+ */
 export default {
 	name: 'SvgIcon',
 	props: {

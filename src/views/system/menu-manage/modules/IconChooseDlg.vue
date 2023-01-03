@@ -88,12 +88,6 @@
 			<a-tab-pane tab="自定义图标" key="7">
 				<ul>
 					<li v-for="icon in icons.diyIcons" :key="icon">
-						<!-- <a-icon
-							:type="icon"
-							:title="icon"
-							@click="chooseIcon(icon)"
-							:class="{ active: activeIndex === icon }"
-						/> -->
 						<svg-icon
 							:iconClass="icon"
 							@click="chooseIcon(icon, 'diy')"

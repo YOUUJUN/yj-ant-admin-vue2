@@ -34,6 +34,22 @@
 </template>
 
 <script>
+/**
+ * 字典组件
+ * 
+ * 	使用：
+ * 		从字典表获取数据,dictCode格式说明: 字典code
+ * 		<j-dict-select-tag  v-model="queryParam.sex" placeholder="请输入用户性别" dictCode="sex"/>
+ * 
+ * 		v-decorator用法：
+ * 		<j-dict-select-tag  v-decorator="['sex', {}]" :triggerChange="true" placeholder="请输入用户性别" dictCode="sex"/>
+ * 
+ * 		从数据库表获取字典数据，dictCode格式说明: 表名,文本字段,取值字段
+ * 		<j-dict-select-tag v-model="queryParam.username" placeholder="请选择用户名称" dictCode="sys_user,realname,id"/>
+ * 
+ * 
+ */
+
 import { ajaxGetDictItems, getDictItemsFromCache } from '@/api/system'
 
 export default {

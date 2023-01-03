@@ -1,3 +1,8 @@
+/**
+ * 自动导入 @/icons/svg 目录下的所有svg图片，构建全局 svg-icon 组件
+ * 
+ */
+
 import Vue from 'vue'
 import SvgIcon from '@/components/SvgIcon'
 
