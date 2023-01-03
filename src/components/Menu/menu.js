@@ -1,5 +1,6 @@
 import Menu from 'ant-design-vue/es/menu'
 import Icon from 'ant-design-vue/es/icon'
+import svgIcon from '@/components/SvgIcon'
 import { equal } from '@/utils/index'
 
 const { Item, SubMenu } = Menu
@@ -156,7 +157,9 @@ export default {
 					}
 				}
 
-				return (menu.children && renderChildren) && !menu.alwaysShow ? this.renderSubMenu(h, menu) : this.renderMenuItem(h, menu)
+				return menu.children && renderChildren && !menu.alwaysShow
+					? this.renderSubMenu(h, menu)
+					: this.renderMenuItem(h, menu)
 			}
 		},
 
@@ -238,13 +241,24 @@ export default {
 				return vnodes
 			}
 
-			return !icon || icon === 'none'
-				? null
-				: h(Icon, {
-						props: {
-							type: icon,
-						},
-				  })
+			if (!icon || icon === 'none') {
+				return
+			} else if (icon.startsWith('diy_')) {
+				return h(svgIcon, {
+					props: {
+						iconClass: icon.replace('diy_', ''),
+					},
+					attrs: {
+						style : 'margin-right:1rem;'
+					}
+				})
+			} else {
+				return h(Icon, {
+					props: {
+						type: icon,
+					},
+				})
+			}
 		},
 	},
 

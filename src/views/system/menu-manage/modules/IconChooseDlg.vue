@@ -1,7 +1,7 @@
 <template>
 	<a-modal
 		:visible="visible"
-		:width="900"
+		:width="1000"
 		:keyboard="false"
 		:closable="false"
 		:centered="true"
@@ -82,6 +82,23 @@
 							@click="chooseIcon(icon)"
 							:class="{ active: activeIndex === icon }"
 						/>
+					</li>
+				</ul>
+			</a-tab-pane>
+			<a-tab-pane tab="自定义图标" key="7">
+				<ul>
+					<li v-for="icon in icons.diyIcons" :key="icon">
+						<!-- <a-icon
+							:type="icon"
+							:title="icon"
+							@click="chooseIcon(icon)"
+							:class="{ active: activeIndex === icon }"
+						/> -->
+						<svg-icon
+							:iconClass="icon"
+							@click="chooseIcon(icon, 'diy')"
+							:class="{ active: activeIndex === icon }"
+						></svg-icon>
 					</li>
 				</ul>
 			</a-tab-pane>
@@ -442,6 +459,8 @@ const logoIcons = [
 	'alibaba',
 	'yahoo',
 ]
+// diy图标名来自 @/icons/svg 目录下的svg图片名
+const diyIcons = ['caihong', 'juese']
 export default {
 	name: 'Icons',
 	props: {
@@ -458,6 +477,7 @@ export default {
 				dataIcons,
 				webIcons,
 				logoIcons,
+				diyIcons,
 			},
 			choosedIcon: '',
 			activeIndex: '',
@@ -468,10 +488,14 @@ export default {
 		reset() {
 			this.activeIndex = ''
 		},
-		chooseIcon(icon) {
+		chooseIcon(icon, category) {
 			this.activeIndex = icon
 			this.choosedIcon = icon
-			this.$message.success(`选中 ${icon}`)
+			if(category === 'diy'){
+				this.choosedIcon = `diy_${icon}`
+			}
+			
+			this.$message.success(`选中 ${this.choosedIcon}`)
 		},
 		ok() {
 			if (this.choosedIcon === '') {
