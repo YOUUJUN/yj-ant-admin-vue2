@@ -1,4 +1,5 @@
-import request from '@/utils/http'
+import http from '@/utils/http'
+const request = http()
 
 export function postAction(url, parameter) {
 	return request({

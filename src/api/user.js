@@ -1,5 +1,6 @@
-import request from '@/utils/http'
+import http from '@/utils/http'
 import { getAction, postAction, putAction, deleteAction } from './manage'
+const request = http()
 
 const login = (params) => postAction('/sys/user/login', params)
 const logout = (logoutToken) => {
