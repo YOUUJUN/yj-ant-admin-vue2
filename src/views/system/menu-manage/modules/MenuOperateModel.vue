@@ -92,9 +92,7 @@
 
 				<a-form-model-item label="菜单平台类型" :required="true">
 					<a-radio-group v-model="form.platformType" :disabled="disableSubmit">
-						<a-radio value="1">监管</a-radio>
-						<a-radio value="2">运营</a-radio>
-						<a-radio value="3">服务商</a-radio>
+						<a-radio :value="item.id" v-for="(item, index) of systemPlatforms">{{ item.name }}</a-radio>
 					</a-radio-group>
 				</a-form-model-item>
 
@@ -111,7 +109,7 @@
 					<a-switch
 						checkedChildren="是"
 						unCheckedChildren="否"
-						v-model="form.menuHidden"
+						v-model="form.hidden"
 						:disabled="disableSubmit"
 					/>
 				</a-form-model-item>
@@ -152,7 +150,8 @@
 	</a-drawer>
 </template>
 <script>
-import { queryTreeMenuList, addPermission, editPermission, duplicateCheck } from '@/api/system'
+import { queryTreeMenuList, addPermission, editPermission, duplicateCheck, fetchAllSystemPlatform } from '@/api/system'
+import { errorCaptured } from '@/utils'
 
 export default {
 	inject: ['openIconChooseDlg_inject'],
@@ -195,6 +194,9 @@ export default {
 			},
 
 			treeData: [],
+
+			//系统平台
+			systemPlatforms: [],
 		}
 	},
 
@@ -204,8 +206,13 @@ export default {
 		},
 	},
 
+	created() {
+		this.getSystemPlatforms()
+		console.log('systemPlatforms', this.systemPlatforms)
+	},
+
 	methods: {
-		initData(record = {}) {
+		async initData(record = {}) {
 			this.loadMenuTree()
 			const originForm = this.$options.data.call(this).form
 			this.$set(
@@ -222,6 +229,24 @@ export default {
 
 		setData(record) {
 			this.form = Object.assign({}, this.form, record)
+		},
+
+		//获取系统平台列表
+		async getSystemPlatforms() {
+			let payload = []
+			const [err, msg] = await errorCaptured(fetchAllSystemPlatform)
+
+			if (err) {
+				console.error('err', err)
+			}
+
+			if (msg) {
+				const { result } = msg
+				payload = result
+			}
+
+			this.systemPlatforms = payload
+			return payload
 		},
 
 		handleCancel() {

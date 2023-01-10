@@ -11,16 +11,16 @@ export function generateIndexRouter(data) {
 			component: (resolve) => require(['@components/Layout/Layout.vue'], resolve),
 			redirect: indexPath,
 			children: [
-				{
-					path: 'index',
-					name: 'Index',
-					components: {
-						default: () => import('@views/test/index.vue'),
-					},
-					meta: {
-						title: '首页',
-					},
-				},
+				// {
+				// 	path: 'index',
+				// 	name: 'Index',
+				// 	components: {
+				// 		default: () => import('@views/test/index.vue'),
+				// 	},
+				// 	meta: {
+				// 		title: '首页',
+				// 	},
+				// },
 
 				...asyncRouters,
 
@@ -68,6 +68,7 @@ function generateChildRouters(data) {
 			component: componentPath,
 			hidden: item.hidden,
 			meta: {
+				invisible : item.hidden,
 				title: item.meta.title,
 				icon: item.meta.icon,
 				link: item.meta.url,
@@ -83,7 +84,7 @@ function generateChildRouters(data) {
 		}
 		//根据后台菜单配置，判断是否路由菜单字段，动态选择是否生成路由（为了支持参数URL菜单）------
 		//判断是否生成路由
-		if (item.route && item.route === '0') {
+		if (item?.route === false) {
 			//console.log(' 不生成路由 item.route：  '+item.route);
 			//console.log(' 不生成路由 item.path：  '+item.path);
 		} else {
