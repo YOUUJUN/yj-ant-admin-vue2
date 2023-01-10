@@ -148,11 +148,11 @@ export default {
 
 		renderItem(h, menu) {
 			const meta = menu?.meta
-			if (!meta || !meta?.invisible) {
+			if (!meta || !menu?.hidden) {
 				let renderChildren = false
 				const children = menu.children
 				if (children?.length > 0) {
-					if (children.find((item) => item?.meta?.invisible !== true)) {
+					if (children.find((item) => item?.hidden !== true)) {
 						renderChildren = true
 					}
 				}
