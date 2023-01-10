@@ -15,7 +15,7 @@ const logout = (logoutToken) => {
 }
 
 //获取验证码
-const getRandomImage = (currentTime) => getAction(`/sys/user/randomImage/${this.currentTime}`)
+const getRandomImage = (currentTime) => getAction(`/sys/user/randomImage/${currentTime}`)
 
 //获取用户权限
 const queryPermissionsByUser = () => getAction('/sys/permission/getUserPermissionByToken')
@@ -48,6 +48,9 @@ const deleteRole = (params) => deleteAction('/sys/role/delete', params)
 //修改角色状态
 const editRoleStatus = (params) => putAction('/sys/role/editStatus', params)
 
+//用户选择业务平台
+const chooseUserPlatform = (params) => postAction('/sys/user/cachePlatformType', params)
+
 export {
 	login,
 	logout,
@@ -65,4 +68,5 @@ export {
 	editRole,
 	deleteRole,
 	editRoleStatus,
+	chooseUserPlatform,
 }

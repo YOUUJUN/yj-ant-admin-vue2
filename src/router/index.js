@@ -18,6 +18,12 @@ export const constantRoutes = [
 				name: 'login',
 				component: () => import('@/views/login'),
 			},
+
+			{
+				path : 'platform',
+				name : 'platform',
+				component: () => import('@/views/system/platform-selection'),
+			}
 		],
 	},
 

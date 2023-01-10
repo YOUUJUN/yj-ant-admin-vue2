@@ -66,7 +66,7 @@ export default {
 					this.ipagination.current = 1
 				}
 
-				var params = this.getQueryParams() //查询条件
+				let params = this.getQueryParams() //查询条件
 				this.loading = true
 
 				const fetchAction = this.postMethod ? postAction : getAction

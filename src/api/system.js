@@ -38,6 +38,9 @@ const addPermission = (params) => postAction('/sys/permission/add', params)
 const editPermission = (params) => putAction('/sys/permission/edit', params)
 const deletePermission = (params) => deleteAction('/sys/permission/delete', params)
 
+//获取系统业务平台列表
+const fetchAllSystemPlatform = (params) => getAction('/sys/platformType/list', params)
+
 export {
 	getPermissionList,
 	ajaxGetDictItems,
@@ -54,4 +57,5 @@ export {
 	addPermission,
 	editPermission,
 	deletePermission,
+	fetchAllSystemPlatform,
 }
