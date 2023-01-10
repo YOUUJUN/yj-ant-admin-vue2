@@ -8,6 +8,7 @@ import {
 	USER_AUTH,
 	SYS_BUTTON_AUTH,
 	ACCESSIBLE_PLATFORM,
+	SELECTED_PLATFORM,
 } from '@/utils/root/local_storageKeys'
 import { login, logout, queryPermissionsByUser } from '@/api/user'
 
@@ -63,6 +64,7 @@ const mutations = {
 
 	SET_USER_SELECTED_PLATFORM: (state, platform) => {
 		state.selectedPlatform = platform
+		platform ? ls.set(SELECTED_PLATFORM, platform, tokenExpirationTime) : ls.remove(SELECTED_PLATFORM)
 	},
 
 	SET_INTRODUCTION: (state, introduction) => {
@@ -120,6 +122,7 @@ const actions = {
 			commit('SET_PERMISSIONLIST', [])
 			ls.remove(UI_CACHE_DB_DICT_DATA)
 			ls.remove(ACCESSIBLE_PLATFORM)
+			ls.remove(SELECTED_PLATFORM)
 			// ls.remove(CACHE_INCLUDED_ROUTES)
 			ls.remove(USER_AUTH)
 			ls.remove(SYS_BUTTON_AUTH)
@@ -184,6 +187,13 @@ const actions = {
 				.catch((error) => {
 					reject(error)
 				})
+		})
+	},
+
+	selectUserPlatform({commit}, platform){
+		return new Promise((resolve) => {
+			commit('SET_USER_SELECTED_PLATFORM', platform)
+			resolve()
 		})
 	},
 

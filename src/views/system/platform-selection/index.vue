@@ -30,11 +30,11 @@ export default {
 	},
 
 	methods: {
-		...mapActions('user', ['setToken']),
+		...mapActions('user', ['setToken', 'selectUserPlatform']),
 
 		enterPlatform(platformId) {
-			console.log('getToken', getToken())
 			const token = getToken()
+
 			chooseUserPlatform({
 				platformType: platformId,
 				token,
@@ -45,6 +45,7 @@ export default {
 					this.setToken(message).then(res => {
 						this.$router.push({path : '/index', replace: true})
 					})
+					this.selectUserPlatform(platformId)
 				})
 				.catch((err) => {
 					console.error('err', err)

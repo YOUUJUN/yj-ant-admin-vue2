@@ -3,7 +3,6 @@
 		:visible="visible"
 		:title="title"
 		:width="drawerWidth"
-		:confirmLoading="confirmLoading"
 		@close="handleCancel"
 	>
 		<!-- <a-spin :spinning="confirmLoading">
@@ -90,7 +89,7 @@
 					/>
 				</a-form-model-item>
 
-				<a-form-model-item label="菜单平台类型" :required="true">
+				<a-form-model-item label="菜单平台类型" :required="true" prop="platformType">
 					<a-radio-group v-model="form.platformType" :disabled="disableSubmit">
 						<a-radio :value="item.id" v-for="(item, index) of systemPlatforms">{{ item.name }}</a-radio>
 					</a-radio-group>
@@ -299,6 +298,8 @@ export default {
 					} else {
 						this.$message.warning(message)
 					}
+
+					this.handleCancel()
 				})
 				.catch((err) => {
 					console.error('err', err)
@@ -308,6 +309,7 @@ export default {
 
 		//处理编辑请求
 		handleEdit(needValidates) {
+			this.confirmLoading = true
 			console.log('form', this.form)
 			editPermission(this.form)
 				.then((res) => {
@@ -321,6 +323,9 @@ export default {
 				})
 				.catch((err) => {
 					console.error('err', err)
+				})
+				.finally(() => {
+					this.confirmLoading = false
 				})
 		},
 
