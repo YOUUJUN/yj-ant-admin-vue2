@@ -109,7 +109,7 @@ export default {
 		return {
 			columns,
 			url: {
-				list: '/sys/dict/list',
+				list: '/rbac/sys/dict/list',
 			},
 
 			visible: false,

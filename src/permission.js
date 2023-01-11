@@ -27,6 +27,7 @@ router.beforeEach(async (to, from, next) => {
 				store
 					.dispatch('user/GetPermissionList')
 					.then((res) => {
+						console.log('res---', res)
 						const { success, result, code } = res
 						if (success) {
 							const menuData = result?.menu

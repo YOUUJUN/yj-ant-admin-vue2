@@ -2,10 +2,19 @@ import http from '@/utils/http'
 import { getAction, postAction, putAction, deleteAction } from './manage'
 const request = http()
 
-const login = (params) => postAction('/sys/user/login', params)
+const login = (params) => {
+	return request({
+		url: '/sso/user/login',
+		method: 'post',
+		params,
+	})
+}
+
+// const login = (params) => postAction('/sso/user/login', params)
+
 const logout = (logoutToken) => {
 	return request({
-		url: '/sys/user/logout',
+		url: '/sso/user/logout',
 		method: 'get',
 		headers: {
 			'Content-Type': 'application/json;charset=UTF-8',
@@ -15,41 +24,44 @@ const logout = (logoutToken) => {
 }
 
 //获取验证码
-const getRandomImage = (currentTime) => getAction(`/sys/user/randomImage/${currentTime}`)
+const getRandomImage = (params) => postAction('/sso/common/generateVerificationCode', params)
 
 //获取用户权限
-const queryPermissionsByUser = () => getAction('/sys/permission/getUserPermissionByToken')
+const queryPermissionsByUser = (params) => getAction('/rbac/sys/permission/getUserPermissionByToken', params)
 
 //获取用户角色
-const queryUserRole = (params) => getAction('/sys/user/queryUserRole', params)
+const queryUserRole = (params) => getAction('/rbac/sys/user/queryUserRole', params)
 //添加用户
-const addUser = (params) => postAction('/sys/user/add', params)
+const addUser = (params) => postAction('/rbac/sys/user/add', params)
 //编辑用户
-const editUser = (params) => putAction('/sys/user/edit', params)
+const editUser = (params) => putAction('/rbac/sys/user/edit', params)
 //修改用户状态
-const editUserStatus = (params) => putAction('/sys/user/editStatus', params)
+const editUserStatus = (params) => putAction('/rbac/sys/user/editStatus', params)
 //删除用户
-const deleteUser = (params) => deleteAction('/sys/user/delete', params)
+const deleteUser = (params) => deleteAction('/rbac/sys/user/delete', params)
 //查询用户角色关系
-const fetchUserRoleRelation = (params) => getAction('/sys/userRole/list', params)
+const fetchUserRoleRelation = (params) => getAction('/rbac/sys/userRole/list', params)
 //获取角色权限关系列表 
-const queryRolePermission = (params) => getAction('/sys/rolePermission/list', params)
+const queryRolePermission = (params) => getAction('/rbac/sys/rolePermission/list', params)
 //新增角色权限关系
-const addRolePermission = (params) => postAction('/sys/rolePermission/add', params)
+const addRolePermission = (params) => postAction('/rbac/sys/rolePermission/add', params)
 
 
 
 //添加角色
-const addRole = (params) => postAction('/sys/role/add', params)
+const addRole = (params) => postAction('/rbac/sys/role/add', params)
 //编辑角色
-const editRole = (params) => putAction('/sys/role/edit', params)
+const editRole = (params) => putAction('/rbac/sys/role/edit', params)
 //删除角色
-const deleteRole = (params) => deleteAction('/sys/role/delete', params)
+const deleteRole = (params) => deleteAction('/rbac/sys/role/delete', params)
 //修改角色状态
-const editRoleStatus = (params) => putAction('/sys/role/editStatus', params)
+const editRoleStatus = (params) => putAction('/rbac/sys/role/editStatus', params)
+
+//查询用户所属平台集合
+const fetchUserPlatforms = (params) => getAction('/rbac/sys/user/getPlatformTypes', params)
 
 //用户选择业务平台
-const chooseUserPlatform = (params) => postAction('/sys/user/cachePlatformType', params)
+const chooseUserPlatform = (params) => postAction('/rbac/sys/user/cachePlatformType', params)
 
 export {
 	login,
@@ -68,5 +80,6 @@ export {
 	editRole,
 	deleteRole,
 	editRoleStatus,
+	fetchUserPlatforms,
 	chooseUserPlatform,
 }

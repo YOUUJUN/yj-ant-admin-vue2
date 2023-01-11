@@ -177,7 +177,7 @@ export default {
 		return {
 			columns,
 			url: {
-				list: '/sys/role/list',
+				list: '/rbac/sys/role/list',
 			},
 
 			//窗体控制

@@ -89,9 +89,11 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { removeToken } from '@/utils/ls_operation'
+import { UI_CACHE_DB_DICT_DATA } from '@/utils/root/local_storageKeys'
+import ls, { removeToken } from '@/utils/ls_operation'
 import { timeFix } from '@/utils/index'
-import { getRandomImage } from '@/api/user'
+import { getRandomImage, fetchUserPlatforms } from '@/api/user'
+import { fetchDictData } from '@/api/system'
 
 export default {
 	data() {
@@ -108,6 +110,7 @@ export default {
 
 			//验证码图片
 			randCodeImage: '',
+			randCodeUid: '',
 
 			//验证码
 			inputCodeContent: '',
@@ -119,14 +122,13 @@ export default {
 	},
 
 	created() {
-		this.currentTime = new Date().getTime()
 		removeToken()
 		this.getRouterData()
 		this.handleChangeCheckCode()
 	},
 
 	methods: {
-		...mapActions('user', ['Login']),
+		...mapActions('user', ['Login', 'saveUserAccessiblePlatforms']),
 
 		handleSubmit() {
 			let loginParams = {}
@@ -139,8 +141,8 @@ export default {
 					if (!err) {
 						loginParams.username = values.username
 						loginParams.password = values.password
-						loginParams.captcha = this.inputCodeContent
-						loginParams.checkKey = this.currentTime
+						loginParams.code = this.inputCodeContent
+						loginParams.uuid = this.randCodeUid
 						console.log('登录参数', loginParams)
 						this.Login(loginParams)
 							.then((res) => {
@@ -161,11 +163,16 @@ export default {
 		},
 
 		handleChangeCheckCode() {
-			this.currentTime = new Date().getTime()
-			getRandomImage(this.currentTime)
+			getRandomImage({
+				count: 4,
+			})
 				.then((res) => {
-					if (res.success) {
-						this.randCodeImage = res.result
+					console.log('res', res)
+					const { success, result } = res
+					if (success) {
+						const { uuid, code } = result
+						this.randCodeImage = code
+						this.randCodeUid = uuid
 						this.requestCodeSuccess = true
 					} else {
 						this.$message.error(res.message)
@@ -179,11 +186,33 @@ export default {
 
 		loginSuccess() {
 			const indexPath = window._CONFIG['indexURL']
-			this.$router.push({ path: indexPath }).catch(() => {})
-			this.$notification.success({
-				message: '欢迎',
-				description: `${timeFix()}，欢迎回来`,
-			})
+
+			//获取用户所属平台列表
+			fetchUserPlatforms()
+				.then((res) => {
+					console.log('res', res)
+					const { success, result } = res
+					if (success) {
+						this.saveUserAccessiblePlatforms(result)
+
+						this.$router.push({ path: indexPath }).catch(() => {})
+						this.$notification.success({
+							message: '欢迎',
+							description: `${timeFix()}，欢迎回来`,
+						})
+
+						//登录成功后，获取字典数据存储到ls
+						fetchDictData().then((res) => {
+							const { success, result } = res
+							if (success) {
+								ls.set(UI_CACHE_DB_DICT_DATA, result)
+							}
+						})
+					}
+				})
+				.catch((err) => {
+					console.error('err', err)
+				})
 		},
 
 		requestFailed(err) {

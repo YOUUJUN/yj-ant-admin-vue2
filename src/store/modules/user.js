@@ -4,8 +4,8 @@ import {
 	USER_NAME,
 	USER_REALNAME,
 	USER_INFO,
-	UI_CACHE_DB_DICT_DATA,
 	USER_AUTH,
+	UI_CACHE_DB_DICT_DATA,
 	SYS_BUTTON_AUTH,
 	ACCESSIBLE_PLATFORM,
 	SELECTED_PLATFORM,
@@ -84,15 +84,12 @@ const actions = {
 				.then((res) => {
 					if (res.code == '200') {
 						const result = res.result
-						let { sysUserVO, token, sysAllDictItems, platformTypes, sysRole } = result
+						let { sysUserVO, token, sysAllDictItems, sysRole } = result
 						let { username, realName, avatar } = sysUserVO
 
 						//设置token
 						commit('SET_TOKEN', token)
-						//储存用户可访问的平台
-						commit('SET_USER_ACCESSIBLE_PLATFORM', platformTypes)
 						//储存用户数据
-						ls.set(UI_CACHE_DB_DICT_DATA, sysAllDictItems, 7 * 24 * 60 * 60 * 1000)
 						commit('SET_USER_INFO', sysUserVO)
 						commit('SET_USER_NAME', {
 							username: username,
@@ -148,9 +145,13 @@ const actions = {
 	},
 
 	//获取用户权限列表
-	GetPermissionList({ commit }) {
+	GetPermissionList({ commit, rootGetters, state }) {
+		const platformType = state?.selectedPlatform || rootGetters?.selectedPlatform || ''
+		console.log('platformType', rootGetters.userInfo)
 		return new Promise((resolve, reject) => {
-			queryPermissionsByUser()
+			queryPermissionsByUser({
+				platformType,
+			})
 				.then((response) => {
 					console.log('response', response)
 					const { success, result } = response
@@ -190,7 +191,15 @@ const actions = {
 		})
 	},
 
-	selectUserPlatform({commit}, platform){
+	//储存用户可访问的平台
+	saveUserAccessiblePlatforms({ commit }, platforms){
+		return new Promise((resolve) => {
+			commit('SET_USER_ACCESSIBLE_PLATFORM', platforms)
+			resolve()
+		})
+	},
+
+	selectUserPlatform({ commit }, platform) {
 		return new Promise((resolve) => {
 			commit('SET_USER_SELECTED_PLATFORM', platform)
 			resolve()
@@ -213,7 +222,6 @@ const actions = {
 			resolve()
 		})
 	},
-	
 }
 
 export default {

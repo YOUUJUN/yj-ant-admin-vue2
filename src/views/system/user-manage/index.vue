@@ -216,7 +216,7 @@ export default {
 		return {
 			columns,
 			url: {
-				list: '/sys/user/list/',
+				list: '/rbac/sys/user/list/',
 			},
 
 			visible: false,
