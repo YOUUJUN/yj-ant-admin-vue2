@@ -91,7 +91,7 @@
 
 				<a-form-model-item label="菜单平台类型" :required="true" prop="platformType">
 					<a-radio-group v-model="form.platformType" :disabled="disableSubmit">
-						<a-radio :value="item.id" v-for="(item, index) of systemPlatforms">{{ item.name }}</a-radio>
+						<a-radio :value="item.id" :key="index" v-for="(item, index) of systemPlatforms">{{ item.name }}</a-radio>
 					</a-radio-group>
 				</a-form-model-item>
 
