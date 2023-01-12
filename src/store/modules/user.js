@@ -202,6 +202,7 @@ const actions = {
 	selectUserPlatform({ commit }, platform) {
 		return new Promise((resolve) => {
 			commit('SET_USER_SELECTED_PLATFORM', platform)
+			commit('SET_PERMISSIONLIST', [])
 			resolve()
 		})
 	},
