@@ -54,7 +54,8 @@
 </template>
 
 <script>
-import { getAction, postAction, putAction } from '@/api/manage'
+import { getAction} from '@/api/manage'
+import { editUserRole } from '@/api/user'
 import dataListMixin from '@/mixins/data_list_mixin'
 
 const columns = [
@@ -180,7 +181,7 @@ export default {
 
 		setData(data) {
 			this.detailForm = Object.assign({}, data.form)
-			this.selectedRowKeys = data.list.map(item => item.id)
+			this.selectedRowKeys = data.list.map((item) => item.id)
 		},
 
 		bindListener() {
@@ -224,7 +225,7 @@ export default {
 			let payload = Object.assign({}, this.detailForm, {
 				selectedRoles: roles,
 			})
-			putAction('/sys/user/edit/baseWeb', payload)
+			editUserRole(payload)
 				.then((res) => {
 					this.$message.success('修改用户角色成功!')
 					this.$emit('handleQuery')

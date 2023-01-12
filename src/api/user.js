@@ -15,7 +15,7 @@ const login = (params) => {
 const logout = (logoutToken) => {
 	return request({
 		url: '/sso/user/logout',
-		method: 'get',
+		method: 'post',
 		headers: {
 			'Content-Type': 'application/json;charset=UTF-8',
 			'X-Access-Token': logoutToken,
@@ -45,7 +45,8 @@ const fetchUserRoleRelation = (params) => getAction('/rbac/sys/userRole/list', p
 const queryRolePermission = (params) => getAction('/rbac/sys/rolePermission/list', params)
 //新增角色权限关系
 const addRolePermission = (params) => postAction('/rbac/sys/rolePermission/add', params)
-
+//修改用户角色
+const editUserRole = (params) => putAction('/rbac/sys/user/edit/baseWeb', params)
 
 
 //添加角色
@@ -76,6 +77,7 @@ export {
 	fetchUserRoleRelation,
 	queryRolePermission,
 	addRolePermission,
+	editUserRole,
 	addRole,
 	editRole,
 	deleteRole,
