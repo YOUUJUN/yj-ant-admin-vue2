@@ -34,7 +34,7 @@ export default {
 
 		enterPlatform(platformId) {
 			this.selectUserPlatform(platformId).then(res => {
-				this.$router.push({path : '/index', replace: true})
+				this.$router.push({path : '/index'})
 			})
 
 			// const token = getToken()

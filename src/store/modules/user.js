@@ -12,6 +12,8 @@ import {
 } from '@/utils/root/local_storageKeys'
 import { login, logout, queryPermissionsByUser } from '@/api/user'
 
+import router, { resetRouter } from '@/router'
+
 //token储存时间
 const tokenExpirationTime = 7 * 24 * 60 * 60 * 1000
 
@@ -192,7 +194,7 @@ const actions = {
 	},
 
 	//储存用户可访问的平台
-	saveUserAccessiblePlatforms({ commit }, platforms){
+	saveUserAccessiblePlatforms({ commit }, platforms) {
 		return new Promise((resolve) => {
 			commit('SET_USER_ACCESSIBLE_PLATFORM', platforms)
 			resolve()
@@ -203,6 +205,7 @@ const actions = {
 		return new Promise((resolve) => {
 			commit('SET_USER_SELECTED_PLATFORM', platform)
 			commit('SET_PERMISSIONLIST', [])
+			resetRouter(router)
 			resolve()
 		})
 	},
