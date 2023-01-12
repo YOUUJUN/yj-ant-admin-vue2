@@ -46,7 +46,7 @@ const queryRolePermission = (params) => getAction('/rbac/sys/rolePermission/list
 //新增角色权限关系
 const addRolePermission = (params) => postAction('/rbac/sys/rolePermission/add', params)
 //修改用户角色
-const editUserRole = (params) => putAction('/rbac/sys/user/edit/baseWeb', params)
+const editUserRole = (params) => putAction('/rbac/sys/user/edit', params)
 
 
 //添加角色
