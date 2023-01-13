@@ -403,4 +403,9 @@ export default {
 .footer-wrap {
 	text-align: right;
 }
+
+::v-deep .ant-form-item-label{
+	text-align: left;
+	padding-left: 2rem;
+}
 </style>
