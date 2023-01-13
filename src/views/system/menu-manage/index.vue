@@ -142,7 +142,7 @@ export default {
 			loading: false,
 			expandedRowKeys: [], // 展开的行
 			url: {
-				list: '/sys/permission/list',
+				list: '/rbac/sys/permission/list',
 			},
 
 			visible: false,

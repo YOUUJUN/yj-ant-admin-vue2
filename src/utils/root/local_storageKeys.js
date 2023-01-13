@@ -1,4 +1,4 @@
-export const ACCESS_TOKEN = 'Access-Token'
+export const ACCESS_TOKEN = 'Authorization'
 export const USER_AUTH = "USER_AUTH"
 export const USER_NAME = 'Login_Username'
 export const USER_REALNAME = 'Login_UserRealname'

@@ -18,7 +18,7 @@ router.beforeEach(async (to, from, next) => {
 		if (to.path === '/user/login') {
 			next({ path: '/index' })
 			NProgress.done()
-		}else if(to.path === '/user/platform'){
+		} else if (to.path === '/user/platform') {
 			next()
 			NProgress.done()
 		} else {
@@ -27,6 +27,7 @@ router.beforeEach(async (to, from, next) => {
 				store
 					.dispatch('user/GetPermissionList')
 					.then((res) => {
+						console.log('res---', res)
 						const { success, result, code } = res
 						if (success) {
 							const menuData = result?.menu
@@ -41,17 +42,18 @@ router.beforeEach(async (to, from, next) => {
 									router.addRoute(route)
 								})
 								console.log('to', to)
-								next({ ...to, replace: true })
+								next({ ...to })
 							})
 						} else {
 							console.log('false....')
 							//如果code返回406说明当前token无法查询到登录用户的菜单权限（用户还未选择业务平台，前端路由跳转到选择业务平台页面）
-							if(code === 406){
+							if (code === 406) {
 								console.log('in 406...')
 								next({ path: '/user/platform' })
-							}else{
-								throw(res)
-							}					
+							} else {
+								next({ path: '/user/login' })
+								throw res
+							}
 						}
 					})
 					.catch((err) => {
@@ -61,7 +63,6 @@ router.beforeEach(async (to, from, next) => {
 						})
 					})
 					.finally(() => {
-						next()
 						NProgress.done()
 					})
 			} else {

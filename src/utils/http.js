@@ -32,7 +32,7 @@ function myAxios(customOptions, axiosConfig) {
 		function (config) {
 			let token = getToken()
 			if (token) {
-				config.headers['X-Access-Token'] = token
+				config.headers['Authorization'] = token
 			}
 			return config
 		},

@@ -33,7 +33,18 @@
 		</header>
 
 		<main class="main-wrap">
-			<a-table :columns="columns" :data-source="data" bordered :pagination="pagination" :loading="loading">
+			<a-table
+				ref="table"
+				bordered
+				size="middle"
+				rowKey="id"
+				:columns="columns"
+				:dataSource="dataSource"
+				:rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+				:pagination="ipagination"
+				:loading="loading"
+				@change="handleTableChange"
+			>
 				<template slot="merchantLevel" slot-scope="text, record">
 					<a-rate v-model="text" />
 				</template>
@@ -55,6 +66,7 @@
 </template>
 
 <script>
+import dataListMixin from '@/mixins/data_list_mixin'
 import { getAction, postAction } from '@/api/manage'
 
 const detailModel = () => import('./modules/Detail.vue')
@@ -62,34 +74,42 @@ const detailModel = () => import('./modules/Detail.vue')
 const columns = [
 	{
 		title: '序号',
+		dataIndex: '',
+		key: 'rowIndex',
+		width: 75,
 		align: 'center',
-		width: 90,
-		dataIndex: 'key',
+		customRender: function (t, r, index) {
+			return parseInt(index) + 1
+		},
 	},
 	{
-		title: '车辆类型',
+		title: '老人姓名',
 		align: 'center',
 		width: 250,
-		dataIndex: 'merchantName',
+		dataIndex: 'name',
 	},
 	{
-		title: '价格（元/每吨）',
+		title: '生日',
 		align: 'center',
-		width: 200,
-		dataIndex: 'tel',
+		dataIndex: 'birthday',
 	},
 	{
-		title: '描述',
+		title: '年龄',
 		align: 'center',
-		dataIndex: 'serviceCategory',
+		dataIndex: 'age',
 	},
 	{
-		title: '操作',
+		title: '照片路径',
 		align: 'center',
-		width: 230,
-		dataIndex: 'operation',
-		scopedSlots: { customRender: 'operation' },
+		dataIndex: 'photo',
 	},
+	// {
+	// 	title: '操作',
+	// 	align: 'center',
+	// 	width: 230,
+	// 	dataIndex: 'operation',
+	// 	scopedSlots: { customRender: 'operation' },
+	// },
 ]
 
 const data = []
@@ -108,6 +128,8 @@ for (let i = 0; i < 46; i++) {
 }
 
 export default {
+	mixins: [dataListMixin],
+
 	components: {
 		detailModel,
 	},
@@ -123,6 +145,9 @@ export default {
 
 			data,
 			columns,
+			url: {
+				list: '/provider/test/testPage',
+			},
 			selectedRowKeys: [], // Check here to configure the default column
 			pagination: {
 				pageSize: 10,
@@ -133,6 +158,7 @@ export default {
 
 			//table
 			loading: false,
+			postMethod: true,
 		}
 	},
 

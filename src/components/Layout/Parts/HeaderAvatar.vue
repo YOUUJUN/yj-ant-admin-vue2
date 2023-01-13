@@ -6,6 +6,10 @@
 			<a-icon type="caret-down" />
 		</div>
 		<a-menu :class="['avatar-menu']" slot="overlay">
+			<a-menu-item @click="goToPlatformSelection()">
+				<a-icon style="margin-right: 8px" type="cluster" />
+				<span>选择业务平台</span>
+			</a-menu-item>
 			<a-menu-item @click="logout">
 				<a-icon style="margin-right: 8px" type="poweroff" />
 				<span>退出登录</span>
@@ -15,14 +19,15 @@
 </template>
 
 <script>
+import router from '@/router'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	name: 'HeaderAvatar',
 
-	data(){
+	data() {
 		return {
-			avatar : require('@/assets/images/me.png')
+			avatar: require('@/assets/images/me.png'),
 		}
 	},
 
@@ -31,7 +36,14 @@ export default {
 	},
 
 	methods: {
-		...mapActions('user', ['Logout']),
+		...mapActions('user', ['Logout', 'selectUserPlatform']),
+
+		goToPlatformSelection() {
+			this.selectUserPlatform('').then((res) => {
+				router.push({ path: '/user/platform' })
+			})
+		},
+
 		logout() {
 			this.Logout()
 		},
@@ -51,13 +63,13 @@ export default {
 		border: 2px solid #ddd;
 	}
 	.name {
-		color: rgba(0,0,0,0.4);
+		color: rgba(0, 0, 0, 0.4);
 		font-size: 15px;
 		font-weight: 500;
 	}
 
-	.anticon-caret-down{
-		color : #cccccc;
+	.anticon-caret-down {
+		color: #cccccc;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;

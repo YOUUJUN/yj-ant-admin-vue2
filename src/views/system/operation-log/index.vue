@@ -116,7 +116,7 @@ export default {
 	data() {
 		return {
 			url: {
-				list: '/sys/log/list',
+				list: '/rbac/sys/log/list',
 			},
             queryParam : {
                 logType : 1,

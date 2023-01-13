@@ -195,4 +195,9 @@ export default {
 	display: flex;
 	justify-content: flex-end;
 }
+
+::v-deep .ant-form-item-label{
+	text-align: left;
+	padding-left: 1.5rem;
+}
 </style>

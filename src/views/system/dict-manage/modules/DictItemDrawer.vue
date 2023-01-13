@@ -96,7 +96,7 @@ export default {
 
 			columns,
 			url: {
-				list: '/sys/dictItem/list',
+				list: '/rbac/sys/dictItem/list',
 			},
 
 			loadByInit: false,

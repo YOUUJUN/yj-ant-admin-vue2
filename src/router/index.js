@@ -20,10 +20,10 @@ export const constantRoutes = [
 			},
 
 			{
-				path : 'platform',
-				name : 'platform',
+				path: 'platform',
+				name: 'platform',
 				component: () => import('@/views/system/platform-selection'),
-			}
+			},
 		],
 	},
 
@@ -42,7 +42,6 @@ export const constantRoutes = [
 		name: '500',
 		component: () => import('@/views/exception/500.vue'),
 	},
-
 ]
 
 //会读取作为菜单项的路由配置
@@ -58,7 +57,6 @@ export const asyncRouters = [
 	// 		title: '菜单管理',
 	// 	},
 	// },
-
 	// {
 	// 	name: 'user-manage',
 	// 	path: '/system/user-manage',
@@ -70,7 +68,6 @@ export const asyncRouters = [
 	// 		title: '用户管理',
 	// 	},
 	// },
-
 	// {
 	// 	name: 'role-manage',
 	// 	path: '/system/role-manage',
@@ -82,7 +79,6 @@ export const asyncRouters = [
 	// 		title: '角色管理',
 	// 	},
 	// },
-
 	// {
 	// 	name: 'dict-manage',
 	// 	path: '/system/dict-manage',
@@ -94,7 +90,6 @@ export const asyncRouters = [
 	// 		title: '数据字典',
 	// 	},
 	// },
-
 	// {
 	// 	name: 'operation-log',
 	// 	path: '/system/operation-log',
@@ -107,6 +102,19 @@ export const asyncRouters = [
 	// 	},
 	// },
 ]
+
+/**
+ * 清除路由配置
+ * @param {*} router // 传入当前router
+ */
+export function resetRouter(router) {
+	// 用初始化的matcher替换当前router的matcher
+	router.matcher = new VueRouter({
+		mode: 'history',
+		base: window._CONFIG['baseURL'],
+		routes: constantRoutes,
+	}).matcher
+}
 
 const router = new VueRouter({
 	mode: 'history',

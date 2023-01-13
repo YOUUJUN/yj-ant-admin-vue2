@@ -33,23 +33,27 @@ export default {
 		...mapActions('user', ['setToken', 'selectUserPlatform']),
 
 		enterPlatform(platformId) {
-			const token = getToken()
-
-			chooseUserPlatform({
-				platformType: platformId,
-				token,
+			this.selectUserPlatform(platformId).then(res => {
+				this.$router.push({path : '/index'}).catch(() => {})
 			})
-				.then((res) => {
-					console.log('res', res)
-					const { message } = res
-					this.setToken(message).then(res => {
-						this.$router.push({path : '/index', replace: true})
-					})
-					this.selectUserPlatform(platformId)
-				})
-				.catch((err) => {
-					console.error('err', err)
-				})
+
+			// const token = getToken()
+
+			// chooseUserPlatform({
+			// 	platformType: platformId,
+			// 	token,
+			// })
+			// 	.then((res) => {
+			// 		console.log('res', res)
+			// 		const { message } = res
+			// 		this.setToken(message).then(res => {
+			// 			this.$router.push({path : '/index', replace: true})
+			// 		})
+			// 		this.selectUserPlatform(platformId)
+			// 	})
+			// 	.catch((err) => {
+			// 		console.error('err', err)
+			// 	})
 		},
 	},
 }
