@@ -11,7 +11,7 @@
 
 		<main>
 			<a-form-model ref="form" :model="form" :rules="rules" :labelCol="labelCol" :wrapperCol="wrapperCol">
-				<a-form-model-item label="菜单类型">
+				<a-form-model-item label="菜单级别">
 					<a-radio-group @change="onChangeMenuType" v-model="form.menuType">
 						<a-radio value="0">一级菜单</a-radio>
 						<a-radio value="1">子菜单</a-radio>
@@ -89,7 +89,7 @@
 					/>
 				</a-form-model-item>
 
-				<a-form-model-item label="菜单平台类型" :required="true" prop="platformType">
+				<a-form-model-item label="平台类型" :required="true" prop="platformType">
 					<a-radio-group v-model="form.platformType" :disabled="disableSubmit">
 						<a-radio :value="item.id" :key="index" v-for="(item, index) of systemPlatforms">{{ item.name }}</a-radio>
 					</a-radio-group>
