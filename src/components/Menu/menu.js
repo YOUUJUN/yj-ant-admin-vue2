@@ -245,6 +245,7 @@ export default {
 				return
 			} else if (icon.startsWith('diy_')) {
 				return h(svgIcon, {
+					class : "anticon",
 					props: {
 						iconClass: icon.replace('diy_', ''),
 					},

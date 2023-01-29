@@ -9,6 +9,7 @@
 				theme="light"
 				v-model="sidebar.opened"
 				collapsible
+				@collapse="toggleClick"
 				:width="sidebar.width"
 			>
 				<side-bar></side-bar>
@@ -31,7 +32,7 @@ const NavBar = () => import('./Parts/NavBar.vue')
 
 const TabsView = () => import('./TabsView.vue')
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	name: 'Layout',
@@ -51,7 +52,13 @@ export default {
 		...mapGetters(['sidebar']),
 	},
 
-	methods: {},
+	methods: {
+		...mapActions('display', ['toggleSideBar']),
+
+		toggleClick(collapsed) {
+			this.toggleSideBar(collapsed)
+		},
+	},
 }
 </script>
 

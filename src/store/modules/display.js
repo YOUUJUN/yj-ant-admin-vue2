@@ -7,7 +7,13 @@ const state = {
 
 const mutations = {
 	TOGGLE_SIDE_BAR(state, payload) {
-		state.sidebar.opened = !state.sidebar.opened
+		let opened = payload?.opened
+		if(opened !== undefined){
+			state.sidebar.opened = opened
+		}else{
+			state.sidebar.opened = !state.sidebar.opened
+		}
+
 		if (state.sidebar.opened === true) {
 			state.sidebar.width = '80'
 		} else {
@@ -21,8 +27,8 @@ const mutations = {
 }
 
 const actions = {
-	toggleSideBar({ commit }) {
-		commit('TOGGLE_SIDE_BAR')
+	toggleSideBar({ commit }, opened) {
+		commit('TOGGLE_SIDE_BAR', { opened })
 	},
 
 	closeSideBar({ commit }) {
