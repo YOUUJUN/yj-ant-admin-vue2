@@ -19,5 +19,4 @@ export function removeToken() {
 	return ls.remove(ACCESS_TOKEN)
 }
 
-
 export default ls

@@ -1,6 +1,6 @@
 /**
  * table分页逻辑混入
- * 
+ *
  */
 
 import { getAction, postAction } from '@/api/manage'

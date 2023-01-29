@@ -8,9 +8,9 @@ const state = {
 const mutations = {
 	TOGGLE_SIDE_BAR(state, payload) {
 		state.sidebar.opened = !state.sidebar.opened
-		if(state.sidebar.opened === true){
+		if (state.sidebar.opened === true) {
 			state.sidebar.width = '80'
-		}else{
+		} else {
 			state.sidebar.width = '240'
 		}
 	},

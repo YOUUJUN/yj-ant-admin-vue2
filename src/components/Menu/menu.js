@@ -249,8 +249,8 @@ export default {
 						iconClass: icon.replace('diy_', ''),
 					},
 					attrs: {
-						style : 'margin-right:1rem;'
-					}
+						style: 'margin-right:1rem;',
+					},
 				})
 			} else {
 				return h(Icon, {

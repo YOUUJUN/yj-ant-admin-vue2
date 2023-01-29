@@ -53,7 +53,6 @@ const actions = {
 // 	return result
 // }
 
-
 //从路由元信息roles判断
 // function hasPrermission(route, roles) {
 // 	if (route.meta && route.meta.roles) {

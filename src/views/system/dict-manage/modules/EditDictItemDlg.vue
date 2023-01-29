@@ -35,7 +35,7 @@
 					placeholder="请输入排序值"
 					v-model="detailForm.sortOrder"
 					:min="1"
-					style="width:150px"
+					style="width: 150px"
 					:disabled="disabled"
 				/>
 			</a-form-model-item>
@@ -203,7 +203,7 @@ export default {
 	justify-content: flex-end;
 }
 
-::v-deep .ant-form-item-label{
+::v-deep .ant-form-item-label {
 	text-align: left;
 	padding-left: 1.5rem;
 }

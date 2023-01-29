@@ -178,7 +178,7 @@ export default {
 				fieldVal: value,
 				dataId: this.detailForm.id,
 			}
-			
+
 			duplicateCheck(params).then((res) => {
 				if (res.success) {
 					callback()
@@ -196,7 +196,7 @@ export default {
 	justify-content: flex-end;
 }
 
-::v-deep .ant-form-item-label{
+::v-deep .ant-form-item-label {
 	text-align: left;
 	padding-left: 1.5rem;
 }

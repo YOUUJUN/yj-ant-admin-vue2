@@ -68,7 +68,7 @@ function generateChildRouters(data) {
 			component: componentPath,
 			hidden: item.hidden,
 			meta: {
-				invisible : item.hidden,
+				invisible: item.hidden,
 				title: item.meta.title,
 				icon: item.meta.icon,
 				link: item.meta.url,

@@ -25,10 +25,8 @@ const editDictItemDetail = (params) => putAction('/rbac/sys/dictItem/edit', para
 //删除字典详细项
 const deleteDictItemDetail = (params) => deleteAction('/rbac/sys/dictItem/delete', params)
 
-
 // 校验授权标识是否重复
 const duplicateCheck = (params) => getAction('/rbac/sys/common/duplicateCheck', params)
-
 
 //获取树形结构菜单数据(不包含按钮)
 const queryTreeMenuList = (params) => getAction('/rbac/sys/permission/queryTreeList', params)

@@ -485,10 +485,10 @@ export default {
 		chooseIcon(icon, category) {
 			this.activeIndex = icon
 			this.choosedIcon = icon
-			if(category === 'diy'){
+			if (category === 'diy') {
 				this.choosedIcon = `diy_${icon}`
 			}
-			
+
 			this.$message.success(`选中 ${this.choosedIcon}`)
 		},
 		ok() {

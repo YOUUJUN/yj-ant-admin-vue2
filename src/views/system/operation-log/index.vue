@@ -37,7 +37,7 @@
 				:pagination="ipagination"
 				:loading="loading"
 				@change="handleTableChange"
-                style="margin-top:14px;"
+				style="margin-top: 14px"
 			></a-table>
 		</main>
 
@@ -118,9 +118,9 @@ export default {
 			url: {
 				list: '/rbac/sys/log/list',
 			},
-            queryParam : {
-                logType : 1,
-            },
+			queryParam: {
+				logType: 1,
+			},
 			columns,
 		}
 	},
@@ -137,10 +137,10 @@ export default {
 				this.columns = columns
 			} else if (activeKey == 2) {
 				this.tabKey = '2'
-                let newColumns = [...columns]
-                newColumns.splice(7, 0, operateColumn)
-                this.columns = newColumns
-			} 
+				let newColumns = [...columns]
+				newColumns.splice(7, 0, operateColumn)
+				this.columns = newColumns
+			}
 
 			Object.assign(this.queryParam, {
 				logType: activeKey,

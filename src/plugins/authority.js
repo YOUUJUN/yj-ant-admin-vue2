@@ -27,12 +27,12 @@ const AuthorityPlugin = {
 				const $auth = instance.$auth
 				let result = $auth(check)
 				if (result) {
-					let ctrlType = getAuthType(check)  
-                    if(ctrlType == '1'){
-                        el.parentNode.removeChild(el)
-                    }else if(ctrlType == '2'){
-                        el.classList.add('disabled')
-                    }
+					let ctrlType = getAuthType(check)
+					if (ctrlType == '1') {
+						el.parentNode.removeChild(el)
+					} else if (ctrlType == '2') {
+						el.classList.add('disabled')
+					}
 				}
 			},
 		})

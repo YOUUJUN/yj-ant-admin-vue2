@@ -50,8 +50,18 @@
 		<footer></footer>
 
 		<dict-dlg ref="dictDlg" :visible.sync="visible" :ctrlMode="ctrlMode" @handleQuery="searchQuery"></dict-dlg>
-		<dict-item-drawer ref="dictItemDrawer" :visible.sync="visible2" @handleQuery="searchQuery" @openDictEditorDlg="openDictEditorDlg"></dict-item-drawer>
-		<edit-dict-item-dlg ref="dictEditorDlg" :visible.sync="visible3" :ctrlMode="ctrlMode3" @handleQuery="doDrawerSearch"></edit-dict-item-dlg>
+		<dict-item-drawer
+			ref="dictItemDrawer"
+			:visible.sync="visible2"
+			@handleQuery="searchQuery"
+			@openDictEditorDlg="openDictEditorDlg"
+		></dict-item-drawer>
+		<edit-dict-item-dlg
+			ref="dictEditorDlg"
+			:visible.sync="visible3"
+			:ctrlMode="ctrlMode3"
+			@handleQuery="doDrawerSearch"
+		></edit-dict-item-dlg>
 	</article>
 </template>
 <script>
@@ -115,8 +125,8 @@ export default {
 			visible: false,
 			ctrlMode: 'add',
 
-			visible2 : false,
-			visible3 : false,
+			visible2: false,
+			visible3: false,
 			ctrlMode3: 'add',
 		}
 	},
@@ -161,17 +171,17 @@ export default {
 		},
 
 		//打开字典详细信息编辑窗体
-		openDictEditorDlg(payload){
-			const {ctrlMode, record} = payload
+		openDictEditorDlg(payload) {
+			const { ctrlMode, record } = payload
 			this.visible3 = true
 			this.ctrlMode3 = ctrlMode
 			this.$refs.dictEditorDlg.setData(record)
 		},
 
 		//搜索字典详细值列表
-		doDrawerSearch(){
+		doDrawerSearch() {
 			this.$refs.dictItemDrawer.searchQuery()
-		}
+		},
 	},
 }
 </script>

@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { getAction} from '@/api/manage'
+import { getAction } from '@/api/manage'
 import { editUserRole } from '@/api/user'
 import dataListMixin from '@/mixins/data_list_mixin'
 

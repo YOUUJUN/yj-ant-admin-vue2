@@ -53,11 +53,9 @@
 			</a-button>
 			<a-button @click="handleSubmit(true)" type="primary" :loading="loading">保存并关闭</a-button>
 		</div>
-
 	</a-drawer>
 </template>
 <script>
-
 import { queryRolePermission, addRolePermission } from '@/api/user'
 import { queryFullTreeMenuList } from '@/api/system'
 

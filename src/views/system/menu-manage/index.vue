@@ -125,9 +125,9 @@ const columns = [
 export default {
 	mixins: [dataListMixin],
 
-	provide(){
+	provide() {
 		return {
-			openIconChooseDlg_inject : this.openIconChooseDlg
+			openIconChooseDlg_inject: this.openIconChooseDlg,
 		}
 	},
 
@@ -284,7 +284,7 @@ export default {
 		},
 
 		//打开图标选择窗体
-		openIconChooseDlg(){
+		openIconChooseDlg() {
 			this.visible = true
 		},
 
@@ -292,7 +292,7 @@ export default {
 		handleIconChoose(value) {
 			console.log(value)
 			this.$refs.operateModel.setData({
-				icon : value
+				icon: value,
 			})
 			this.visible = false
 		},

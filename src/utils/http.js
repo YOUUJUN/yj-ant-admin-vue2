@@ -23,7 +23,7 @@ function myAxios(customOptions, axiosConfig) {
 			withCredentials: true,
 			timeout: 9000,
 		},
-		axiosConfig
+		axiosConfig,
 	)
 
 	const service = axios.create(axios_options)
@@ -40,10 +40,10 @@ function myAxios(customOptions, axiosConfig) {
 			return Promise.reject(error)
 		},
 	)
-	
+
 	service.interceptors.response.use(
 		(response) => {
-			return custom_options.if_reduct_data_format ? response.data : response;
+			return custom_options.if_reduct_data_format ? response.data : response
 		},
 		(error) => {
 			custom_options.if_handle_error_status && httpErrorStatusHandle(error)
@@ -101,6 +101,5 @@ function httpErrorStatusHandle(error) {
 		notification.error(notifyOption)
 	}
 }
-
 
 export default myAxios

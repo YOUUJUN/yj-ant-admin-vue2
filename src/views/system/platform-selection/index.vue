@@ -33,8 +33,8 @@ export default {
 		...mapActions('user', ['setToken', 'selectUserPlatform']),
 
 		enterPlatform(platformId) {
-			this.selectUserPlatform(platformId).then(res => {
-				this.$router.push({path : '/index'}).catch(() => {})
+			this.selectUserPlatform(platformId).then((res) => {
+				this.$router.push({ path: '/index' }).catch(() => {})
 			})
 
 			// const token = getToken()

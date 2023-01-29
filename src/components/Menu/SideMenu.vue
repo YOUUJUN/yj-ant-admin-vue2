@@ -106,7 +106,6 @@ export default {
 .menu-wrap .ant-menu {
 	border: none;
 }
-
 </style>
 
 <style scoped>

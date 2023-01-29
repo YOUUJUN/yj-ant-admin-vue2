@@ -41,13 +41,12 @@ const editUserStatus = (params) => putAction('/rbac/sys/user/editStatus', params
 const deleteUser = (params) => deleteAction('/rbac/sys/user/delete', params)
 //查询用户角色关系
 const fetchUserRoleRelation = (params) => getAction('/rbac/sys/userRole/list', params)
-//获取角色权限关系列表 
+//获取角色权限关系列表
 const queryRolePermission = (params) => getAction('/rbac/sys/rolePermission/list', params)
 //新增角色权限关系
 const addRolePermission = (params) => postAction('/rbac/sys/rolePermission/add', params)
 //修改用户角色
 const editUserRole = (params) => putAction('/rbac/sys/user/edit', params)
-
 
 //添加角色
 const addRole = (params) => postAction('/rbac/sys/role/add', params)

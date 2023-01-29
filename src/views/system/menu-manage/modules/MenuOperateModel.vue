@@ -1,10 +1,5 @@
 <template>
-	<a-drawer
-		:visible="visible"
-		:title="title"
-		:width="drawerWidth"
-		@close="handleCancel"
-	>
+	<a-drawer :visible="visible" :title="title" :width="drawerWidth" @close="handleCancel">
 		<!-- <a-spin :spinning="confirmLoading">
 
         </a-spin> -->
@@ -91,7 +86,9 @@
 
 				<a-form-model-item label="平台类型" :required="true" prop="platformType">
 					<a-radio-group v-model="form.platformType" :disabled="disableSubmit">
-						<a-radio :value="item.id" :key="index" v-for="(item, index) of systemPlatforms">{{ item.name }}</a-radio>
+						<a-radio :value="item.id" :key="index" v-for="(item, index) of systemPlatforms">
+							{{ item.name }}
+						</a-radio>
 					</a-radio-group>
 				</a-form-model-item>
 
@@ -404,7 +401,7 @@ export default {
 	text-align: right;
 }
 
-::v-deep .ant-form-item-label{
+::v-deep .ant-form-item-label {
 	text-align: left;
 	padding-left: 2rem;
 }

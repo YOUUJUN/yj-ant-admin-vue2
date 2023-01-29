@@ -201,7 +201,7 @@ export default {
 					)
 					editRole(payload)
 						.then((res) => {
-                            const { success, message } = res
+							const { success, message } = res
 							if (success) {
 								this.$message.success('编辑角色成功!')
 								this.$emit('handleQuery')
