@@ -14,7 +14,6 @@ router.beforeEach(async (to, from, next) => {
 	/* must call `next` */
 	const hasToken = getToken()
 	if (hasToken) {
-		console.log('to.path', to)
 		if (to.path === '/user/login') {
 			next({ path: '/index' })
 			NProgress.done()
@@ -27,14 +26,12 @@ router.beforeEach(async (to, from, next) => {
 				store
 					.dispatch('user/GetPermissionList')
 					.then((res) => {
-						console.log('res---', res)
 						const { success, result, code } = res
 						if (success) {
 							const menuData = result?.menu
 							if (!menuData) {
 								return
 							}
-							console.log('menuData', menuData)
 							let constRoutes = generateIndexRouter(menuData)
 							console.log('constRoutes', constRoutes)
 							store.dispatch('permission/UpdateAppRouter', { constRoutes }).then((res) => {
@@ -69,38 +66,13 @@ router.beforeEach(async (to, from, next) => {
 				next()
 				NProgress.done()
 			}
-
-			// const hasRoles = store.getters.roles && store.getters.roles.length > 0
-			// if (hasRoles) {
-			// 	next()
-			// } else {
-			// 	/*--如果没有，尝试获取--*/
-			// 	try {
-			// 		const { roles } = await store.dispatch('user/getInfo')
-
-			// 		//通过权限列表动态生成前端路由
-			// 		const accessedRoutes = await store.dispatch('permission/generateRoutes', roles)
-
-			// 		accessedRoutes.forEach((route) => {
-			// 			router.addRoute(route)
-			// 		})
-
-			// 		next({ ...to, replace: true })
-			// 	} catch (err) {
-			// 		/*--处理向后台请求用户信息接口错误--*/
-			// 		await store.dispatch('user/resetToken')
-			// 		next(`/login?redirect=${to.path}`)
-			// 	}
-			// }
 		}
 	} else {
 		console.log('no token')
 		/*no token*/
 		if (whiteList.includes(to.path)) {
-			console.log('1')
 			next()
 		} else {
-			console.log('2')
 			next({ path: '/user/login', query: { redirect: to.fullPath } })
 		}
 		NProgress.done()
