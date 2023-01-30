@@ -11,7 +11,7 @@ export default {
 	data() {
 		return {
 			/* token header */
-			tokenHeader: { 'X-Access-Token': ls.get(ACCESS_TOKEN) },
+			tokenHeader: { 'Authorization': ls.get(ACCESS_TOKEN) },
 			/* 查询列表用是否用post方法 */
 			postMethod: false,
 			/* 查询条件-请不要在queryParam中声明非字符串值的属性 */
